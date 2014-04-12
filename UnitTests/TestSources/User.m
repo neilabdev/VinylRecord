@@ -12,11 +12,13 @@
 @dynamic name;
 @synthesize ignoredProperty;
 @dynamic groupId;
+@dynamic birthDate;
 
 @dynamic imageData;
 
 belongs_to_imp(Group, group, ARDependencyDestroy)
 has_many_through_imp(Project, UserProjectRelationship, projects, ARDependencyDestroy)
+has_many_through_imp(Animal, UserAnimalRelationship, pets, ARDependencyDestroy)
 
 validation_do(
     validate_uniqueness_of(name)

@@ -37,11 +37,15 @@ typedef void (^ARConfigurationBlock) (ARConfiguration *config);
 
 - (void)markAsNew;
 
+- (BOOL)isDirty;
 - (BOOL)isValid;
 - (NSArray *)errors;
 - (void)addError:(ARError *)anError;
+- (void)addErrors:(NSArray*) errors;
 
 + (instancetype)newRecord;
++ (instancetype) new: (NSDictionary *) values;
++ (instancetype) create: (NSDictionary *) values;
 - (BOOL)save;
 - (BOOL)update;
 - (void)dropRecord;
