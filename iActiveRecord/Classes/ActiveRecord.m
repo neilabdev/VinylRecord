@@ -58,10 +58,16 @@ static NSMutableDictionary *relationshipsDictionary = nil;
 + (instancetype) new: (NSDictionary *) values {
     ActiveRecord *newRow = [self newRecord];
     if(values) for(id key in values) {
-            ARColumn *column =  [self columnWithGetterNamed:key];
-
+         //   ARColumn *column =  [self columnWithGetterNamed:key];
+            NSString *baseName = [key stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[key substringToIndex:1] uppercaseString]];
+            SEL setterMethod = NSSelectorFromString([NSString stringWithFormat:@"set%@:",baseName]);
             id columnValue = [values objectForKey:key];
-            [newRow setValue:columnValue forColumn:column];
+
+            NSAssert([newRow respondsToSelector:setterMethod],@"'%@' is not an existing column for %@ class.",key,  NSStringFromClass([newRow class]));
+
+         //   if([newRow respondsToSelector:setterMethod])
+                [newRow performSelector:setterMethod withObject: columnValue ];
+           // [newRow setValue:columnValue forColumn:column];
         }
     return newRow;
 }
@@ -424,7 +430,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     NSInteger result = [[ARDatabaseManager sharedManager] updateRecord:self];
     if (result) {
         [_changedColumns removeAllObjects];
-        return [self persistQueuedManyRelationships];
+        BOOL success = [self persistQueuedManyRelationships];
+        return success;
        // return YES;
     }
     return NO;
