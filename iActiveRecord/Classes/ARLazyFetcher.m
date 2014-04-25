@@ -343,16 +343,32 @@
     }
     va_end(args);
 
-    NSRange range = NSMakeRange(0, [sqlArguments count]);
-    NSMutableData * data = [NSMutableData dataWithLength:sizeof(id) * [sqlArguments count]];
-    [sqlArguments getObjects: (__unsafe_unretained id *)data.mutableBytes range:range];
-    NSString * result = [[NSString alloc] initWithFormat:aCondition
-                                               arguments:data.mutableBytes];
+
+    NSMutableString *sqlQuery = [NSMutableString stringWithCapacity:[aCondition length]];
+    NSScanner *scanner = [NSScanner scannerWithString:aCondition];
+    NSCharacterSet *illegalCharacterSet = [NSCharacterSet illegalCharacterSet];
+    NSString *separatorString = @"%@";
+    NSString *container;
+    NSInteger sqlQueryIndex = 0;
+    NSInteger totalSQLArguments = [sqlArguments count];
+    scanner.charactersToBeSkipped = illegalCharacterSet;
+
+    while ([scanner isAtEnd] == NO) {
+        if([scanner scanUpToString:separatorString intoString:&container]) {
+            if(totalSQLArguments)
+                [sqlQuery appendFormat:@"%@%@",container, [sqlArguments objectAtIndex:sqlQueryIndex++]];
+            else
+                [sqlQuery appendFormat:@"%@",container];
+            [scanner scanString:separatorString intoString:NULL]; // steps past seperator
+        } else if([scanner scanString:separatorString intoString:NULL]) {
+            [sqlQuery appendFormat:@"%@",[sqlArguments objectAtIndex:sqlQueryIndex++]];
+        }
+    }
 
     if (!self.whereStatement) {
-        self.whereStatement = [[NSMutableString alloc] initWithString:result];
+        self.whereStatement = sqlQuery;
     } else {
-        self.whereStatement = [NSMutableString stringWithFormat:@"%@AND %@", self.whereStatement, result];
+        self.whereStatement = [NSMutableString stringWithFormat:@"%@ AND %@", self.whereStatement, sqlQuery];
     }
     return self;
 }
