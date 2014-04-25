@@ -355,7 +355,7 @@
 
     while ([scanner isAtEnd] == NO) {
         if([scanner scanUpToString:separatorString intoString:&container]) {
-            if(totalSQLArguments)
+            if(totalSQLArguments>sqlQueryIndex)
                 [sqlQuery appendFormat:@"%@%@",container, [sqlArguments objectAtIndex:sqlQueryIndex++]];
             else
                 [sqlQuery appendFormat:@"%@",container];
