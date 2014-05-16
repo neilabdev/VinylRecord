@@ -103,7 +103,7 @@
     //  classes described as @"ClassName"
     if (anAttribute[0] == '@') {
         unsigned long length = strlen(anAttribute) - 3;
-        type = (char *)calloc( length, sizeof(char) );
+        type = (char *)calloc( length+1, sizeof(char) );
         strncpy(type, anAttribute + 2, length);
         self.columnClass = [objc_getClass(type) class];
         if (self.columnClass == [NSString class]) {
