@@ -31,6 +31,7 @@ static NSString * joinString(ARJoinType type)
     BOOL useJoin;
     NSNumber *limit;
     NSNumber *offset;
+    ActiveRecord * row;
 }
 
 @property (nonatomic, copy) NSMutableString *whereStatement;

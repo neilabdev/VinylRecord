@@ -213,6 +213,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     self = [super init];
     if (self) {
         self.createdAt = self.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+        self.entityCache = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -229,6 +230,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     self.belongsToPersistentQueue = nil;
     self.hasManyPersistentQueue = nil;
     self.hasManyThroughRelationsQueue = nil;
+    self.entityCache = nil;
 }
 
 - (void)markAsNew {
@@ -284,8 +286,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (instancetype)reload {
+    [self.entityCache removeAllObjects];
+
     if([self isNewRecord])
         return self;
+
     ActiveRecord *existingRecord = [[[[[self class] lazyFetcher] where:@"id == %@", self.id, nil] fetchRecords] firstObject];
 
     if(existingRecord)
@@ -307,6 +312,50 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return fetcher;
 }
 
+#pragma mark - cache
+
+- (ActiveRecord*) setCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
+    NSString *fieldKey = field;
+    if(entity)
+        [self.entityCache setObject:entity forKey:fieldKey];
+    else
+        [self.entityCache removeObjectForKey:fieldKey];
+    return entity;
+}
+
+- (ActiveRecord *) cachedEntityForKey: (NSString *) field {
+    NSString *fieldKey = field;
+    return [self.entityCache objectForKey:field];
+}
+
+- (NSArray*) cachedArrayForKey: (NSString *) field {
+    NSString *fieldKey = field;
+    return [self.entityCache objectForKey:field];
+}
+
+- (void) addCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
+    NSString *fieldKey = field;
+    NSMutableArray *entityArray = [self.entityCache objectForKey:fieldKey];
+
+    if(!entityArray) {
+        entityArray = [NSMutableArray array];
+        [self.entityCache setObject:entityArray forKey:fieldKey];
+    }
+
+    [entityArray addObject:entity];
+}
+
+- (void) removeCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
+        NSString *fieldKey = field;
+        NSMutableArray *entityArray = [self.entityCache objectForKey:fieldKey];
+
+        if(!entityArray) {
+            entityArray = [NSMutableArray array];
+            [self.entityCache setObject:entityArray forKey:fieldKey];
+        }
+
+        [entityArray removeObject :entity];
+}
 
 
 #pragma mark - Validations
@@ -602,18 +651,26 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     NSNumber *rec_id = [self performSelector:selector];
 #pragma clang diagnostic pop
-    
-    if (rec_id == nil) {
+    ActiveRecord *cachedEntity = [self cachedEntityForKey:selectorString];
+
+    if(cachedEntity)
+        return cachedEntity;
+    else if (rec_id == nil) {
         return nil;
     }
+
+
     ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
     [fetcher where:@"id = %@", rec_id, nil];
     NSArray *records = [fetcher fetchRecords];
-    return records.count ? [records objectAtIndex:0] : nil;
+    return records.count ? [self setCachedEntity:[records objectAtIndex:0] forKey:selectorString] : nil;
 }
 
 
 - (void)setRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
+    NSString *selectorString = [NSString stringWithFormat:@"%@Id", [aRelation lowercaseFirst]];
+
+    [self setCachedEntity:aRecord forKey:selectorString];
 
     if(![aRecord isNewRecord] && ![self isNewRecord] &&
             [self persistRecord: aRecord belongsTo:aRelation]) {
@@ -650,6 +707,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)addRecord:(ActiveRecord *)aRecord {
+    NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
+    [self addCachedEntity:aRecord forKey:entityKey];
 
     if(![aRecord isNewRecord] &&  [self persistRecord:aRecord])
         return;
@@ -669,8 +728,15 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)removeRecord:(ActiveRecord *)aRecord {
+    NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
+
     NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
+
+    [self removeCachedEntity:aRecord forKey:entityKey];
+    //[aRecord removeCachedEntity:self forKey:relationIdKey];//;[[self recordName] lowercaseFirst]
+    [aRecord setCachedEntity:nil forKey:relationIdKey];
+
     [aRecord setValue:nil forColumn:column];
     [aRecord save];
 }
@@ -685,6 +751,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark HasManyThrough
 
 - (ARLazyFetcher *)hasMany:(NSString *)aClassName through:(NSString *)aRelationsipClassName {
+
     NSString *relId = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
     Class relClass = NSClassFromString(aRelationsipClassName);
@@ -699,6 +766,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
           through:(NSString *)aRelationshipClassName
 {
 
+    NSString *entityKey = [NSString stringWithFormat:@"%@", [aClassname lowercaseFirst]];
+    [self addCachedEntity:aRecord forKey:entityKey];
     /* If the record being added is not a new record and self is not new it is not necessary
     *  to queue the request. This allows use to mimic existing behavior while adding lazy
     *  persistence support.  */
@@ -753,9 +822,16 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void)removeRecord:(ActiveRecord *)aRecord through:(NSString *)aClassName {
     Class relationsClass = NSClassFromString(aClassName);
-    ARLazyFetcher *fetcher = [relationsClass lazyFetcher];
     NSString *currentId = [NSString stringWithFormat:@"%@ID", [self recordName]];
     NSString *relId = [NSString stringWithFormat:@"%@ID", [aRecord recordName]];
+
+    //TODO: There should be a test to ensure that removing a relation also remove the item through the cache.
+    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
+    NSString *entityRelationKey = [NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]] ;
+    [self removeCachedEntity:aRecord forKey:entityKey];
+    [aRecord setCachedEntity:nil forKey:entityRelationKey];
+
+    ARLazyFetcher *fetcher = [relationsClass lazyFetcher];
     [fetcher where:@"%@ = %@ AND %@ = %@", currentId, self.id, relId, aRecord.id, nil];
     NSArray *records = [fetcher fetchRecords];
     ActiveRecord *record = records.count ? [records objectAtIndex:0] : nil;

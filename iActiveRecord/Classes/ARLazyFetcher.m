@@ -24,13 +24,18 @@
         limit = nil;
         offset = nil;
         sqlRequest = nil;
+        row = nil;
         orderByConditions = nil;
         useJoin = NO;
         useRandomOrder = NO;
     }
     return self;
 }
-
+    - (instancetype)initWithRow:(ActiveRecord *)row {
+        self = [self init];
+        recordClass = [row class];
+        return self;
+    }
 - (instancetype)initWithRecord:(Class)aRecord {
     self = [self init];
     recordClass = aRecord;
