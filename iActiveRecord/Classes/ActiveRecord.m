@@ -22,7 +22,6 @@
 #import "ARValidatorUniqueness.h"
 #import "ARValidatorPresence.h"
 #import "ARException.h"
-
 #import "NSString+stringWithEscapedQuote.h"
 #import "NSMutableDictionary+valueToArray.h"
 
@@ -33,8 +32,15 @@
 #import "ARDynamicAccessor.h"
 #import "ARConfiguration.h"
 #import "ARPersistentQueueEntity.h"
-
+#import "ARSynchronizationProtocol.h"
 static NSMutableDictionary *relationshipsDictionary = nil;
+
+
+@interface ActiveRecord () {
+
+    BOOL shouldSync;
+}
+@end
 
 @implementation ActiveRecord
 
@@ -217,8 +223,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
                                  nil, OBJC_ASSOCIATION_ASSIGN);
     }
 
-
-
     self.id = nil;
     self.updatedAt = nil;
     self.createdAt = nil;
@@ -279,6 +283,18 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return record;
 }
 
+- (instancetype)reload {
+    if([self isNewRecord])
+        return self;
+    ActiveRecord *existingRecord = [[[[[self class] lazyFetcher] where:@"id == %@", self.id, nil] fetchRecords] firstObject];
+
+    if(existingRecord)
+        [self copyFrom:existingRecord merge:NO];
+
+    return self;
+}
+
+
 #pragma mark - Fetchers
 
 + (NSArray *)allRecords {
@@ -291,11 +307,14 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return fetcher;
 }
 
+
+
 #pragma mark - Validations
 
 + (void)initializeValidators {
     //  nothing goes there
 }
+
 
 + (void)validateUniquenessOfField:(NSString *)aField {
     [ARValidator registerValidator:[ARValidatorUniqueness class]
@@ -330,7 +349,61 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return [errors allObjects];
 }
 
+#pragma mark - AR Callbacks
+
++ (void)initializeCallbacks {
+        // nothing goes here
+}
+
+
+- (void) beforeSave {}
+
+- (void) afterSave {}
+
+- (void) beforeUpdate {}
+
+- (void) afterUpdate{}
+
+- (void) beforeValidation {}
+
+- (void) afterValidation {}
+
+- (void) beforeCreate {}
+
+- (void) afterCreate {}
+
+- (void) beforeDestroy {}
+
+- (void) afterDestroy {}
+
+- (void) beforeSync {}
+
+- (void) afterSync {}
+
+
+
 #pragma mark - Save/Update
+
+
+- (void) markForSychronization {
+    shouldSync = YES;
+}
+
+- (void) markQueuedRelationshipsForSynchronization {
+
+    for(ARPersistentQueueEntity* entity in self.belongsToPersistentQueue) {
+        [entity.record markForSychronization];
+    }
+    for(ARPersistentQueueEntity* entity in self.hasManyPersistentQueue) {
+        [entity.record markForSychronization];
+    }
+    for(ARPersistentQueueEntity* entity in self.hasManyThroughRelationsQueue) {
+        [entity.record markForSychronization];
+    }
+    //markForSynchronization
+    [self markForSychronization];
+}
+
 
 - (BOOL) hasQueuedRelationships {
     NSInteger belongsToCount = [self.belongsToPersistentQueue count];
@@ -388,20 +461,68 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return success;
 }
 
+
+    - (void) copyFrom: (ActiveRecord *) copy  {
+        [self copyFrom:copy  merge:NO];
+    }
+
+- (void) copyFrom: (ActiveRecord *) copy merge: (BOOL) merge{
+
+    if(![copy isKindOfClass:[self class]])  return;
+
+    NSSet *columnSet = [NSSet setWithSet: _changedColumns];
+
+    for(ARColumn *col in [copy columns]) {
+        if(merge && [columnSet containsObject:col])
+            continue;
+
+        id value = [copy valueForColumn:col];
+        [self setValue:value forColumn:col];
+    }
+}
+
 - (BOOL)save {
+    BOOL wasNew = isNew;
 
     if (!isNew) {
         return [self update];
+    } else if(shouldSync) {
+        if ([self conformsToProtocol:@protocol(ARSynchronizationProtocol)] ) {
+            ActiveRecord <ARSynchronizationProtocol> *wself = self;
+            ActiveRecord *existingRecord = nil;
+
+            if([wself respondsToSelector:@selector(mergeExistingRecord)] &&
+                    (existingRecord = [wself mergeExistingRecord]) && existingRecord.id)  {
+                self.id = existingRecord.id;
+                [self copyFrom:existingRecord merge: YES];
+                isNew = shouldSync = NO;
+                return [self update];
+            } else if([wself respondsToSelector:@selector(overwriteExistingRecord)]
+                    && (existingRecord = [wself overwriteExistingRecord]) && existingRecord.id)  {
+                self.id = existingRecord.id;
+                isNew = shouldSync = NO;
+                return [self update];
+            }
+        }
+
+        shouldSync = NO;
     }
+
     /* If queued belongs_to relationship exists, we should have those before saving ourselves
     *  because validations could rely on the existence of such properties. */
     if(![self persistQueuedBelongsToRelationships]) {
         return NO;
     }
 
+    [self beforeValidation];
     if (![self isValid]) {
         return NO;
     }
+    [self afterValidation];
+
+    [self beforeSave];
+    if(wasNew)
+        [self beforeCreate];
     NSInteger newRecordId = [[ARDatabaseManager sharedManager] saveRecord:self];
     if (newRecordId) {
         self.id = [NSNumber numberWithInteger:newRecordId];
@@ -409,9 +530,29 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         [_changedColumns removeAllObjects];
         /* Saved queued relationships (hasMany/hasManyThrough) which all depend on id of this model.
         * If any models fail to persist, their validation errors are added to this objects errors array. */
-        return [self persistQueuedManyRelationships];
+        BOOL success =  [self persistQueuedManyRelationships];
+        if(success){
+            if(wasNew)
+                [self afterCreate];
+            [self afterSave];
+        }
+
+        return success;
     }
     return NO;
+}
+
+- (BOOL) sync {
+    BOOL success = NO;
+    [self beforeSync];
+    [self markQueuedRelationshipsForSynchronization];
+
+    success = [self save];
+
+    if(success)
+        [self afterSync];
+
+    return success;
 }
 
 - (BOOL)update {
@@ -423,14 +564,22 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         return NO;
     }
 
+    [self beforeValidation];
     if (![self isValid]) {
         return NO;
     }
+    [self afterValidation];
 
+    [self beforeSave];
+    [self beforeUpdate];
     NSInteger result = [[ARDatabaseManager sharedManager] updateRecord:self];
     if (result) {
         [_changedColumns removeAllObjects];
         BOOL success = [self persistQueuedManyRelationships];
+        if(success) {
+            [self afterUpdate];
+            [self afterSave];
+        }
         return success;
        // return YES;
     }
@@ -632,8 +781,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void)dropRecord {
     if([self hasQueuedRelationships])
         [self save];
-
+    [self beforeDestroy];
     [[ARDatabaseManager sharedManager] dropRecord:self];
+    [self afterDestroy];
     [self privateAfterDestroy];
 }
 

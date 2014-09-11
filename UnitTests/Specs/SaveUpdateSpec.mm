@@ -12,6 +12,7 @@
 #import "Animal.h"
 #import "User.h"
 #import "PrimitiveModel.h"
+#import "Item.h"
 
 using namespace Cedar::Matchers;
 
@@ -57,6 +58,27 @@ describe(@"NewAndCreate", ^{
     });
 
 });
+
+
+    describe(@"NewAndSync", ^{
+        it(@"should synchronize with existing Item ", ^{
+
+            Item *initialItem = [Item new:@{@"name" : @"Misc Name", @"title" : @"This is a test", @"text":@"text1"}];
+            Item *syncItem = [Item new:@{@"name" : @"Misc Name", @"text":@"text2"}];
+            Item *persistedItem = nil;
+
+            initialItem.save should BeTruthy();
+            [syncItem sync] should BeTruthy();
+            persistedItem = [initialItem reload];
+
+            syncItem.title should equal(initialItem.title);
+            syncItem.id should equal(initialItem.id);
+            persistedItem.text should equal(syncItem.text);
+
+
+        });
+
+    });
 
 describe(@"Update", ^{
 #warning separate this specs

@@ -11,6 +11,7 @@
 
 #import "ARRelationshipsHelper.h"
 #import "ARValidationsHelper.h"
+#import "ARCallbacksHelper.h"
 #import "ARLazyFetcher.h"
 #import "ARErrorHelper.h"
 #import "ARError.h"
@@ -44,10 +45,16 @@ typedef void (^ARConfigurationBlock) (ARConfiguration *config);
 - (void)addErrors:(NSArray*) errors;
 
 + (instancetype)newRecord;
-+ (instancetype) new: (NSDictionary *) values;
-+ (instancetype) create: (NSDictionary *) values;
++ (instancetype)new: (NSDictionary *) values;
++ (instancetype)create: (NSDictionary *) values;
+
+- (void) copyFrom: (ActiveRecord *) copy;
+- (void) copyFrom: (ActiveRecord *) copy merge: (BOOL) merge;
+- (instancetype)reload;
+
 - (BOOL)save;
 - (BOOL)update;
+- (BOOL)sync;
 - (void)dropRecord;
 
 + (NSInteger)count;
@@ -60,6 +67,21 @@ typedef void (^ARConfigurationBlock) (ARConfiguration *config);
 + (void)transaction:(ARTransactionBlock)aTransactionBlock;
 
 + (void)applyConfiguration:(ARConfigurationBlock)configBlock;
+
+
+#pragma mark - Callbacks
+
+- (void) beforeSave;
+- (void) afterSave;
+- (void) afterUpdate;
+- (void) beforeValidation;
+- (void) afterValidation;
+- (void) beforeCreate;
+- (void) afterCreate;
+- (void) beforeDestroy;
+- (void) afterDestroy;
+- (void) beforeSync;
+- (void) afterSync;
 
 #pragma mark - TableName
 

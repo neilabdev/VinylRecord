@@ -23,7 +23,7 @@
 @property (nonatomic,strong) NSMutableSet *belongsToPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyThroughRelationsQueue;
-
+@property (nonatomic,strong) NSMutableDictionary *entityCache;
 #pragma mark - Lazy Persistent Helpers
 - (BOOL)isNewRecord;
 - (BOOL)hasQueuedRelationships;
