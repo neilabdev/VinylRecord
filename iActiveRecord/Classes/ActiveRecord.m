@@ -505,6 +505,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if(success) {
         [self.hasManyThroughRelationsQueue removeAllObjects];
         [self.hasManyPersistentQueue removeAllObjects];
+        [self.entityCache removeAllObjects];
     }
 
     return success;
@@ -742,21 +743,26 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (ARLazyFetcher *)hasManyRecords:(NSString *)aClassName {
-    ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
-    NSString *selfId = [NSString stringWithFormat:@"%@Id", [[self class] description]];
-    [fetcher where:@"%@ = %@", selfId, self.id, nil];
+    //ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
+    //NSString *selfId = [NSString stringWithFormat:@"%@Id", [[self class] description]];
+    //[fetcher where:@"%@ = %@", selfId, self.id, nil];
+
+    ARLazyFetcher *fetcher = [[ARLazyFetcher  alloc] initWithRecord:self thatHasMany:aClassName through:nil];
     return fetcher;
 }
 
 #pragma mark HasManyThrough
 
 - (ARLazyFetcher *)hasMany:(NSString *)aClassName through:(NSString *)aRelationsipClassName {
+    //NSString *relId = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
+    //ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
+    //Class relClass = NSClassFromString(aRelationsipClassName);
 
-    NSString *relId = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
-    ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
-    Class relClass = NSClassFromString(aRelationsipClassName);
-    [fetcher join: relClass];
-    [fetcher where:@"%@.%@ = %@", [relClass performSelector: @selector(recordName)], relId, self.id, nil];
+    ARLazyFetcher *fetcher = [[ARLazyFetcher  alloc] initWithRecord:self thatHasMany:aClassName through:aRelationsipClassName];
+
+
+    //[fetcher join: relClass];
+    //[fetcher where:@"%@.%@ = %@", [relClass performSelector: @selector(recordName)], relId, self.id, nil];
     return fetcher;
 }
 

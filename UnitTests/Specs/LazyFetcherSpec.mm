@@ -8,11 +8,12 @@
 
 #import "SpecHelper.h"
 
-#import "User.h"
 #import "ARDatabaseManager.h"
 #import "ARFactory.h"
 #import "DifferentTableName.h"
-
+#import "Animal.h"
+#import "Project.h"
+#import "User.h"
 using namespace Cedar::Matchers;
 
 #define DAY (24*60*60)
@@ -256,8 +257,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 [dtn save] should BeTruthy();
                 
                 //try to fetch the joined records
-                NSArray* results = [[[User lazyFetcher] join: DifferentTableName.class
-                                                      useJoin: ARJoinInner onField: @"id" andField: @"userId"] fetchJoinedRecords];
+                NSArray* results = [[[User lazyFetcher] join: DifferentTableName.class useJoin: ARJoinInner onField: @"id" andField: @"userId"] fetchJoinedRecords];
 
                 results should_not BeNil();
                 results.count should equal(1);
@@ -272,6 +272,89 @@ Tsuga<ARLazyFetcher>::run(^{
                 
             });
         });
+
+
+        describe(@"cached records", ^{
+            it(@"should be able to return belongs_to cached result before save", ^{
+                User *john = [User newRecord];
+                john.name = @"john";
+               // john.save should BeTruthy();
+                DifferentTableName* dtn = [DifferentTableName newRecord];
+                dtn.title = @"testTitle";
+                dtn.user = john;
+
+                dtn.user should equal(john);
+
+            });
+
+            it(@"should be able to return has_many cached result before save", ^{
+                User *john = [User new: @{@"name": @"John"}];
+                User *peter =  [User new: @{@"name": @"Peter"}];
+                Animal *animal = [Animal new: @{@"name":@"animal_error", @"state":@"good", @"title" : @"test title"}];
+
+                [john addAnimal:animal];
+
+                [john.pets count] should equal(1);
+                [[john.pets fetchRecords] count] should equal(1);
+
+                Project *worldConquest = [Project new: @{@"name": @"Conquest of the World"}];
+                [worldConquest addUser:john];
+                [worldConquest addUser:peter];
+                [worldConquest.users count] should equal(2); //2 items are cached
+                [worldConquest save] should equal(NO);
+                [worldConquest.users count] should equal(1);
+
+                animal.name = @"animal";
+                [worldConquest save] should equal(YES);
+                [worldConquest.users count] should equal(2);
+                //[worldConquest.errors count] should equal(1);
+                //[Animal count] should equal(0);
+
+
+
+            });
+        });
+
+        describe(@"NSArray support", ^{
+            it(@"should be able to return belongs_to cached result before save", ^{
+                User *john = [User newRecord];
+                john.name = @"john";
+                // john.save should BeTruthy();
+                DifferentTableName* dtn = [DifferentTableName newRecord];
+                dtn.title = @"testTitle";
+                dtn.user = john;
+
+                dtn.user should equal(john);
+
+            });
+
+            it(@"should be able to iterate of lazyFetcher as an array", ^{
+                User *john = [User new: @{@"name": @"John"}];
+                User *peter =  [User new: @{@"name": @"Peter"}];
+                User *mike =  [User new: @{@"name": @"Mike"}];
+
+                NSInteger savedUserCount = 0;
+                NSInteger unsavedUserCount = 0;
+                Project *worldConquest = [Project new: @{@"name": @"Conquest of the World"}];
+
+                [worldConquest addUser:john];
+                [worldConquest addUser:peter];
+
+                for(User *user in worldConquest.users) {
+                    unsavedUserCount++;
+                }
+                unsavedUserCount should equal(2);
+                [worldConquest addUser: mike];
+                [worldConquest.users count] should equal(2); //2 items are cached
+                [worldConquest save] should equal(YES);
+
+                for(User *user in worldConquest.users) {
+                    savedUserCount++;
+                }
+                savedUserCount should equal(3);
+            });
+        });
+
     });
     
 });

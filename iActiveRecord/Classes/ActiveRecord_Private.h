@@ -109,4 +109,14 @@
 
 - (NSString *)recordName;
 
+
+
+
+#pragma mark - Entity Caching
+- (ActiveRecord*) setCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field;
+- (ActiveRecord *) cachedEntityForKey: (NSString *) field;
+- (NSArray*) cachedArrayForKey: (NSString *) field;
+- (void) addCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field;
+- (void) removeCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field;
+
 @end
