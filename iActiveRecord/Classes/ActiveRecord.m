@@ -441,13 +441,13 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void) markQueuedRelationshipsForSynchronization {
 
     for(ARPersistentQueueEntity* entity in self.belongsToPersistentQueue) {
-        [entity.record markForSychronization];
+        [entity.record markQueuedRelationshipsForSynchronization];
     }
     for(ARPersistentQueueEntity* entity in self.hasManyPersistentQueue) {
-        [entity.record markForSychronization];
+        [entity.record markQueuedRelationshipsForSynchronization];
     }
     for(ARPersistentQueueEntity* entity in self.hasManyThroughRelationsQueue) {
-        [entity.record markForSychronization];
+        [entity.record markQueuedRelationshipsForSynchronization];
     }
     //markForSynchronization
     [self markForSychronization];

@@ -345,7 +345,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 }
                 unsavedUserCount should equal(2);
                 [worldConquest addUser: mike];
-                [worldConquest.users count] should equal(2); //2 items are cached
+                [worldConquest.users count] should equal(3);
                 [worldConquest save] should equal(YES);
 
                 for(User *user in worldConquest.users) {

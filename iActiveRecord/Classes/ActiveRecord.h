@@ -21,6 +21,7 @@
 #import "ARException.h"
 #import "ARIndicesMacroHelper.h"
 #import "ARConfiguration.h"
+#import "ARSynchronizationProtocol.h"
 
 @class ARConfiguration;
 
