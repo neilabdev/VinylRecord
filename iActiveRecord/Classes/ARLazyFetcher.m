@@ -325,18 +325,18 @@
 #pragma mark - Immediately fetch
 
 - (NSArray *)cachedRecords {
-    if([row isNewRecord]) {
-        NSArray *entities = nil;
-        NSString *entityKey = [NSString stringWithFormat:@"%@", [[recordClass recordName] lowercaseFirst]];
 
-        if(relationType==ARRelationTypeHasManyThrough) {
-            entities = [row cachedArrayForKey:entityKey];
-        } else if(relationType == ARRelationTypeHasMany) {
-            entities = [row cachedEntityForKey:entityKey];
-        }
-        return entities;
+    if(!row) return nil;
+
+    NSArray *entities = nil;
+    NSString *entityKey = [NSString stringWithFormat:@"%@", [[recordClass recordName] lowercaseFirst]];
+
+    if (relationType == ARRelationTypeHasManyThrough) {
+        entities = [row cachedArrayForKey:entityKey];
+    } else if (relationType == ARRelationTypeHasMany) {
+        entities = [row cachedEntityForKey:entityKey];
     }
-    return nil;
+    return entities;
 }
 
 - (NSArray *)fetchRecords {

@@ -431,26 +431,34 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 
 
-#pragma mark - Save/Update
+#pragma mark - Save/Update/Sync
 
 
 - (void) markForSychronization {
     shouldSync = YES;
 }
 
+- (BOOL) syncScheduled {
+    return shouldSync;
+}
+
 - (void) markQueuedRelationshipsForSynchronization {
 
+    if([self syncScheduled]) return;
+    [self markForSychronization];
+
     for(ARPersistentQueueEntity* entity in self.belongsToPersistentQueue) {
-        [entity.record markQueuedRelationshipsForSynchronization];
+        if(![entity.record syncScheduled])
+            [entity.record markQueuedRelationshipsForSynchronization];
     }
     for(ARPersistentQueueEntity* entity in self.hasManyPersistentQueue) {
-        [entity.record markQueuedRelationshipsForSynchronization];
+        if(![entity.record syncScheduled])
+            [entity.record markQueuedRelationshipsForSynchronization];
     }
     for(ARPersistentQueueEntity* entity in self.hasManyThroughRelationsQueue) {
-        [entity.record markQueuedRelationshipsForSynchronization];
+        if(![entity.record syncScheduled])
+            [entity.record markQueuedRelationshipsForSynchronization];
     }
-    //markForSynchronization
-    [self markForSychronization];
 }
 
 
