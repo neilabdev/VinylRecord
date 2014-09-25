@@ -913,6 +913,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #warning refactor
 
 + (ARColumn *)columnNamed:(NSString *)aColumnName {
+    ARColumn *cachedColumn = [[ARSchemaManager sharedInstance] columnForRecord:self named:aColumnName];
+    if(cachedColumn)
+        return cachedColumn;
     NSArray *columns = [self columns];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"columnName = %@", aColumnName];
     NSArray *filteredColumns = [columns filteredArrayUsingPredicate:predicate];
@@ -920,7 +923,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 + (ARColumn *)columnWithSetterNamed:(NSString *)aSetterName {
-    ARColumn *cachedColumn = [[ARSchemaManager sharedInstance] columnForRecord:self named:aSetterName];
+    ARColumn *cachedColumn =[[ARSchemaManager sharedInstance] columnForRecord:self named:aSetterName];
     if(cachedColumn)
         return cachedColumn;
     NSArray *columns = [self columns];

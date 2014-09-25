@@ -45,6 +45,7 @@
                       toArrayNamed:recordName];
             [self addColumn:column forRecord:aRecordClass named:column.setter];
             [self addColumn:column forRecord:aRecordClass named:column.getter];
+            [self addColumn:column forRecord:aRecordClass named:column.columnName];
         }
 
         free(properties);
@@ -67,9 +68,10 @@
     NSString *recordName = [aRecordClass performSelector:@selector(recordName)];
     NSMutableDictionary *recordCache = [self.columns objectForKey:recordName];
 
-    if(!recordCache) // should always be true.
+    if(!recordCache) { // should always be true.
         [self.columns setObject:recordCache = [NSMutableDictionary new] forKey:recordName];
-
+        NSLog(@"Created cached for record: %@",recordName);
+    }
     if(column)
         [recordCache setObject:column forKey:columnName];
     else
