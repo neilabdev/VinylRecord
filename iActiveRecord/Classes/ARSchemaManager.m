@@ -25,6 +25,7 @@
     self = [super init];
     self.schemes = [NSMutableDictionary new];
     self.indices = [NSMutableDictionary new];
+    self.columns = [NSMutableDictionary new];
     return self;
 }
 
@@ -42,7 +43,11 @@
             }
             [self.schemes addValue:column
                       toArrayNamed:recordName];
+            [self addColumn:column forRecord:aRecordClass named:column.setter];
+            [self addColumn:column forRecord:aRecordClass named:column.getter];
+            [self addColumn:column forRecord:aRecordClass named:column.columnName];
         }
+
         free(properties);
         CurrentClass = class_getSuperclass(CurrentClass);
     }
@@ -50,6 +55,28 @@
 
 - (NSArray *)columnsForRecord:(Class)aRecordClass {
     return [[self.schemes valueForKey:[aRecordClass performSelector:@selector(recordName)]] allObjects];
+}
+
+- (ARColumn *) columnForRecord: (Class)aRecordClass named:(NSString *) columnName {
+    NSString *recordName = [aRecordClass performSelector:@selector(recordName)];
+    NSMutableDictionary *recordCache = [self.columns objectForKey:recordName];
+
+    return recordCache ? [recordCache objectForKey:columnName] : nil;
+}
+
+- (void) addColumn:(ARColumn *) column forRecord:(Class) aRecordClass named:(NSString *) columnName {
+    NSString *recordName = [aRecordClass performSelector:@selector(recordName)];
+    NSMutableDictionary *recordCache = [self.columns objectForKey:recordName];
+
+    if(!recordCache) { // should always be true.
+        [self.columns setObject:recordCache = [NSMutableDictionary new] forKey:recordName];
+        NSLog(@"Created cached for record: %@",recordName);
+    }
+    if(column)
+        [recordCache setObject:column forKey:columnName];
+    else
+        [recordCache removeObjectForKey:columnName];
+
 }
 
 - (void)addIndexOnColumn:(NSString *)aColumn ofRecord:(Class)aRecordClass {

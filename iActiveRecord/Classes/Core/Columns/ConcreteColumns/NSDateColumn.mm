@@ -18,10 +18,21 @@ return "real";
 
 NSString *NSDateColumn::sqlValueFromRecord(ActiveRecord *record) const
 {
-NSDate *value = objc_getAssociatedObject(record, this->columnKey());
+/*NSDate *value = objc_getAssociatedObject(record, this->columnKey());
 if(value == nil) return @"null";
 NSTimeInterval time = [value timeIntervalSince1970];
-return [NSString stringWithFormat:@"%f", time];
+return [NSString stringWithFormat:@"%f", time]; */
+    //TODO: Figure out why date changed to NSFNumber causing exception: -[__NSCFNumber timeIntervalSince1970]: unrecognized selector sent to instance 0xd787c30
+    id value =   objc_getAssociatedObject(record, this->columnKey());
+    NSTimeInterval  time = 0;
+    if([value isKindOfClass:[NSDate class]]) {
+        time = [value timeIntervalSince1970];
+    } else if([value isKindOfClass:[NSNumber class]]) {
+        NSNumber *number = (NSNumber*)value;
+        time = [number doubleValue];
+    }
+    return [NSString stringWithFormat:@"%f", time];
+
 }
 
 NSDate *__strong NSDateColumn::toColumnType(id value) const

@@ -15,11 +15,14 @@ typedef enum {
     ARJoinOuter
 } ARJoinType;
 
-@interface ARLazyFetcher : NSObject
+@class ActiveRecord;
+@interface ARLazyFetcher : NSArray
 
 - (instancetype)initWithRecord:(Class )aRecord;
+- (instancetype)initWithRecord:(ActiveRecord *)entityRow
+                   thatHasMany:(NSString *)aClassName through:(NSString *)aRelationsipClassName ;
 
-- (ARLazyFetcher *)limit:(NSInteger)aLimit;
+    - (ARLazyFetcher *)limit:(NSInteger)aLimit;
 - (ARLazyFetcher *)offset:(NSInteger)anOffset;
 
 - (ARLazyFetcher *)only:(NSString *)aFirstParam, ... NS_REQUIRES_NIL_TERMINATION;
