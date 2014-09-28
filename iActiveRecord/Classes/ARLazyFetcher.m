@@ -13,6 +13,7 @@
 #import "ActiveRecord.h"
 #import "ActiveRecord_Private.h"
 #import "ARLazyFetcher_Private.h"
+#import "ActiveRecord_Private.h"
 
 @implementation ARLazyFetcher
 
@@ -24,13 +25,29 @@
         limit = nil;
         offset = nil;
         sqlRequest = nil;
+        row = nil;
         orderByConditions = nil;
         useJoin = NO;
         useRandomOrder = NO;
+        relationType = ARRelationTypeNone;
     }
     return self;
 }
+    - (instancetype)initWithRecord:(ActiveRecord *)entityRow thatHasMany:(NSString *)aClassName through:(NSString *)aRelationsipClassName {
+        self = [self init];
+        row = entityRow;
+        recordClass = NSClassFromString(aClassName);//[entityRow class];
+        hasManyClass = [aClassName copy];
+        hasManyThroughClass = [aRelationsipClassName copy];
 
+        if(hasManyClass && hasManyThroughClass) {
+            relationType = ARRelationTypeHasManyThrough;
+        } else if(hasManyClass) {
+            relationType = ARRelationTypeHasMany;
+        }
+
+        return self;
+    }
 - (instancetype)initWithRecord:(Class)aRecord {
     self = [self init];
     recordClass = aRecord;
@@ -86,11 +103,35 @@
     sqlRequest = [sql copy];
 }
 
+
+- (void)createRecordHasManyThrough {
+    NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
+    Class relClass = NSClassFromString(hasManyThroughClass);
+    [self join:relClass];
+    [self where:@"%@.%@ = %@", [relClass performSelector:@selector(recordName)], relId, row.id, nil];
+}
+
+- (void)createRecordHasMany {
+    NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
+    [self where:@"%@ = %@", selfId, row.id, nil];
+}
+
+
+
 - (NSString *)createWhereStatement {
     NSMutableString *statement = [NSMutableString string];
+    if(!whereStatement && row) {
+        if(relationType==ARRelationTypeHasMany) {
+           [self createRecordHasMany];
+        } else if(relationType==ARRelationTypeHasManyThrough) {
+            [self createRecordHasManyThrough];
+        }
+    }
+
     if (whereStatement) {
         [statement appendFormat:@" WHERE (%@) ", self.whereStatement];
     }
+
     return statement;
 }
 
@@ -283,7 +324,31 @@
 
 #pragma mark - Immediately fetch
 
+- (NSArray *)cachedRecords {
+
+    if(!row) return nil;
+
+    NSArray *entities = nil;
+    NSString *entityKey = [NSString stringWithFormat:@"%@", [[recordClass recordName] lowercaseFirst]];
+
+    if (relationType == ARRelationTypeHasManyThrough) {
+        entities = [row cachedArrayForKey:entityKey];
+    } else if (relationType == ARRelationTypeHasMany) {
+        entities = [row cachedEntityForKey:entityKey];
+    }
+    return entities;
+}
+
 - (NSArray *)fetchRecords {
+
+    if([row isNewRecord]) {
+        // NEW Records down't have an ID can't query database. Return cache if available.
+        NSArray *cachedEntities = [self cachedRecords];
+        return cachedEntities ? cachedEntities : [NSArray array];
+    }
+
+    arrayRows = nil; //ensure that iteration dowsn't used cached rows but the following rows in the database.
+
     [self buildSql];
     return [[ARDatabaseManager sharedManager] allRecordsWithName:[recordClass description]
                                                           withSql:sqlRequest];
@@ -310,9 +375,25 @@
     return [[ARDatabaseManager sharedManager] joinedRecordsWithSql:sql];
 }
 
-- (NSInteger)count {
-    NSMutableString *sql = [NSMutableString string];
+- (id)objectAtIndex: (NSUInteger)index {
 
+    if(!arrayRows) {
+        arrayRows = [self fetchRecords];
+    }
+
+    return [arrayRows objectAtIndex:index];
+}
+
+- (NSInteger)count {
+
+    if(arrayRows)
+        return [arrayRows count];
+
+    if([row isNewRecord]) {
+       return [[self cachedRecords] count];
+    }
+
+    NSMutableString *sql = [NSMutableString string];
     NSString *select = [NSString stringWithFormat:@"SELECT count(*) FROM \"%@\" ",
                         [recordClass performSelector:@selector(recordName)]];
     NSString *where = [self createWhereStatement];

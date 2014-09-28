@@ -51,6 +51,14 @@ describe(@"Uniqueness", ^{
         john2.name = @"John";
         result = [john2 save];
         result should_not BeTruthy();
+        //Updates should not validate uniqueness
+
+        john.name = @"Johns";
+        john.name = @"John";
+        john.birthDate = [NSDate date];
+        result = [john save];
+        result should BeTruthy();
+
     });
     it(@"Should save User with some name", ^{
         User *john = [User newRecord];

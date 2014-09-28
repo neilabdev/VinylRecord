@@ -21,7 +21,7 @@
     NSMutableArray *columnValues = [NSMutableArray arrayWithCapacity:columnsCount];
     NSEnumerator *columnsIterator = [changedColumns objectEnumerator];
     for (int index = 0; index < columnsCount; index++) {
-        ARColumn *column = [columnsIterator nextObject];
+        ARColumn *column = [columnsIterator nextObject];   //FIXME: NSFastEnumerationMutationHandler
         NSString *value = [column sqlValueForRecord:aRecord];
         NSString *updater = [NSString stringWithFormat:
                              @"\"%@\"=\"%@\"",

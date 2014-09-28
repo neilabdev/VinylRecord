@@ -31,6 +31,11 @@ static NSString * joinString(ARJoinType type)
     BOOL useJoin;
     NSNumber *limit;
     NSNumber *offset;
+    ActiveRecord * row;
+    ARRelationType relationType;
+    NSString *hasManyClass;
+    NSString *hasManyThroughClass;
+    NSArray *arrayRows;
 }
 
 @property (nonatomic, copy) NSMutableString *whereStatement;
@@ -46,5 +51,7 @@ static NSString * joinString(ARJoinType type)
 - (NSString *)createJoinStatement;
 
 - (NSSet *)fieldsOfRecord:(id)aRecord;
+
+
 
 @end
