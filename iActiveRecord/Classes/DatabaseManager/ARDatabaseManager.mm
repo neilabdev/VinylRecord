@@ -556,7 +556,84 @@ static NSArray *records = nil;
     return result;
 }
 
+
 - (NSInteger)updateRecord:(ActiveRecord *)aRecord {
+    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+    NSSet *changedColumns = [aRecord changedColumns];
+    NSInteger columnsCount = changedColumns.count;
+    if (!columnsCount) {
+        return 0;
+    }
+
+    changedColumns = [aRecord changedColumns];
+    columnsCount = changedColumns.count;
+
+    __block int result = SQLITE_OK;
+
+    dispatch_sync([self activeRecordQueue], ^{
+        sqlite3_stmt *stmt;
+        const char *sql;
+
+        NSMutableArray *columns = [NSMutableArray arrayWithCapacity:columnsCount];
+        NSArray *orderedColumns = [changedColumns allObjects];
+
+        for (ARColumn *column in orderedColumns) {
+            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.columnName]];
+        }
+
+        NSString *sqlString = [NSString stringWithFormat:
+                @"UPDATE '%@' SET %@ WHERE id = %@",
+                [aRecord recordName],
+                [columns componentsJoinedByString:@","],aRecord.id];
+
+        sql = [sqlString UTF8String];
+
+        if(SQLITE_OK != sqlite3_prepare_v2(database, sql, strlen(sql), &stmt, NULL)) {
+            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(database));
+            result = SQLITE_ERROR;
+            return;
+        }
+
+        int columnIndex = 1;
+        for (ARColumn *column in orderedColumns) {
+            id value = [aRecord valueForColumn:column];
+
+            switch (column.columnType) {
+                case ARColumnTypeComposite:
+                    if ([value isKindOfClass:[NSData class]]) {
+                        NSData *data = value;
+                        sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
+                    } else {
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                    }
+
+                    break;
+                default:
+                    column.internal->bind(stmt, columnIndex, value);
+                    break;
+            }
+            columnIndex++;
+        }
+
+        if(SQLITE_DONE == sqlite3_step(stmt) &&
+                SQLITE_OK == sqlite3_finalize(stmt)) {
+            result = SQLITE_OK ; //sqlite3_last_insert_rowid(database);
+        } else {
+            int error = sqlite3_finalize(stmt);
+            NSLog( @"Couldn't update record to database: %s", sqlite3_errmsg(database) );
+            result = SQLITE_ERROR;
+            switch(error) {
+                case SQLITE_CONSTRAINT:
+                    //TODO: Code should be added here to detect which column failed and added to model errors. JKW
+                    break;
+            }
+        }
+    });
+    return result != SQLITE_OK ? 0 : 1;
+}
+
+- (NSInteger)updateSQLRecord:(ActiveRecord *)aRecord {   //TODO: Depricate this, prepared statement used instead.
     aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
     const char *sqlQuery = [ARSQLBuilder sqlOnUpdateRecord:aRecord];
     if (!sqlQuery) {
