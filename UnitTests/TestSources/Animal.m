@@ -19,4 +19,9 @@ validation_do(
     validate_field_with_validator(name, AnimalValidator)
 )
 
+- (ActiveRecord *)mergeExistingRecord {
+    return nil;
+}
+
+
 @end

@@ -18,7 +18,17 @@
     BOOL isNew;
     NSMutableSet *errors;
     NSMutableSet *_changedColumns;
+
 }
+
+@property (nonatomic,strong) NSMutableSet *belongsToPersistentQueue;
+@property (nonatomic,strong) NSMutableSet *hasManyPersistentQueue;
+@property (nonatomic,strong) NSMutableSet *hasManyThroughRelationsQueue;
+@property (nonatomic,strong) NSMutableDictionary *entityCache;
+#pragma mark - Lazy Persistent Helpers
+- (BOOL)isNewRecord;
+- (BOOL)hasQueuedRelationships;
+- (BOOL)persistQueuedManyRelationships;
 
 #pragma mark - Validations Declaration
 
@@ -41,13 +51,14 @@
 
 - (id)belongsTo:(NSString *)aClassName;
 - (void)setRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation;
+- (BOOL)persistRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation;
 
 #pragma mark HasMany
 
 - (ARLazyFetcher *)hasManyRecords:(NSString *)aClassName;
 - (void)addRecord:(ActiveRecord *)aRecord;
 - (void)removeRecord:(ActiveRecord *)aRecord;
-
+- (BOOL)persistRecord:(ActiveRecord *)aRecord;
 #pragma mark HasManyThrough
 
 - (ARLazyFetcher *)hasMany:(NSString *)aClassName
@@ -56,7 +67,9 @@
           ofClass:(NSString *)aClassname
           through:(NSString *)aRelationshipClassName;
 - (void)removeRecord:(ActiveRecord *)aRecord through:(NSString *)aClassName;
-
+- (BOOL)persistRecord:(ActiveRecord *)aRecord
+              ofClass:(NSString *)aClassname
+              through:(NSString *)aRelationshipClassName;
 #pragma mark - register relationships
 
 + (void)registerRelationships;
@@ -96,5 +109,15 @@
 + (void)addIndexOn:(NSString *)aField;
 
 - (NSString *)recordName;
+
+#pragma mark - Entity Caching
+- (ActiveRecord*) setCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field;
+- (ActiveRecord *) cachedEntityForKey: (NSString *) field;
+- (NSArray*) cachedArrayForKey: (NSString *) field;
+- (void) addCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field;
+- (void) removeCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field;
+
+#pragma  mark - Synchronization Support
+- (void) markQueuedRelationshipsForSynchronization;
 
 @end

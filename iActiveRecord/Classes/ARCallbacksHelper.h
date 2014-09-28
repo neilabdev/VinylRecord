@@ -1,13 +1,8 @@
-//
-//  ARValidations.h
-//  iActiveRecord
-//
-//  Created by Alex Denisov on 01.02.12.
-//  Copyright (c) 2012 okolodev.org. All rights reserved.
-//
+
 
 #import <Foundation/Foundation.h>
 
+/*
 #define validate_uniqueness_of(aField) \
     [self performSelector : @selector(validateUniquenessOfField:) withObject : @ ""#aField ""];
 
@@ -18,9 +13,11 @@
     [self performSelector : @selector(validateField:withValidator:) \
      withObject : @ ""#aField "" \
      withObject : @ ""#aValidator ""]; \
+     */
 
 
-#define validation_do(validations) \
-    + (void)initializeValidators { \
-        validations \
+
+#define callbacks_do(callbacks) \
+    + (void)initializeCallbacks{ \
+        callbacks \
     }
