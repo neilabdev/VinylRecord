@@ -33,6 +33,7 @@
 #import "ARConfiguration.h"
 #import "ARPersistentQueueEntity.h"
 #import "ARSynchronizationProtocol.h"
+
 static NSMutableDictionary *relationshipsDictionary = nil;
 
 
@@ -58,6 +59,7 @@ static NSMutableDictionary *relationshipsDictionary = nil;
     [self initializeDynamicAccessors];
     [self registerRelationships];
 }
+
 
 
 
@@ -214,6 +216,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if (self) {
         self.createdAt = self.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
         self.entityCache = [NSMutableDictionary dictionary];
+        shouldSync = NO;
     }
     return self;
 }
@@ -433,7 +436,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 #pragma mark - Save/Update/Sync
 
-
 - (void) markForSychronization {
     shouldSync = YES;
 }
@@ -446,18 +448,25 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
     if([self syncScheduled]) return;
     [self markForSychronization];
-
+    /*   //DEPRICATED because entityCache has all entities before save.
     for(ARPersistentQueueEntity* entity in self.belongsToPersistentQueue) {
-        if(![entity.record syncScheduled])
             [entity.record markQueuedRelationshipsForSynchronization];
     }
     for(ARPersistentQueueEntity* entity in self.hasManyPersistentQueue) {
-        if(![entity.record syncScheduled])
             [entity.record markQueuedRelationshipsForSynchronization];
     }
     for(ARPersistentQueueEntity* entity in self.hasManyThroughRelationsQueue) {
-        if(![entity.record syncScheduled])
             [entity.record markQueuedRelationshipsForSynchronization];
+    } */
+
+    for(id value in [self.entityCache allValues]) {
+        if([value isKindOfClass:[ActiveRecord class]])   {
+            ActiveRecord * record = (ActiveRecord *)value;
+            [record markQueuedRelationshipsForSynchronization];
+        } else if([value isKindOfClass:[NSArray class]]) {
+            for(ActiveRecord *record in value)
+                [record markQueuedRelationshipsForSynchronization];
+        }
     }
 }
 
@@ -513,7 +522,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if(success) {
         [self.hasManyThroughRelationsQueue removeAllObjects];
         [self.hasManyPersistentQueue removeAllObjects];
-        [self.entityCache removeAllObjects];
     }
 
     return success;
@@ -585,11 +593,13 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if (newRecordId) {
         self.id = [NSNumber numberWithInteger:newRecordId];
         isNew = NO;
-        [_changedColumns removeAllObjects];
+        [self resetChanges];
         /* Saved queued relationships (hasMany/hasManyThrough) which all depend on id of this model.
         * If any models fail to persist, their validation errors are added to this objects errors array. */
         BOOL success =  [self persistQueuedManyRelationships];
         if(success){
+
+            [self.entityCache removeAllObjects];
             if(wasNew)
                 [self afterCreate];
             [self afterSave];
@@ -632,9 +642,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     [self beforeUpdate];
     NSInteger result = [[ARDatabaseManager sharedManager] updateRecord:self];
     if (result) {
-        [_changedColumns removeAllObjects];
+        [self resetChanges];
         BOOL success = [self persistQueuedManyRelationships];
         if(success) {
+
+            [self.entityCache removeAllObjects];
             [self afterUpdate];
             [self afterSave];
         }

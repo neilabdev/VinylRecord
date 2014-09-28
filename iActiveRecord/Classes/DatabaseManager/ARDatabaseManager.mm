@@ -491,8 +491,9 @@ static NSArray *records = nil;
                                                    withString: @"?,"
                                               startingAtIndex: 0];
         NSMutableArray *columns = [NSMutableArray arrayWithCapacity:columnsCount];
-        
-        for (ARColumn *column in changedColumns) {
+        NSArray *orderedColumns = [changedColumns allObjects];  //Used to prevent enumeration execeptions should columns change.
+
+        for (ARColumn *column in orderedColumns) {
             [columns addObject:[NSString stringWithFormat:@"'%@'", column.columnName]];
         }
         
@@ -510,7 +511,7 @@ static NSArray *records = nil;
         }
 
         int columnIndex = 1;
-        for (ARColumn *column in changedColumns) {
+        for (ARColumn *column in orderedColumns) {
             id value = [aRecord valueForColumn:column];
             
             switch (column.columnType) {
