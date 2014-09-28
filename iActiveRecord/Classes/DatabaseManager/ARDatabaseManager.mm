@@ -569,7 +569,7 @@ static NSArray *records = nil;
     changedColumns = [aRecord changedColumns];
     columnsCount = changedColumns.count;
 
-    __block int result = 0;
+    __block int result = SQLITE_OK;
 
     dispatch_sync([self activeRecordQueue], ^{
         sqlite3_stmt *stmt;
@@ -591,6 +591,7 @@ static NSArray *records = nil;
 
         if(SQLITE_OK != sqlite3_prepare_v2(database, sql, strlen(sql), &stmt, NULL)) {
             NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(database));
+            result = SQLITE_ERROR;
             return;
         }
 
@@ -617,11 +618,11 @@ static NSArray *records = nil;
 
         if(SQLITE_DONE == sqlite3_step(stmt) &&
                 SQLITE_OK == sqlite3_finalize(stmt)) {
-            result = sqlite3_last_insert_rowid(database);
+            result = SQLITE_OK ; //sqlite3_last_insert_rowid(database);
         } else {
             int error = sqlite3_finalize(stmt);
             NSLog( @"Couldn't update record to database: %s", sqlite3_errmsg(database) );
-
+            result = SQLITE_ERROR;
             switch(error) {
                 case SQLITE_CONSTRAINT:
                     //TODO: Code should be added here to detect which column failed and added to model errors. JKW
@@ -629,7 +630,7 @@ static NSArray *records = nil;
             }
         }
     });
-    return result;
+    return result != SQLITE_OK ? 0 : 1;
 }
 
 - (NSInteger)updateSQLRecord:(ActiveRecord *)aRecord {   //TODO: Depricate this, prepared statement used instead.
