@@ -5,6 +5,7 @@ before_install:
     - gem install ios_ci
     - gem install cocoapods
     - brew install ios-sim
+    - pod update
 
 script: ios_ci cedar --source-root $TRAVIS_BUILD_DIR --workspace iActiveRecord.xcworkspace --scheme UnitTests --build-path build/Products
 
