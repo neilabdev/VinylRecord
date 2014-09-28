@@ -346,7 +346,7 @@
 
     NSMutableString *sqlQuery = [NSMutableString stringWithCapacity:[aCondition length]];
     NSScanner *scanner = [NSScanner scannerWithString:aCondition];
-    NSCharacterSet *illegalCharacterSet = [NSCharacterSet illegalCharacterSet];
+    NSCharacterSet *illegalCharacterSet = nil;// [NSCharacterSet illegalCharacterSet];
     NSString *separatorString = @"%@";
     NSString *container;
     NSInteger sqlQueryIndex = 0;
@@ -355,10 +355,13 @@
 
     while ([scanner isAtEnd] == NO) {
         if([scanner scanUpToString:separatorString intoString:&container]) {
-            if(totalSQLArguments>sqlQueryIndex)
-                [sqlQuery appendFormat:@"%@%@",container, [sqlArguments objectAtIndex:sqlQueryIndex++]];
-            else
-                [sqlQuery appendFormat:@"%@",container];
+            if(totalSQLArguments>sqlQueryIndex) {
+                id value = [sqlArguments objectAtIndex:sqlQueryIndex++];
+                [sqlQuery appendString:container];
+                [sqlQuery appendString: [value description]];
+                //[sqlQuery appendFormat:@"%@%@",container, [sqlArguments objectAtIndex:sqlQueryIndex++]];
+            } else
+                [sqlQuery appendString:container];
             [scanner scanString:separatorString intoString:NULL]; // steps past seperator
         } else if([scanner scanString:separatorString intoString:NULL]) {
             [sqlQuery appendFormat:@"%@",[sqlArguments objectAtIndex:sqlQueryIndex++]];

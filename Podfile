@@ -1,12 +1,13 @@
-platform :ios, '5.0'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '6.0'
 
 target 'UnitTests' do
-  pod 'Cedar'
+  pod 'Cedar', '0.9.5'
   pod 'CedarAsync'
   pod 'Tsuga'
 end
 
 target 'ActiveTwitter' do
   pod 'RestKit'
-  pod 'iActiveRecord', :path => '.'
+  pod 'iActiveRecord', :path => "."
 end
