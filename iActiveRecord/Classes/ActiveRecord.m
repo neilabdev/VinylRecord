@@ -276,8 +276,15 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 + (NSString *)recordName {
-    return [self description];
+    NSString *name = [[self class] className];
+    NSArray *components = [name componentsSeparatedByString:@"."];
+
+    // Swift returns Package.ClassName and we only want ClassName
+    if(components)
+        return [components lastObject];
+    return name;
 }
+
 - (NSString *)recordName {
     return [[self class] recordName];
 }

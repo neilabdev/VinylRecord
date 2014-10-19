@@ -10,13 +10,7 @@
 #import "ARSynchronizationProtocol.h"
 
 @interface Animal : ActiveRecord     <ARSynchronizationProtocol>
-
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *state;
 @property (nonatomic, copy) NSString *title;
-
-
-
-
-
 @end

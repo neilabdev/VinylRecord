@@ -206,6 +206,7 @@
 		5DC6ADA1564D0E115E325FF2 /* ARCallbacksHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A7D285F313114CA69DC2 /* ARCallbacksHelper.h */; };
 		5DC6ADD39EBB8E17B89D9D5F /* ARDynamicAccessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A8BEEBB2EF00EAF4CCD2 /* ARDynamicAccessor.mm */; };
 		5DC6ADD7B757B2F7CCFCEAFB /* FloatColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A25C78B7306C4E864637 /* FloatColumn.mm */; };
+		5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A466C55C664FEC21B3F7 /* SwiftIntegrationSpec.mm */; };
 		5DC6ADEBF2FAB4CF43AB04DA /* sqlite3_unicode.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A8579D88D4B190D1C5B7 /* sqlite3_unicode.c */; settings = {COMPILER_FLAGS = "-Wno-missing-prototypes"; }; };
 		5DC6AE1372573FF21456286E /* ARRelationHasMany.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AAFF51CF485C2BA2D494 /* ARRelationHasMany.m */; };
 		5DC6AE1BFBDAA86A82C1C989 /* NSDateColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC5AE6DB043254DB4B45 /* NSDateColumn.mm */; };
@@ -281,6 +282,7 @@
 		CAE92278171495290082A97C /* UserProjectRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9226A171495290082A97C /* UserProjectRelationship.m */; };
 		CAE9227C171495880082A97C /* ARFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9227B171495880082A97C /* ARFactory.m */; };
 		CAE9227F17149A080082A97C /* octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = CAE9227E17149A080082A97C /* octocat.png */; };
+		E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698C98D19F2B2AA00E13A61 /* Dog.swift */; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -332,6 +334,7 @@
 		5DC6A404E9A45CED06AED5D1 /* ARValidatorUniqueness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValidatorUniqueness.m; sourceTree = "<group>"; };
 		5DC6A43FBBA089CA8CDC697B /* NSString+stringWithEscapedQuote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+stringWithEscapedQuote.h"; sourceTree = "<group>"; };
 		5DC6A4403EA8F7746DB9428D /* ARRelationHasManyThrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelationHasManyThrough.h; sourceTree = "<group>"; };
+		5DC6A466C55C664FEC21B3F7 /* SwiftIntegrationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwiftIntegrationSpec.mm; sourceTree = "<group>"; };
 		5DC6A48DD7E1316289D14BDC /* LongColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LongColumn.mm; sourceTree = "<group>"; };
 		5DC6A4F233B2651C96A0B988 /* FloatColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatColumn.h; sourceTree = "<group>"; };
 		5DC6A5115176220392350D69 /* ARColumn_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARColumn_Private.h; sourceTree = "<group>"; };
@@ -510,6 +513,8 @@
 		CAE9227A171495880082A97C /* ARFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFactory.h; sourceTree = "<group>"; };
 		CAE9227B171495880082A97C /* ARFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFactory.m; sourceTree = "<group>"; };
 		CAE9227E17149A080082A97C /* octocat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = octocat.png; sourceTree = "<group>"; };
+		E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		E698C98D19F2B2AA00E13A61 /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -596,6 +601,7 @@
 				CA91ECCB1715AEC10085A27B /* GCDSpec.mm */,
 				75F56DBB171700D300A1DF7B /* NSDecimalNumberSpec.mm */,
 				5DC6AE39AED7F65097305A31 /* NSDateSpec.mm */,
+				5DC6A466C55C664FEC21B3F7 /* SwiftIntegrationSpec.mm */,
 			);
 			path = Specs;
 			sourceTree = "<group>";
@@ -671,6 +677,8 @@
 				5DC6AFF2C93EA186939DC65A /* UserAnimalRelationship.h */,
 				5DC6AB78CE47BE5C9DAE9693 /* Item.m */,
 				5DC6AE7546108C8F460608B0 /* Item.h */,
+				E698C98D19F2B2AA00E13A61 /* Dog.swift */,
+				E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */,
 			);
 			name = "Test Entities";
 			path = TestSources;
@@ -1293,9 +1301,9 @@
 		25998EB414BC199C00CA2490 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = AR;
+				CLASSPREFIX = VR;
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = okolodev.org;
+				ORGANIZATIONNAME = "NEiLAB, INC";
 			};
 			buildConfigurationList = 25998EB714BC199C00CA2490 /* Build configuration list for PBXProject "iActiveRecord" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1307,8 +1315,6 @@
 			mainGroup = 25998EB214BC199C00CA2490;
 			productRefGroup = 25998EBE14BC199C00CA2490 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-			);
 			projectRoot = "";
 			targets = (
 				25922AFA14EC286000CBB58A /* UnitTests */,
@@ -1481,6 +1487,7 @@
 				5DC6A8B25B64670BF8364A8B /* ARValidatorUniqueness.m in Sources */,
 				5DC6A3C6C45220ABE22CD46E /* ARValidatorPresence.m in Sources */,
 				5DC6AE8AED0990CE8E2255B2 /* ARValidator.m in Sources */,
+				E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */,
 				5DC6A162DF1D432EE3E3F5BB /* ARValidation.m in Sources */,
 				5DC6A6B9C101B2874279387C /* NSSet+toSql.m in Sources */,
 				5DC6A49D58FCC3671123F75A /* NSMutableDictionary+valueToArray.m in Sources */,
@@ -1522,6 +1529,7 @@
 				5DC6AA481A1F80BAB55F1685 /* ARPersistentQueueEntity.m in Sources */,
 				5DC6A94C87C9B03A2C4C1750 /* ARCallback.m in Sources */,
 				5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */,
+				5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,11 +1669,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "$(inherited)";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/opt/cedar/build/Release-iphoneuniversal\"",
@@ -1679,13 +1690,16 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/UnitTests/Supporting Files/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-all_load",
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/TestSources/UnitTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1694,11 +1708,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4B16D5CE34B6AB338B1733A1 /* Pods-UnitTests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "$(inherited)";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/opt/cedar/build/Release-iphoneuniversal\"",
@@ -1706,15 +1723,21 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/Supporting Files/UnitTests-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "SQLITE_CORE SQLITE_ENABLE_UNICODE $(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					SQLITE_CORE,
+					SQLITE_ENABLE_UNICODE,
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/UnitTests/Supporting Files/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-all_load",
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/TestSources/UnitTests-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1774,7 +1797,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEAD_CODE_STRIPPING = NO;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
@@ -1803,8 +1829,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
