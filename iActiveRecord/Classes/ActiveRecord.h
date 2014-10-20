@@ -22,6 +22,7 @@
 #import "ARIndicesMacroHelper.h"
 #import "ARConfiguration.h"
 #import "ARSynchronizationProtocol.h"
+#import "ActiveRecord+Extensions.h"
 
 @class ARConfiguration;
 
