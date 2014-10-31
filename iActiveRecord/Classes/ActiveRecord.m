@@ -253,8 +253,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     errors = nil;
 }
 
-- (void)addErrors:(NSArray*) errors {
-    for(ARError *error in errors)
+- (void)addErrors:(NSArray*) errorz {
+    for(ARError *error in errorz)
         [self addError:error];
 }
 
@@ -327,12 +327,10 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (ActiveRecord *) cachedEntityForKey: (NSString *) field {
-    NSString *fieldKey = field;
     return [self.entityCache objectForKey:field];
 }
 
 - (NSArray*) cachedArrayForKey: (NSString *) field {
-    NSString *fieldKey = field;
     return [self.entityCache objectForKey:field];
 }
 
