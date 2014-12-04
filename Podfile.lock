@@ -7,7 +7,7 @@ PODS:
   - ISO8601DateFormatterValueTransformer (0.6.0):
     - RKValueTransformers (~> 1.1.0)
   - RestKit (0.23.3):
-    - RestKit/Core
+    - RestKit/Core (= 0.23.3)
   - RestKit/Core (0.23.3):
     - RestKit/CoreData
     - RestKit/Network
@@ -54,4 +54,4 @@ SPEC CHECKSUMS:
   TransitionKit: 6a6f3ddda38ae758778aa889dcb930e4f8d64edc
   Tsuga: de163f93d8b73d6bc0712103b53e483135a4694e
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.35.0
