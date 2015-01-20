@@ -9,7 +9,16 @@ namespace AR {
 
 bool NSDateColumn::bind(sqlite3_stmt *statement, const int columnIndex, const id value) const
 {
-return sqlite3_bind_double(statement, columnIndex, [value timeIntervalSince1970]) == SQLITE_OK;
+    NSTimeInterval  time = 0;
+    //TODO: Figure out why date changed to NSFNumber causing exception: -[__NSCFNumber timeIntervalSince1970]: unrecognized selector sent to instance 0xd787c30
+
+    if([value isKindOfClass:[NSDate class]]) {
+        time = [value timeIntervalSince1970];
+    } else if([value isKindOfClass:[NSNumber class]]) {
+        NSNumber *number = (NSNumber*)value;
+        time = [number doubleValue];
+    }
+return sqlite3_bind_double(statement, columnIndex, time) == SQLITE_OK;
 }
 
 const char *NSDateColumn::sqlType(void) const {
