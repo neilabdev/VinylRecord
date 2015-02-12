@@ -376,10 +376,11 @@
 }
 
 - (id)objectAtIndex: (NSUInteger)index {
-
+    NSArray *rows = nil;
     if(!arrayRows) {
         arrayRows = [self fetchRecords];
     }
+    rows = arrayRows;
 
     return [arrayRows objectAtIndex:index];
 }
@@ -398,10 +399,12 @@
                         [recordClass performSelector:@selector(recordName)]];
     NSString *where = [self createWhereStatement];
     NSString *join = [self createJoinStatement];
+    NSInteger resultCount = 0;
     [sql appendString:select];
     [sql appendString:join];
     [sql appendString:where];
-    return [[ARDatabaseManager sharedManager] functionResult:sql];
+    resultCount =  [[ARDatabaseManager sharedManager] functionResult:sql];
+    return limit ? MIN([limit intValue],resultCount) : resultCount;
 }
 
 - (ARLazyFetcher *)where:(NSString *)aCondition, ...{
