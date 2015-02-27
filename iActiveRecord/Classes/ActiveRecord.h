@@ -22,6 +22,9 @@
 #import "ARIndicesMacroHelper.h"
 #import "ARConfiguration.h"
 #import "ARSynchronizationProtocol.h"
+#import "ARTransactionState.h"
+
+
 
 @class ARConfiguration;
 
@@ -88,4 +91,18 @@ typedef void (^ARConfigurationBlock) (ARConfiguration *config);
 
 + (NSString *)recordName;
 
+#pragma mark - Extensions
+
++ (instancetype) findById: (id) record_id;
++ (instancetype) findByKey: (id) key value: (id) value;
++ (instancetype) findOrBuildByKey: (id) key value: (id) value;
++ (NSArray *) findAllByKey: (id) key value: (id) value;
++ (NSArray *) findAllByConditions: (NSDictionary *) conditions;
++ (instancetype) findByConditions: (NSDictionary *) conditions;
++ (void)addSearchOn:(NSString *)aField;
++ (BOOL) savePointTransaction: (ARSavePointTransactionBlock) transaction;
++ (BOOL) savePoint: (NSString *)name transaction: (ARSavePointTransactionBlock) transaction;
+- (instancetype) recordSaved;
 @end
+
+
