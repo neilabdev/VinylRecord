@@ -86,25 +86,25 @@
 
 #define field_boolean_dec( property_name ) \
     @property ( nonatomic,strong ) NSNumber * property_name; \
-    @property ( nonatomic,assign ) NSInteger is_##property_name ; \
-    @property ( nonatomic,assign ) NSInteger has_##property_name ;
+    @property ( nonatomic,assign ) BOOL is_##property_name ; \
+    @property ( nonatomic,assign ) BOOL has_##property_name ;
 
 #define field_boolean_imp( property_name ) \
     @dynamic property_name ;   \
     - (BOOL) is_##property_name { \
-        NSInteger value =  [ [ self property_name ] boolValue ]; \
+        BOOL value =  [ [ self property_name ] boolValue ]; \
         return value; \
     }  \
     - (BOOL) has_##property_name { \
-        NSInteger value =  [ [ self property_name ] boolValue ]; \
+        BOOL value =  [ [ self property_name ] boolValue ]; \
         return value; \
     }  \
-    - (void) setIs_##property_name: (NSInteger ) value  { \
+    - (void) setIs_##property_name: (BOOL ) value  { \
         NSString *propertyName =  @"" #property_name ; \
         NSString *propertySetter =  [propertyName asSetterMethodName]; ; \
         objc_msgSend(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithInt: value ]) ; \
     } \
-    - (void) setHas_##property_name: (NSInteger ) value  { \
+    - (void) setHas_##property_name: (BOOL ) value  { \
         NSString *propertyName =  @"" #property_name ; \
         NSString *propertySetter =  [propertyName asSetterMethodName]; ; \
         objc_msgSend(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithInt: value ]) ; \
