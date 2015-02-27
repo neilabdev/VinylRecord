@@ -477,10 +477,7 @@ static NSArray *records = nil;
     if (!columnsCount) {
         return 0;
     }
-    
-    changedColumns = [aRecord changedColumns];
-    columnsCount = changedColumns.count;
-    
+
     __block int result = 0;
     
     dispatch_sync([self activeRecordQueue], ^{
@@ -500,7 +497,7 @@ static NSArray *records = nil;
         NSString *sqlString = [NSString stringWithFormat:
                                @"INSERT INTO '%@'(%@) VALUES(%@)",
                                [aRecord recordName],
-                               [columns componentsJoinedByString:@","],
+                               [columns componentsJoinedByString:@","],  //FIXME: Sometimes query generates because no changed columns: "INSERT INTO 'Subscriber'() VALUES(?,?,?,?,?,?)"
                                valueMapping];
         
         sql = [sqlString UTF8String];
@@ -559,21 +556,18 @@ static NSArray *records = nil;
 
 - (NSInteger)updateRecord:(ActiveRecord *)aRecord {
     aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-
-    NSSet *changedColumns = [aRecord changedColumns];
+    NSSet *changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
     NSInteger columnsCount = changedColumns.count;
     if (!columnsCount) {
         return 0;
     }
-
-    changedColumns = [aRecord changedColumns];
-    columnsCount = changedColumns.count;
 
     __block int result = SQLITE_OK;
 
     dispatch_sync([self activeRecordQueue], ^{
         sqlite3_stmt *stmt;
         const char *sql;
+
 
         NSMutableArray *columns = [NSMutableArray arrayWithCapacity:columnsCount];
         NSArray *orderedColumns = [changedColumns allObjects];

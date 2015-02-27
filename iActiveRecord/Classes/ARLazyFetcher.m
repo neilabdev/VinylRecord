@@ -385,7 +385,7 @@
     return [arrayRows objectAtIndex:index];
 }
 
-- (NSInteger)count {
+- (NSUInteger)count {
 
     if(arrayRows)
         return [arrayRows count];

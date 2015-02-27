@@ -13,7 +13,7 @@
 @implementation ARSQLBuilder
 
 + (const char *)sqlOnUpdateRecord:(ActiveRecord *)aRecord {
-    NSSet *changedColumns = [aRecord changedColumns];
+    NSSet *changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
     NSInteger columnsCount = changedColumns.count;
     if (columnsCount == 0) {
         return NULL;
@@ -67,6 +67,8 @@
 }
 
 + (const char *)sqlOnCreateIndex:(NSString *)aColumnName forRecord:(ActiveRecord *)aRecord {
+    //FIXME: INDEXES should probably not be unique. macro add_index_on creates only unique indexes, as apposed to
+    //       just an index to speed up queries.
     NSString *sqlString = [NSString stringWithFormat:
                            @"CREATE UNIQUE INDEX IF NOT EXISTS index_%@ ON \"%@\" (\"%@\")",
                            aColumnName,

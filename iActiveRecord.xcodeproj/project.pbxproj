@@ -52,6 +52,7 @@
 		5DC6A148CE53234CBB208C36 /* ShortColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A14995364C6B2265DFE4 /* ShortColumn.h */; };
 		5DC6A162DF1D432EE3E3F5BB /* ARValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6ABF97D79E4336D5BE923 /* ARValidation.m */; };
 		5DC6A16A9F723443CA1352CA /* NSDateSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AE39AED7F65097305A31 /* NSDateSpec.mm */; };
+		5DC6A198ED8CEB2516E5DAF7 /* ActiveRecord+Extentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A0522651E6E6FCFAA57A /* ActiveRecord+Extentions.m */; };
 		5DC6A1A2F5D13291F707DE1A /* ARRelationHasMany.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AAFF51CF485C2BA2D494 /* ARRelationHasMany.m */; };
 		5DC6A1B282DC9AA5592EC6DD /* LongColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A6FD424BA64BA38700C5 /* LongColumn.h */; };
 		5DC6A1D6718B7BBEEC7B5AAF /* NSDate+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6ABD014D1136631A348B3 /* NSDate+sqlRepresentation.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -71,7 +72,9 @@
 		5DC6A306669F1C6AFAF305F4 /* ARCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A3A762CE999313FF75B0 /* ARCallbacks.h */; };
 		5DC6A32867B1EBF0E9BE0CE7 /* NSNumber+isPresented.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AAAB70CB031C9F5C4C40 /* NSNumber+isPresented.m */; };
 		5DC6A33BE2BC28B801AE248F /* UnsignedLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7766472DD1B7A817791 /* UnsignedLongColumn.mm */; };
+		5DC6A34B5F79E0F4A24D6CF7 /* ARLazyFetcher+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */; };
 		5DC6A3B67B83B2533CA37942 /* LongLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A6CBF14D64DA76D9A1F0 /* LongLongColumn.mm */; };
+		5DC6A3BA94DFF8C495B1F9CA /* ARLazyFetcher+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6ADACB3725DDE5FBE5F93 /* ARLazyFetcher+Extensions.h */; };
 		5DC6A3C6C45220ABE22CD46E /* ARValidatorPresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A5EF0A747B230347443D /* ARValidatorPresence.m */; };
 		5DC6A3D8F78221174429FD7A /* UnsignedLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7766472DD1B7A817791 /* UnsignedLongColumn.mm */; };
 		5DC6A3F60AAD34F09717E338 /* ARValidatorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A3A3560845372C1EB7E2 /* ARValidatorProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,6 +97,7 @@
 		5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC2995407494CF310401 /* ARCallbacks.m */; };
 		5DC6A532144ABAAC7C261443 /* IColumnInternal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A6BE1889B04C7ED8A060 /* IColumnInternal.mm */; };
 		5DC6A5379FAACA37D0F3D914 /* ARCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC2995407494CF310401 /* ARCallbacks.m */; };
+		5DC6A54BBF1754ED2F0DCEC7 /* ARLazyFetcher+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */; };
 		5DC6A551B9C12005DB40C2E9 /* NSString+uppercaseFirst.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A9C931FE9944B97ECD1D /* NSString+uppercaseFirst.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5DC6A55DD23D4BF06F26CE5A /* NSData+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A06DC63FD1B3C96E61F7 /* NSData+sqlRepresentation.m */; };
 		5DC6A56665563DF8D91E3132 /* ARRelationHasMany.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A0BB9565F82B8766CF1D /* ARRelationHasMany.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -132,6 +136,7 @@
 		5DC6A827368EE16F6E444185 /* LongLongColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A1FAA9B36FE3AAB11137 /* LongLongColumn.h */; };
 		5DC6A83061D703CF5061186E /* LongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A48DD7E1316289D14BDC /* LongColumn.mm */; };
 		5DC6A839F5765CED4EB39BBA /* NSDecimalNumber+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A29C9DC8BBF65F1421AA /* NSDecimalNumber+sqlRepresentation.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		5DC6A843BE3B94C110FAC682 /* ActiveRecord+Extentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A0522651E6E6FCFAA57A /* ActiveRecord+Extentions.m */; };
 		5DC6A84E55B6EAC86E2F7DF0 /* NSMutableDictionary+valueToArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A70619E877AB3D9FD1C1 /* NSMutableDictionary+valueToArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5DC6A85E81A6732D77B855E0 /* ARColumn_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A5115176220392350D69 /* ARColumn_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5DC6A879C13BD609424189BD /* ARLazyFetcher_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AD561CC01CEBF53C2E58 /* ARLazyFetcher_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -154,6 +159,7 @@
 		5DC6A99E26A8FC34D5C138B6 /* FloatColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A4F233B2651C96A0B988 /* FloatColumn.h */; };
 		5DC6A9ABC235244F9D424425 /* class_getSubclasses.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AA4647BE6210B0AC88CF /* class_getSubclasses.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5DC6A9AE6F7560A2E4C07B4D /* ARLazyFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AD5503099C71ECCEF60B /* ARLazyFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5DC6A9DA9CA8FE13C1833CBD /* ActiveRecord+Extentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A0522651E6E6FCFAA57A /* ActiveRecord+Extentions.m */; };
 		5DC6A9FF6387D70DDBD1E67C /* ARRelationHasManyThrough.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AE41EAE9F07B774D891C /* ARRelationHasManyThrough.m */; };
 		5DC6AA0F298A3F2C7BDDA817 /* ARColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AA12D58A3ABD1EA42F8D /* ARColumn.mm */; };
 		5DC6AA111620AB8898A86AB3 /* NSDateColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC5AE6DB043254DB4B45 /* NSDateColumn.mm */; };
@@ -176,6 +182,7 @@
 		5DC6AB21FE73C6D834BC30E9 /* ARLazyFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC7544D832AA12D5082A /* ARLazyFetcher.m */; };
 		5DC6AB3CC2ABC105ECB1CC62 /* ARValidatorUniqueness.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A03CE8DDF9EB33EA7887 /* ARValidatorUniqueness.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5DC6AB4C264D6467940CDF6F /* NSNumberColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A695C80A25C8ECCB7127 /* NSNumberColumn.mm */; };
+		5DC6AB52DB877D8307B14C76 /* ActiveRecord+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A57BB8D682327C3AABB5 /* ActiveRecord+Extensions.h */; };
 		5DC6AB71675E61EA5823A34F /* IntColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A703FF803B2A3E19252A /* IntColumn.mm */; };
 		5DC6AB73D3B49C7F370E25A6 /* UnsignedCharColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC7F790EFA8D12EA24A3 /* UnsignedCharColumn.mm */; };
 		5DC6AB78AA610CDAED834A3D /* NSString+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A0BCB9E849518EF903B9 /* NSString+sqlRepresentation.m */; };
@@ -202,10 +209,12 @@
 		5DC6AD3EBFFD4AAA4CF1F13B /* LongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A48DD7E1316289D14BDC /* LongColumn.mm */; };
 		5DC6AD54337A0C59BF3CB9DE /* UnsignedShortColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AA4E7929852B84D3371F /* UnsignedShortColumn.h */; };
 		5DC6AD66C4C4982B055BF418 /* UnsignedIntColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A92835028CDAD2082282 /* UnsignedIntColumn.h */; };
+		5DC6AD722C04D26E713F04B1 /* ARLazyFetcher+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */; };
 		5DC6AD918ED638A185A4A902 /* CharColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A246D2B06C5C99FD4138 /* CharColumn.mm */; };
 		5DC6ADA1564D0E115E325FF2 /* ARCallbacksHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A7D285F313114CA69DC2 /* ARCallbacksHelper.h */; };
 		5DC6ADD39EBB8E17B89D9D5F /* ARDynamicAccessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A8BEEBB2EF00EAF4CCD2 /* ARDynamicAccessor.mm */; };
 		5DC6ADD7B757B2F7CCFCEAFB /* FloatColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A25C78B7306C4E864637 /* FloatColumn.mm */; };
+		5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A466C55C664FEC21B3F7 /* SwiftIntegrationSpec.mm */; };
 		5DC6ADEBF2FAB4CF43AB04DA /* sqlite3_unicode.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A8579D88D4B190D1C5B7 /* sqlite3_unicode.c */; settings = {COMPILER_FLAGS = "-Wno-missing-prototypes"; }; };
 		5DC6AE1372573FF21456286E /* ARRelationHasMany.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AAFF51CF485C2BA2D494 /* ARRelationHasMany.m */; };
 		5DC6AE1BFBDAA86A82C1C989 /* NSDateColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC5AE6DB043254DB4B45 /* NSDateColumn.mm */; };
@@ -281,6 +290,7 @@
 		CAE92278171495290082A97C /* UserProjectRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9226A171495290082A97C /* UserProjectRelationship.m */; };
 		CAE9227C171495880082A97C /* ARFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9227B171495880082A97C /* ARFactory.m */; };
 		CAE9227F17149A080082A97C /* octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = CAE9227E17149A080082A97C /* octocat.png */; };
+		E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698C98D19F2B2AA00E13A61 /* Dog.swift */; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -307,6 +317,7 @@
 		5DC6A028A2B0DA62CB645575 /* UnsignedLongLongColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnsignedLongLongColumn.h; sourceTree = "<group>"; };
 		5DC6A035E307B369BAB8F2FD /* ColumnInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnInternal.h; sourceTree = "<group>"; };
 		5DC6A03CE8DDF9EB33EA7887 /* ARValidatorUniqueness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARValidatorUniqueness.h; sourceTree = "<group>"; };
+		5DC6A0522651E6E6FCFAA57A /* ActiveRecord+Extentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ActiveRecord+Extentions.m"; sourceTree = "<group>"; };
 		5DC6A06DC63FD1B3C96E61F7 /* NSData+sqlRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+sqlRepresentation.m"; sourceTree = "<group>"; };
 		5DC6A0A3961EDF41F67D8B92 /* ARSynchronizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSynchronizationProtocol.h; sourceTree = "<group>"; };
 		5DC6A0ADFF4FFBF7C280E1D4 /* NSDecimalNumber+isPresented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+isPresented.h"; sourceTree = "<group>"; };
@@ -323,6 +334,7 @@
 		5DC6A25C78B7306C4E864637 /* FloatColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FloatColumn.mm; sourceTree = "<group>"; };
 		5DC6A279EA6310C06C71ADDE /* UnsignedLongColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnsignedLongColumn.h; sourceTree = "<group>"; };
 		5DC6A29C9DC8BBF65F1421AA /* NSDecimalNumber+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+sqlRepresentation.h"; sourceTree = "<group>"; };
+		5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARLazyFetcher+Extensions.m"; sourceTree = "<group>"; };
 		5DC6A2E32B7ABE9381CA5F03 /* ARSQLBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSQLBuilder.m; sourceTree = "<group>"; };
 		5DC6A38AF3777CA7F875B4DE /* ARPersistentQueueEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPersistentQueueEntity.h; sourceTree = "<group>"; };
 		5DC6A3A3560845372C1EB7E2 /* ARValidatorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARValidatorProtocol.h; sourceTree = "<group>"; };
@@ -332,12 +344,14 @@
 		5DC6A404E9A45CED06AED5D1 /* ARValidatorUniqueness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValidatorUniqueness.m; sourceTree = "<group>"; };
 		5DC6A43FBBA089CA8CDC697B /* NSString+stringWithEscapedQuote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+stringWithEscapedQuote.h"; sourceTree = "<group>"; };
 		5DC6A4403EA8F7746DB9428D /* ARRelationHasManyThrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelationHasManyThrough.h; sourceTree = "<group>"; };
+		5DC6A466C55C664FEC21B3F7 /* SwiftIntegrationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwiftIntegrationSpec.mm; sourceTree = "<group>"; };
 		5DC6A48DD7E1316289D14BDC /* LongColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LongColumn.mm; sourceTree = "<group>"; };
 		5DC6A4F233B2651C96A0B988 /* FloatColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatColumn.h; sourceTree = "<group>"; };
 		5DC6A5115176220392350D69 /* ARColumn_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARColumn_Private.h; sourceTree = "<group>"; };
 		5DC6A516DEAF1DA75BFDB382 /* NSDecimalNumberColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberColumn.h; sourceTree = "<group>"; };
 		5DC6A550DD59C54D580AF21A /* NSNumber+isPresented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+isPresented.h"; sourceTree = "<group>"; };
 		5DC6A566C59847BF74949ED1 /* CharColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharColumn.h; sourceTree = "<group>"; };
+		5DC6A57BB8D682327C3AABB5 /* ActiveRecord+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ActiveRecord+Extensions.h"; sourceTree = "<group>"; };
 		5DC6A57F78ECC71A320CBDBE /* NSDate+isPresented.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+isPresented.m"; sourceTree = "<group>"; };
 		5DC6A5B5E6A1C5759E119C3A /* NSString+stringWithEscapedQuote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+stringWithEscapedQuote.m"; sourceTree = "<group>"; };
 		5DC6A5EDB3A2527CBB40C9FA /* NSStringColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSStringColumn.mm; sourceTree = "<group>"; };
@@ -411,6 +425,7 @@
 		5DC6AD5503099C71ECCEF60B /* ARLazyFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLazyFetcher.h; sourceTree = "<group>"; };
 		5DC6AD561CC01CEBF53C2E58 /* ARLazyFetcher_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLazyFetcher_Private.h; sourceTree = "<group>"; };
 		5DC6AD86BEECF691AA884B80 /* IColumnInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IColumnInternal.h; sourceTree = "<group>"; };
+		5DC6ADACB3725DDE5FBE5F93 /* ARLazyFetcher+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARLazyFetcher+Extensions.h"; sourceTree = "<group>"; };
 		5DC6ADB77C66988070FD6515 /* NSData+isPresented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+isPresented.h"; sourceTree = "<group>"; };
 		5DC6ADD728C0C99D51FF641C /* NSString+uppercaseFirst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+uppercaseFirst.m"; sourceTree = "<group>"; };
 		5DC6ADE83AA05D28CC965D86 /* ARValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValidator.m; sourceTree = "<group>"; };
@@ -510,6 +525,11 @@
 		CAE9227A171495880082A97C /* ARFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFactory.h; sourceTree = "<group>"; };
 		CAE9227B171495880082A97C /* ARFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFactory.m; sourceTree = "<group>"; };
 		CAE9227E17149A080082A97C /* octocat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = octocat.png; sourceTree = "<group>"; };
+		E62FA55F19F537F1001E6AFD /* ActiveRecord-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ActiveRecord-Bridging-Header.h"; sourceTree = "<group>"; };
+		E62FA56019F537F1001E6AFD /* Build_Framework-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Build_Framework-Bridging-Header.h"; sourceTree = "<group>"; };
+		E62FA56119F537F1001E6AFD /* ActiveTwitter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ActiveTwitter-Bridging-Header.h"; sourceTree = "<group>"; };
+		E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		E698C98D19F2B2AA00E13A61 /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -596,6 +616,7 @@
 				CA91ECCB1715AEC10085A27B /* GCDSpec.mm */,
 				75F56DBB171700D300A1DF7B /* NSDecimalNumberSpec.mm */,
 				5DC6AE39AED7F65097305A31 /* NSDateSpec.mm */,
+				5DC6A466C55C664FEC21B3F7 /* SwiftIntegrationSpec.mm */,
 			);
 			path = Specs;
 			sourceTree = "<group>";
@@ -671,6 +692,8 @@
 				5DC6AFF2C93EA186939DC65A /* UserAnimalRelationship.h */,
 				5DC6AB78CE47BE5C9DAE9693 /* Item.m */,
 				5DC6AE7546108C8F460608B0 /* Item.h */,
+				E698C98D19F2B2AA00E13A61 /* Dog.swift */,
+				E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */,
 			);
 			name = "Test Entities";
 			path = TestSources;
@@ -835,6 +858,7 @@
 		5DC6A703CFFC2CC898CA3AFB /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				5DC6A0A3961EDF41F67D8B92 /* ARSynchronizationProtocol.h */,
 				5DC6AC860527D9A6348AD422 /* ARRepresentationProtocol.h */,
 				5DC6A3A3560845372C1EB7E2 /* ARValidatorProtocol.h */,
 			);
@@ -922,6 +946,8 @@
 		5DC6ABB0FE5CB9622987B70D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E62FA56619F5390E001E6AFD /* BridgingHeaders */,
+				E62FA55E19F535C3001E6AFD /* Extentions */,
 				5DC6A406EBB95733905E8432 /* Enums */,
 				5DC6A73CEB1694A71E35DF51 /* Configuration */,
 				5DC6A3D50FEF98EB76919681 /* ARSQLBuilder */,
@@ -945,7 +971,10 @@
 				5DC6A70E34EF372195F9743C /* ARCallback.h */,
 				5DC6AC2995407494CF310401 /* ARCallbacks.m */,
 				5DC6A3A762CE999313FF75B0 /* ARCallbacks.h */,
-				5DC6A0A3961EDF41F67D8B92 /* ARSynchronizationProtocol.h */,
+				5DC6A0522651E6E6FCFAA57A /* ActiveRecord+Extentions.m */,
+				5DC6A57BB8D682327C3AABB5 /* ActiveRecord+Extensions.h */,
+				5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */,
+				5DC6ADACB3725DDE5FBE5F93 /* ARLazyFetcher+Extensions.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1137,6 +1166,23 @@
 			path = Fixtures;
 			sourceTree = "<group>";
 		};
+		E62FA55E19F535C3001E6AFD /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Extentions;
+			sourceTree = "<group>";
+		};
+		E62FA56619F5390E001E6AFD /* BridgingHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				E62FA55F19F537F1001E6AFD /* ActiveRecord-Bridging-Header.h */,
+				E62FA56019F537F1001E6AFD /* Build_Framework-Bridging-Header.h */,
+				E62FA56119F537F1001E6AFD /* ActiveTwitter-Bridging-Header.h */,
+			);
+			name = BridgingHeaders;
+			sourceTree = "<group>";
+		};
 		EF94C8DA224397F1336F85BE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1225,6 +1271,8 @@
 				5DC6A112EF9364533F728F56 /* ARCallback.h in Headers */,
 				5DC6A306669F1C6AFAF305F4 /* ARCallbacks.h in Headers */,
 				5DC6A63257F2F44AD8854CF6 /* ARSynchronizationProtocol.h in Headers */,
+				5DC6AB52DB877D8307B14C76 /* ActiveRecord+Extensions.h in Headers */,
+				5DC6A3BA94DFF8C495B1F9CA /* ARLazyFetcher+Extensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1293,9 +1341,9 @@
 		25998EB414BC199C00CA2490 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = AR;
+				CLASSPREFIX = VR;
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = okolodev.org;
+				ORGANIZATIONNAME = "NEiLAB, INC";
 			};
 			buildConfigurationList = 25998EB714BC199C00CA2490 /* Build configuration list for PBXProject "iActiveRecord" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1307,8 +1355,6 @@
 			mainGroup = 25998EB214BC199C00CA2490;
 			productRefGroup = 25998EBE14BC199C00CA2490 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-			);
 			projectRoot = "";
 			targets = (
 				25922AFA14EC286000CBB58A /* UnitTests */,
@@ -1481,6 +1527,7 @@
 				5DC6A8B25B64670BF8364A8B /* ARValidatorUniqueness.m in Sources */,
 				5DC6A3C6C45220ABE22CD46E /* ARValidatorPresence.m in Sources */,
 				5DC6AE8AED0990CE8E2255B2 /* ARValidator.m in Sources */,
+				E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */,
 				5DC6A162DF1D432EE3E3F5BB /* ARValidation.m in Sources */,
 				5DC6A6B9C101B2874279387C /* NSSet+toSql.m in Sources */,
 				5DC6A49D58FCC3671123F75A /* NSMutableDictionary+valueToArray.m in Sources */,
@@ -1522,6 +1569,9 @@
 				5DC6AA481A1F80BAB55F1685 /* ARPersistentQueueEntity.m in Sources */,
 				5DC6A94C87C9B03A2C4C1750 /* ARCallback.m in Sources */,
 				5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */,
+				5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */,
+				5DC6A9DA9CA8FE13C1833CBD /* ActiveRecord+Extentions.m in Sources */,
+				5DC6A34B5F79E0F4A24D6CF7 /* ARLazyFetcher+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1583,6 +1633,8 @@
 				5DC6A964E50FFD6006F0BAE9 /* ARPersistentQueueEntity.m in Sources */,
 				5DC6A78856466DA004A77EE5 /* ARCallback.m in Sources */,
 				5DC6A0C80811BE1886CE936C /* ARCallbacks.m in Sources */,
+				5DC6A198ED8CEB2516E5DAF7 /* ActiveRecord+Extentions.m in Sources */,
+				5DC6AD722C04D26E713F04B1 /* ARLazyFetcher+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1616,6 +1668,8 @@
 				5DC6ABDCDA37AD414C31DDAA /* ARPersistentQueueEntity.m in Sources */,
 				5DC6AA5E4945FDFD944E4D17 /* ARCallback.m in Sources */,
 				5DC6A5379FAACA37D0F3D914 /* ARCallbacks.m in Sources */,
+				5DC6A843BE3B94C110FAC682 /* ActiveRecord+Extentions.m in Sources */,
+				5DC6A54BBF1754ED2F0DCEC7 /* ARLazyFetcher+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,11 +1715,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "$(inherited)";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/opt/cedar/build/Release-iphoneuniversal\"",
@@ -1679,13 +1736,16 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/UnitTests/Supporting Files/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-all_load",
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/TestSources/UnitTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1694,11 +1754,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4B16D5CE34B6AB338B1733A1 /* Pods-UnitTests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "$(inherited)";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/opt/cedar/build/Release-iphoneuniversal\"",
@@ -1706,15 +1769,21 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/Supporting Files/UnitTests-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "SQLITE_CORE SQLITE_ENABLE_UNICODE $(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					SQLITE_CORE,
+					SQLITE_ENABLE_UNICODE,
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/UnitTests/Supporting Files/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-all_load",
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/TestSources/UnitTests-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1774,7 +1843,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEAD_CODE_STRIPPING = NO;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
@@ -1788,12 +1860,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "ARBundle/ARBundle-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LINK_WITH_STANDARD_LIBRARIES = NO;
 				MACH_O_TYPE = mh_object;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "iActiveRecord/Classes/ActiveRecord-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSION_INFO_BUILDER = "Alex Denisov";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1803,8 +1878,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
@@ -1818,12 +1896,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "ARBundle/ARBundle-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LINK_WITH_STANDARD_LIBRARIES = NO;
 				MACH_O_TYPE = mh_object;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "iActiveRecord/Classes/ActiveRecord-Bridging-Header.h";
 				VERSION_INFO_BUILDER = "Alex Denisov";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1832,16 +1912,23 @@
 		CA62C340151E0F7300E54276 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iActiveRecord/Classes/Build_Framework-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		CA62C341151E0F7300E54276 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iActiveRecord/Classes/Build_Framework-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -1851,6 +1938,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1867,8 +1955,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "ActiveTwitter/ActiveTwitter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iActiveRecord/Classes/ActiveTwitter-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1879,6 +1970,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1891,7 +1983,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "ActiveTwitter/ActiveTwitter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iActiveRecord/Classes/ActiveTwitter-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

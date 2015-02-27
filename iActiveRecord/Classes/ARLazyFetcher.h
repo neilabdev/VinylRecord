@@ -42,6 +42,6 @@ typedef enum {
 
 - (NSArray *)fetchRecords;
 - (NSArray *)fetchJoinedRecords;
-- (NSInteger)count;
+- (NSUInteger)count;
 
 @end
