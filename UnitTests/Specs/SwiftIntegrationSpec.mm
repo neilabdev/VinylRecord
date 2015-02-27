@@ -34,8 +34,7 @@ SPEC_BEGIN(SwiftIntegrationSpecs)
             animal.save should BeTruthy();
             recordId = animal.id;
             Dog *dog = [[Dog allRecords] objectAtIndex:0];
-
-
+            dog.foo=@"bark";
          //   Dog.mapping should equal(1776);
          //   Dog.mapping should equal(1776);
 

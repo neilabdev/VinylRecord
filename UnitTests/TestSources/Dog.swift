@@ -8,30 +8,26 @@
 
 import Foundation
 
-
+/*
 struct VRMappings {}
 
-struct VRConstraints {}
+struct VRConstraints {
+    var UNIQUE:Int
+} */
 
 class Dog : Animal {
+/*
+    static let mapping = [
+        "breed":["column":"breed"]
+    ]
+    static let constraints = [
+            "breed": [VRConstraints.UNIQUE:true]
+    ] */
 
- @NSManaged var breed:NSString;
-
-/*  // NOTE: PROPOSED STYLES to configure ORM:
-     class var mapping: VRMappings {
-        return VRMappings();
-     }
-
-     class var constraints1: VRConstraints {
-         return VRConstraints();
-     }
+    @NSManaged var breed:NSString?
 
 
-    class var hasMany :[String:String] {
-         return ["foo" : "Animal"];
-    }
-
-*/
+    var foo:NSString?
 
     
 }
