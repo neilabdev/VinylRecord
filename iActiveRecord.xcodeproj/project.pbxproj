@@ -71,9 +71,7 @@
 		5DC6A306669F1C6AFAF305F4 /* ARCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A3A762CE999313FF75B0 /* ARCallbacks.h */; };
 		5DC6A32867B1EBF0E9BE0CE7 /* NSNumber+isPresented.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AAAB70CB031C9F5C4C40 /* NSNumber+isPresented.m */; };
 		5DC6A33BE2BC28B801AE248F /* UnsignedLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7766472DD1B7A817791 /* UnsignedLongColumn.mm */; };
-		5DC6A34B5F79E0F4A24D6CF7 /* ARLazyFetcher+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */; };
 		5DC6A3B67B83B2533CA37942 /* LongLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A6CBF14D64DA76D9A1F0 /* LongLongColumn.mm */; };
-		5DC6A3BA94DFF8C495B1F9CA /* ARLazyFetcher+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6ADACB3725DDE5FBE5F93 /* ARLazyFetcher+Extensions.h */; };
 		5DC6A3C6C45220ABE22CD46E /* ARValidatorPresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A5EF0A747B230347443D /* ARValidatorPresence.m */; };
 		5DC6A3D8F78221174429FD7A /* UnsignedLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7766472DD1B7A817791 /* UnsignedLongColumn.mm */; };
 		5DC6A3F60AAD34F09717E338 /* ARValidatorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A3A3560845372C1EB7E2 /* ARValidatorProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,7 +95,6 @@
 		5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC2995407494CF310401 /* ARCallbacks.m */; };
 		5DC6A532144ABAAC7C261443 /* IColumnInternal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A6BE1889B04C7ED8A060 /* IColumnInternal.mm */; };
 		5DC6A5379FAACA37D0F3D914 /* ARCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC2995407494CF310401 /* ARCallbacks.m */; };
-		5DC6A54BBF1754ED2F0DCEC7 /* ARLazyFetcher+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */; };
 		5DC6A551B9C12005DB40C2E9 /* NSString+uppercaseFirst.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A9C931FE9944B97ECD1D /* NSString+uppercaseFirst.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5DC6A55DD23D4BF06F26CE5A /* NSData+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A06DC63FD1B3C96E61F7 /* NSData+sqlRepresentation.m */; };
 		5DC6A56665563DF8D91E3132 /* ARRelationHasMany.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A0BB9565F82B8766CF1D /* ARRelationHasMany.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -209,7 +206,6 @@
 		5DC6AD3EBFFD4AAA4CF1F13B /* LongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A48DD7E1316289D14BDC /* LongColumn.mm */; };
 		5DC6AD54337A0C59BF3CB9DE /* UnsignedShortColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AA4E7929852B84D3371F /* UnsignedShortColumn.h */; };
 		5DC6AD66C4C4982B055BF418 /* UnsignedIntColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A92835028CDAD2082282 /* UnsignedIntColumn.h */; };
-		5DC6AD722C04D26E713F04B1 /* ARLazyFetcher+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */; };
 		5DC6AD918ED638A185A4A902 /* CharColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A246D2B06C5C99FD4138 /* CharColumn.mm */; };
 		5DC6ADA1564D0E115E325FF2 /* ARCallbacksHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A7D285F313114CA69DC2 /* ARCallbacksHelper.h */; };
 		5DC6ADD39EBB8E17B89D9D5F /* ARDynamicAccessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A8BEEBB2EF00EAF4CCD2 /* ARDynamicAccessor.mm */; };
@@ -334,7 +330,6 @@
 		5DC6A25C78B7306C4E864637 /* FloatColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FloatColumn.mm; sourceTree = "<group>"; };
 		5DC6A279EA6310C06C71ADDE /* UnsignedLongColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnsignedLongColumn.h; sourceTree = "<group>"; };
 		5DC6A29C9DC8BBF65F1421AA /* NSDecimalNumber+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+sqlRepresentation.h"; sourceTree = "<group>"; };
-		5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARLazyFetcher+Extensions.m"; sourceTree = "<group>"; };
 		5DC6A2E32B7ABE9381CA5F03 /* ARSQLBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSQLBuilder.m; sourceTree = "<group>"; };
 		5DC6A38AF3777CA7F875B4DE /* ARPersistentQueueEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPersistentQueueEntity.h; sourceTree = "<group>"; };
 		5DC6A3A3560845372C1EB7E2 /* ARValidatorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARValidatorProtocol.h; sourceTree = "<group>"; };
@@ -425,7 +420,6 @@
 		5DC6AD5503099C71ECCEF60B /* ARLazyFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLazyFetcher.h; sourceTree = "<group>"; };
 		5DC6AD561CC01CEBF53C2E58 /* ARLazyFetcher_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLazyFetcher_Private.h; sourceTree = "<group>"; };
 		5DC6AD86BEECF691AA884B80 /* IColumnInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IColumnInternal.h; sourceTree = "<group>"; };
-		5DC6ADACB3725DDE5FBE5F93 /* ARLazyFetcher+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARLazyFetcher+Extensions.h"; sourceTree = "<group>"; };
 		5DC6ADB77C66988070FD6515 /* NSData+isPresented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+isPresented.h"; sourceTree = "<group>"; };
 		5DC6ADD728C0C99D51FF641C /* NSString+uppercaseFirst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+uppercaseFirst.m"; sourceTree = "<group>"; };
 		5DC6ADE83AA05D28CC965D86 /* ARValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValidator.m; sourceTree = "<group>"; };
@@ -971,8 +965,6 @@
 				5DC6A70E34EF372195F9743C /* ARCallback.h */,
 				5DC6AC2995407494CF310401 /* ARCallbacks.m */,
 				5DC6A3A762CE999313FF75B0 /* ARCallbacks.h */,
-				5DC6A2DEA80032721D44AD39 /* ARLazyFetcher+Extensions.m */,
-				5DC6ADACB3725DDE5FBE5F93 /* ARLazyFetcher+Extensions.h */,
 				5DC6A019FD2B87A4B7089250 /* ARTransactionState.m */,
 				5DC6A9E8B05E648027C6AADF /* ARTransactionState.h */,
 			);
@@ -1271,7 +1263,6 @@
 				5DC6A112EF9364533F728F56 /* ARCallback.h in Headers */,
 				5DC6A306669F1C6AFAF305F4 /* ARCallbacks.h in Headers */,
 				5DC6A63257F2F44AD8854CF6 /* ARSynchronizationProtocol.h in Headers */,
-				5DC6A3BA94DFF8C495B1F9CA /* ARLazyFetcher+Extensions.h in Headers */,
 				5DC6AB2879C683A4B3DC4157 /* ARTransactionState.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1575,7 +1566,6 @@
 				5DC6A94C87C9B03A2C4C1750 /* ARCallback.m in Sources */,
 				5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */,
 				5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */,
-				5DC6A34B5F79E0F4A24D6CF7 /* ARLazyFetcher+Extensions.m in Sources */,
 				5DC6AA3A6A9ED50E94AAF691 /* ARTransactionState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1638,7 +1628,6 @@
 				5DC6A964E50FFD6006F0BAE9 /* ARPersistentQueueEntity.m in Sources */,
 				5DC6A78856466DA004A77EE5 /* ARCallback.m in Sources */,
 				5DC6A0C80811BE1886CE936C /* ARCallbacks.m in Sources */,
-				5DC6AD722C04D26E713F04B1 /* ARLazyFetcher+Extensions.m in Sources */,
 				5DC6A5A34F494C15A352647F /* ARTransactionState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1673,7 +1662,6 @@
 				5DC6ABDCDA37AD414C31DDAA /* ARPersistentQueueEntity.m in Sources */,
 				5DC6AA5E4945FDFD944E4D17 /* ARCallback.m in Sources */,
 				5DC6A5379FAACA37D0F3D914 /* ARCallbacks.m in Sources */,
-				5DC6A54BBF1754ED2F0DCEC7 /* ARLazyFetcher+Extensions.m in Sources */,
 				5DC6A448F18EC610511FC6EB /* ARTransactionState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -34,7 +34,6 @@
 #import "ARConfiguration.h"
 #import "ARPersistentQueueEntity.h"
 #import "ARSynchronizationProtocol.h"
-#import "ARLazyFetcher+Extensions.h"
 static NSMutableDictionary *relationshipsDictionary = nil;
 
 

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'iActiveRecord'
-  s.version  = '1.9.6'
+  s.version  = '1.9.7'
   s.license  = 'MIT'
   s.summary  = 'ActiveRecord for iOS without CoreData, only SQLite.'
   s.homepage = 'https://github.com/valerius/iActiveRecord.git'
