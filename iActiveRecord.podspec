@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     For more details check Wiki on Github.
   }
   s.author   = { 'James Whitfield' => 'jwhitfield@neilab.com' }
-  s.source   = {  :git => 'https://github.com/valerius/iActiveRecord.git',
+  s.source   = {  :git => 'https://github.com/valerius/VinylRecord.git',
                   :tag => s.version.to_s
                 }
 
