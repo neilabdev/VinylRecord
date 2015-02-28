@@ -21,9 +21,8 @@ class Dog : Animal {
         "breed":["column":"breed"]
     ]
     static let constraints = [
-            "breed": [VRConstraints.UNIQUE:true]
+            "breed": ["unique":true]
     ] */
-
     @NSManaged var breed:NSString?
 
 

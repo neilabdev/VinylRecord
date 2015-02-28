@@ -1,15 +1,15 @@
 Pod::Spec.new do |s|
-  s.name     = 'iActiveRecord'
-  s.version  = '1.9.5'
+  s.name     = 'VinylRecord'
+  s.version  = '1.0.0'
   s.license  = 'MIT'
   s.summary  = 'ActiveRecord for iOS without CoreData, only SQLite.'
-  s.homepage = 'https://github.com/valerius/iActiveRecord.git'
+  s.homepage = 'https://github.com/valerius/VinylRecord.git'
   s.description = %{
-    ActiveRecord for iOS without CoreData. Only SQLite.
+    ORM for iOS without CoreData. Only SQLite.
     For more details check Wiki on Github.
   }
   s.author   = { 'James Whitfield' => 'jwhitfield@neilab.com' }
-  s.source   = {  :git => 'https://github.com/valerius/iActiveRecord.git',
+  s.source   = {  :git => 'https://github.com/valerius/VinylRecord.git',
                   :tag => s.version.to_s
                 }
 
