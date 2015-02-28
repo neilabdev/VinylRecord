@@ -13,6 +13,7 @@
 #import "ARColumn_Private.h"
 #import "ARSQLBuilder.h"
 #import "ARSchemaManager.h"
+#import "VinylRecord.h"
 
 @implementation ARDatabaseManager
 
@@ -660,7 +661,14 @@ static NSArray *records = nil;
 
 - (NSArray *)records {
     if (records == nil) {
-        records = class_getSubclasses([ActiveRecord class]);
+        NSMutableArray *clazzes = [NSMutableArray array];
+        NSArray *subclasses = class_getSubclasses([ActiveRecord class]);
+        for(Class clazz in subclasses) {
+            //TODO: Until VinylRecord becomes the official base class and ActiveRecord compatibility is dropped. the subclass VinylRecord should not create a new table.
+            if(! (clazz == [VinylRecord class]))
+                [clazzes addObject:clazz];
+        }
+        records = clazzes; // record = class_getSubclasses([ActiveRecord class]); // originally.
     }
     return records;
 }
