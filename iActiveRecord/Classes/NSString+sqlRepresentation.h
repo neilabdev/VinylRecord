@@ -13,5 +13,6 @@
 //+ (NSString *)sqlType;
 + (id)fromSql:(NSString *)sqlData;
 - (NSString *)toSql;
-
+- (NSString *)stringAsColumnName;
+- (BOOL) isColumnName;
 @end

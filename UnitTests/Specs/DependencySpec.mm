@@ -26,7 +26,7 @@ afterEach(^{
 });
 
 describe(@"Destroy", ^{
-    it(@"HasMany", ^{
+    fit(@"HasMany", ^{
         User *john = [User newRecord];
         john.name = @"John";
         [john save];
