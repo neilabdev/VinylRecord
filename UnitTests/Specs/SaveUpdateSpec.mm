@@ -111,7 +111,11 @@ describe(@"Update", ^{
     
     it(@"should save values with quotes", ^{
         User *user = [User newRecord];
-        user.name = @"Al\"ex";
+        user.name = @"Al'ex";
+        user.save should be_truthy;
+
+        user = [User newRecord];
+        user.name = @"Bo\"b";
         user.save should be_truthy;
     });
     
