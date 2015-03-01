@@ -20,6 +20,7 @@ extern "C" {
 @interface ARConfiguration : NSObject
 
 @property (nonatomic, copy) NSString *databasePath;
+@property (nonatomic, assign) BOOL enableThreadPool;
 @property (nonatomic, getter = isMigrationsEnabled) BOOL migrationsEnabled;
 
 @end

@@ -15,6 +15,63 @@
 #import "ARSchemaManager.h"
 #import "VinylRecord.h"
 
+
+@implementation ARDatabaseConnection {
+@private
+    sqlite3 *database;
+}
+@synthesize database = database;
+
++ (dispatch_queue_t)connectionQueue {
+    static dispatch_queue_t queue;
+    static dispatch_once_t onceTokenQueue;
+    dispatch_once(&onceTokenQueue, ^{
+        queue = dispatch_queue_create("com.ic2media.vinylrecord", DISPATCH_QUEUE_SERIAL);
+    });
+    return queue;
+}
+
+- (id)initWithConfiguration:(ARConfiguration *)config {
+    if (self = [super init]) {
+        database = NULL;
+        self.configuration = config;
+        [self openConnection];
+    }
+
+    return self;
+}
+
++ (instancetype)connectionWithConfiguration:(ARConfiguration *)config {
+    id connection = [[ARDatabaseConnection alloc] initWithConfiguration:config];
+    return connection;
+}
+
+- (void)openConnection {
+    dispatch_sync([ARDatabaseConnection connectionQueue], ^{
+        if (!database) if (SQLITE_OK != sqlite3_open([self.configuration.databasePath UTF8String], &database)) {
+            NSLog(@"Couldn't open database connection: %s", sqlite3_errmsg(database));
+        }
+    });
+}
+
+- (void)closeConnection {
+    dispatch_sync([ARDatabaseConnection connectionQueue], ^{
+        if (database) {
+            sqlite3_close(database);
+        }
+    });
+}
+
+- (void)dealloc {
+    [self closeConnection];
+}
+
+@end
+
+@interface ARDatabaseManager ()
+@property(nonatomic, retain) NSMutableDictionary *connections;
+@end
+
 @implementation ARDatabaseManager
 
 static NSArray *records = nil;
@@ -29,26 +86,51 @@ static NSArray *records = nil;
 }
 
 - (void)applyConfiguration:(ARConfiguration *)configuration {
-    self.configuration = configuration;
+    if(!self.configuration)
+        self.configuration = configuration;
     [self createDatabase];
 }
 
-- (void)dealloc {
-    [self closeConnection];
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        sqlite3_unicode_load();
+    }
+
+    return self;
 }
+
+- (void)dealloc {
+    //[self closeConnection];
+    sqlite3_unicode_free();
+}
+
+
+- (ARDatabaseConnection *) getCurrentConnection {
+    NSThread *currentThread = self.configuration.enableThreadPool ? [NSThread currentThread] : [NSThread mainThread];
+    NSMutableDictionary *threadDictionary = [currentThread threadDictionary];
+    ARDatabaseConnection *currentConnection = [threadDictionary objectForKey:@"ARDatabaseConnection"];
+
+    if(!currentConnection) {
+        [threadDictionary setObject:currentConnection=[ARDatabaseConnection connectionWithConfiguration:self.configuration] forKey:@"ARDatabaseConnection"];
+    }
+
+    return currentConnection;
+}
+
 
 - (void)createDatabase {
     NSString *databasePath = self.configuration.databasePath;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:databasePath]) {
-        [self openConnection];
+     //   [self openConnection];
         [self appendMigrations];
         return;
     }
     
     [[NSFileManager defaultManager] createFileAtPath:databasePath contents:nil attributes:nil];
     
-    [self openConnection];
+   // [self openConnection];
     [self createTables];
 }
 
@@ -119,15 +201,15 @@ static NSArray *records = nil;
     __block NSMutableArray *resultArray = nil;
     
     dispatch_sync([self activeRecordQueue], ^{
-        
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         NSString *sqlString = [NSString stringWithFormat:@"PRAGMA table_info('%@')", aTableName];
         
         sqlite3_stmt *statement;
         
         const char *sqlQuery = [sqlString UTF8String];
         
-        if (sqlite3_prepare_v2(database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
-            NSLog( @"%s", sqlite3_errmsg(database) );
+        if (sqlite3_prepare_v2(connection.database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog( @"%s", sqlite3_errmsg(connection.database) );
             return;
         }
         
@@ -158,18 +240,19 @@ static NSArray *records = nil;
     __block NSMutableArray *resultArray = nil;
     
     dispatch_sync([self activeRecordQueue], ^{
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         char **results;
         int nRows;
         int nColumns;
         const char *pszSql = [[NSString stringWithFormat: @"select tbl_name from sqlite_master where type='%@' and name not like 'sqlite_%'", type, nil] UTF8String];
-        if ( SQLITE_OK != sqlite3_get_table(database,
+        if ( SQLITE_OK != sqlite3_get_table(connection.database,
                                             pszSql,
                                             &results,
                                             &nRows,
                                             &nColumns,
                                             NULL) )
         {
-            NSLog( @"Couldn't retrieve data from database: %s", sqlite3_errmsg(database) );
+            NSLog( @"Couldn't retrieve data from database: %s", sqlite3_errmsg(connection.database) );
             return;
         }
         resultArray = [NSMutableArray arrayWithCapacity:nRows++];
@@ -184,31 +267,20 @@ static NSArray *records = nil;
     return resultArray;
 }
 
-- (void)openConnection {
-    dispatch_sync([self activeRecordQueue], ^{
-        sqlite3_unicode_load();
-        if ( SQLITE_OK != sqlite3_open([self.configuration.databasePath UTF8String], &database) ) {
-            NSLog( @"Couldn't open database connection: %s", sqlite3_errmsg(database) );
-        }
-    });
-}
+
 
 - (NSString *)tableName:(NSString *)modelName {
     return modelName;
 }
 
-- (void)closeConnection {
-    dispatch_sync([self activeRecordQueue], ^{
-        sqlite3_close(database);
-        sqlite3_unicode_free();
-    });
-}
+
 
 - (BOOL)executeSqlQuery:(const char *)anSqlQuery {
     __block BOOL result = YES;
     dispatch_sync([self activeRecordQueue], ^{
-        if ( SQLITE_OK != sqlite3_exec(database, anSqlQuery, NULL, NULL, NULL) ) {
-            NSLog( @"Couldn't execute query %s : %s", anSqlQuery, sqlite3_errmsg(database) );
+        ARDatabaseConnection *connection = [self getCurrentConnection];
+        if ( SQLITE_OK != sqlite3_exec(connection.database, anSqlQuery, NULL, NULL, NULL) ) {
+            NSLog( @"Couldn't execute query %s : %s", anSqlQuery, sqlite3_errmsg(connection.database) );
             result = NO;
         }
     });
@@ -219,13 +291,13 @@ static NSArray *records = nil;
     __block NSMutableArray *resultArray = nil;
     
     dispatch_sync([self activeRecordQueue], ^{
-        
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *statement;
         
         const char *sqlQuery = [aSqlRequest UTF8String];
-        
-        if (sqlite3_prepare_v2(database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
-            NSLog( @"%s", sqlite3_errmsg(database) );
+
+        if (sqlite3_prepare_v2(connection.database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog( @"%s", sqlite3_errmsg(connection.database) );
             return;
         }
         
@@ -315,12 +387,13 @@ static NSArray *records = nil;
     __block NSMutableArray *resultArray = nil;
     
     dispatch_sync([self activeRecordQueue], ^{
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *statement;
         
         const char *sqlQuery = [aSqlRequest UTF8String];
         
-        if (sqlite3_prepare_v2(database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
-            NSLog( @"%s", sqlite3_errmsg(database) );
+        if (sqlite3_prepare_v2(connection.database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog( @"%s", sqlite3_errmsg(connection.database) );
             return;
         }
         
@@ -443,11 +516,12 @@ static NSArray *records = nil;
     __block NSInteger resId = 0;
     
     dispatch_sync([self activeRecordQueue], ^{
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         char **results;
         int nRows;
         int nColumns;
         const char *pszSql = [anSql UTF8String];
-        if ( SQLITE_OK != sqlite3_get_table(database,
+        if ( SQLITE_OK != sqlite3_get_table(connection.database,
                                             pszSql,
                                             &results,
                                             &nRows,
@@ -455,7 +529,7 @@ static NSArray *records = nil;
                                             NULL) )
         {
             NSLog(@"%@", anSql);
-            NSLog( @"Couldn't retrieve data from database: %s", sqlite3_errmsg(database) );
+            NSLog( @"Couldn't retrieve data from database: %s", sqlite3_errmsg(connection.database) );
             return;
         }
         if (nRows == 0 || nColumns == 0) {
@@ -482,6 +556,7 @@ static NSArray *records = nil;
     __block int result = 0;
     
     dispatch_sync([self activeRecordQueue], ^{
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
         const char *sql;
         
@@ -503,8 +578,8 @@ static NSArray *records = nil;
         
         sql = [sqlString UTF8String];
 
-        if(SQLITE_OK != sqlite3_prepare_v2(database, sql, strlen(sql), &stmt, NULL)) {
-            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(database));
+        if(SQLITE_OK != sqlite3_prepare_v2(connection.database, sql, strlen(sql), &stmt, NULL)) {
+            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(connection.database));
             return;
         }
 
@@ -539,10 +614,10 @@ static NSArray *records = nil;
 
         if(SQLITE_DONE == sqlite3_step(stmt) &&
                 SQLITE_OK == sqlite3_finalize(stmt)) {
-            result = sqlite3_last_insert_rowid(database);
+            result = sqlite3_last_insert_rowid(connection.database);
         } else {
             int error = sqlite3_finalize(stmt);
-            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(database) );
+            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(connection.database) );
 
             switch(error) {
                 case SQLITE_CONSTRAINT:
@@ -566,6 +641,7 @@ static NSArray *records = nil;
     __block int result = SQLITE_OK;
 
     dispatch_sync([self activeRecordQueue], ^{
+        ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
         const char *sql;
 
@@ -584,8 +660,8 @@ static NSArray *records = nil;
 
         sql = [sqlString UTF8String];
 
-        if(SQLITE_OK != sqlite3_prepare_v2(database, sql, strlen(sql), &stmt, NULL)) {
-            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(database));
+        if(SQLITE_OK != sqlite3_prepare_v2(connection.database, sql, strlen(sql), &stmt, NULL)) {
+            NSLog( @"Couldn't save record to database: %s", sqlite3_errmsg(connection.database));
             result = SQLITE_ERROR;
             return;
         }
@@ -616,7 +692,7 @@ static NSArray *records = nil;
             result = SQLITE_OK ; //sqlite3_last_insert_rowid(database);
         } else {
             int error = sqlite3_finalize(stmt);
-            NSLog( @"Couldn't update record to database: %s", sqlite3_errmsg(database) );
+            NSLog( @"Couldn't update record to database: %s", sqlite3_errmsg(connection.database) );
             result = SQLITE_ERROR;
             switch(error) {
                 case SQLITE_CONSTRAINT:

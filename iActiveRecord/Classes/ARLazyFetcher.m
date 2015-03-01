@@ -421,7 +421,7 @@
             if ([value respondsToSelector:@selector(toSql)]) {
                 value = [value performSelector:@selector(toSql)];
             }
-            argument = [NSString stringWithFormat:@"\"%@\"", value];
+            argument = [NSString stringWithFormat:@"\"%@\"", value]; //FIXME: This should encode with single quotes '
         }
         [sqlArguments addObject:argument];
     }

@@ -27,7 +27,7 @@ SPEC_BEGIN(SwiftIntegrationSpecs)
     });
 
     describe(@"Swift subclass of ActiveRecord", ^{
-        fit(@"should successfully persist new NSManaged property", ^{
+        it(@"should successfully persist new NSManaged property", ^{
             NSNumber *recordId = nil;
             Dog *animal = [Dog new: @{@"name":@"animal", @"title": @"dog title", @"breed":@"dog breed"}];
 
