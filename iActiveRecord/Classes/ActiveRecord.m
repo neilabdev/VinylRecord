@@ -34,6 +34,8 @@
 #import "ARConfiguration.h"
 #import "ARPersistentQueueEntity.h"
 #import "ARSynchronizationProtocol.h"
+#import "NSString+sqlRepresentation.h"
+
 static NSMutableDictionary *relationshipsDictionary = nil;
 
 
@@ -831,7 +833,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
             return NO;
     }
 
-    [fetcher where:@"%@ = %@ AND %@ = %@", currentId, self.id, relId, aRecord.id, nil];
+    [fetcher where:@"%@ = %@ AND %@ = %@", [currentId stringAsColumnName], self.id, [relId stringAsColumnName], aRecord.id, nil];
     if ([fetcher count] != 0) {
         return YES; // while it couldn't save, it already exists which has same effect.
     }
@@ -863,7 +865,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     [aRecord setCachedEntity:nil forKey:entityRelationKey];
 
     ARLazyFetcher *fetcher = [relationsClass lazyFetcher];
-    [fetcher where:@"%@ = %@ AND %@ = %@", currentId, self.id, relId, aRecord.id, nil];
+    [fetcher where:@"%@ = %@ AND %@ = %@", [currentId stringAsColumnName], self.id, [relId stringAsColumnName], aRecord.id, nil];
     NSArray *records = [fetcher fetchRecords];
     ActiveRecord *record = records.count ? [records objectAtIndex:0] : nil;
     [record dropRecord];

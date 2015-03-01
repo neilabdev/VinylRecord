@@ -16,7 +16,7 @@ static char FIELD_KEY;
 }
 
 - (NSString *)toSql {
-    return self;
+    return [self stringByReplacingOccurrencesOfString:@"'" withString:@"''"]; //SQL values should be enclosed in (') and excapted with (''). Standard SQL.
 }
 
 - (NSString *)toColumnName {
