@@ -19,10 +19,14 @@ static char FIELD_KEY;
     return self;
 }
 
-- (NSString *)stringAsColumnName { //toColumnName // isColumnName
+- (NSString *)toColumnName {
+    objc_setAssociatedObject(self, &FIELD_KEY, [NSNumber numberWithBool:YES], OBJC_ASSOCIATION_RETAIN);
+    return self;
+}
+
+- (NSString *)stringAsColumnName {
     NSString *columnString = [NSString stringWithString:self];
-    objc_setAssociatedObject(columnString, &FIELD_KEY, [NSNumber numberWithBool:YES], OBJC_ASSOCIATION_RETAIN);
-    return columnString; /// [@"foo" toField]
+    return [columnString toColumnName];
 }
 
 - (BOOL) isColumnName {

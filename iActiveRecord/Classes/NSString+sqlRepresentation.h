@@ -13,6 +13,8 @@
 //+ (NSString *)sqlType;
 + (id)fromSql:(NSString *)sqlData;
 - (NSString *)toSql;
+#pragma mark -
+- (NSString *)toColumnName;
 - (NSString *)stringAsColumnName;
 - (BOOL) isColumnName;
 @end
