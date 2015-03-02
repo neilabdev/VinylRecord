@@ -62,8 +62,9 @@ static NSMutableDictionary *relationshipsDictionary = nil;
     [self registerRelationships];
 }
 
-
-
++ (instancetype) new {
+    return [self new: nil];
+}
 
 + (instancetype) new: (NSDictionary *) values {
     ActiveRecord *newRow = [self newRecord];
@@ -241,7 +242,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void)markAsNew {
     isNew = YES;
 }
-
+- (void)markAsPersisted {
+    isNew = NO;
+}
 #pragma mark -
 - (BOOL) isDirty {
     return  [_changedColumns count]>0 || [self hasQueuedRelationships];
@@ -291,6 +294,12 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return [[self class] recordName];
 }
 
+
++ (instancetype)persistedRecord {
+    ActiveRecord *record = [[self alloc] init];
+    [record markAsPersisted];
+    return record;
+}
 + (instancetype)newRecord {
     ActiveRecord *record = [[self alloc] init];
     [record markAsNew];
@@ -1056,7 +1065,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 #pragma mark - Extentions
-
++ (ARLazyFetcher *) query {
+    return [self lazyFetcher];
+}
 
 + (instancetype) findById: (id) record_id {
     return [[self lazyFetcher] findById:record_id];

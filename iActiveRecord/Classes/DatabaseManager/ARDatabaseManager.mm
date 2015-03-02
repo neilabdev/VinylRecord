@@ -26,7 +26,7 @@
     static dispatch_queue_t queue;
     static dispatch_once_t onceTokenQueue;
     dispatch_once(&onceTokenQueue, ^{
-        queue = dispatch_queue_create("com.ic2media.vinylrecord", DISPATCH_QUEUE_SERIAL);
+        queue = dispatch_queue_create("com.neilab.vinylrecord", DISPATCH_QUEUE_SERIAL);
     });
     return queue;
 }
@@ -302,7 +302,7 @@ static NSArray *records = nil;
         }
         
         resultArray = [NSMutableArray array];
-        Class Record = NSClassFromString(aName);
+        Class <ActiveRecordPrivateMethods>  Record = NSClassFromString(aName);
         BOOL hasColumns = NO;
         NSMutableArray *columns = nil;
         
@@ -312,7 +312,7 @@ static NSArray *records = nil;
                 columns = [NSMutableArray arrayWithCapacity:columnsCount];
             }
             
-            ActiveRecord *record = [Record new];
+            ActiveRecord *record = [Record persistedRecord];
             
             for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
                 
@@ -478,8 +478,8 @@ static NSArray *records = nil;
                 }
                 ActiveRecord *currentRecord = [recordsDictionary valueForKey:recordName];
                 if (currentRecord == nil) {
-                    Class Record = recordClasses[columnIndex];
-                    currentRecord = [Record new];
+                    Class <ActiveRecordPrivateMethods> Record = recordClasses[columnIndex];
+                    currentRecord = [Record persistedRecord];
                     [recordsDictionary setValue:currentRecord
                                          forKey:recordName];
                 }
