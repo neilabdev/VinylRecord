@@ -3,7 +3,6 @@ PODS:
   - Cedar (0.9.5)
   - CedarAsync (0.0.1):
     - Cedar
-  - iActiveRecord (1.9.5)
   - ISO8601DateFormatterValueTransformer (0.6.0):
     - RKValueTransformers (~> 1.1.0)
   - RestKit (0.23.3):
@@ -30,28 +29,29 @@ PODS:
   - TransitionKit (2.1.0)
   - Tsuga (0.0.8):
     - Cedar (~> 0.9)
+  - VinylRecord (1.0.1)
 
 DEPENDENCIES:
   - Cedar (= 0.9.5)
   - CedarAsync
-  - iActiveRecord (from `.`)
   - RestKit
   - Tsuga
+  - VinylRecord (from `.`)
 
 EXTERNAL SOURCES:
-  iActiveRecord:
+  VinylRecord:
     :path: .
 
 SPEC CHECKSUMS:
   AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
   Cedar: d00facacedc3d4d9257ecaa4546fe36ba542e86d
   CedarAsync: 65137f0cef5f3f38ceaff5fc2aaa45a8792f3a08
-  iActiveRecord: 3ca6ea375aa310b04569edbb1d3e55f006aa94e4
   ISO8601DateFormatterValueTransformer: a705384ea6531255258e25b6480ba1180db703a0
   RestKit: 193a35cddae5198388977abaedad129f8acb978b
   RKValueTransformers: b705e7b4651b9206b94600408462b74554bba969
   SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
   TransitionKit: 6a6f3ddda38ae758778aa889dcb930e4f8d64edc
   Tsuga: de163f93d8b73d6bc0712103b53e483135a4694e
+  VinylRecord: e6c7d1a832e18785feb69393998bb5ffcf4da0c6
 
 COCOAPODS: 0.35.0
