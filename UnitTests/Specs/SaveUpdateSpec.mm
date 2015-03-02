@@ -13,6 +13,7 @@
 #import "User.h"
 #import "PrimitiveModel.h"
 #import "Item.h"
+#import "ActiveRecord_Private.h"
 
 using namespace Cedar::Matchers;
 
@@ -31,7 +32,7 @@ describe(@"NewAndCreate", ^{
     it(@"should be successful with :new method ", ^{
         NSNumber *recordId = nil;
         Animal *enot = [Animal new: @{@"name":@"animal", @"title": @"Racoon"}];
-
+        [enot isNewRecord] should equal(@(TRUE));
         enot.save should BeTruthy();
         recordId = enot.id;
         Animal *racoon = [[Animal allRecords] objectAtIndex:0];
@@ -39,6 +40,7 @@ describe(@"NewAndCreate", ^{
         racoon.id should equal(recordId);
         racoon.title should equal(@"Racoon");
         racoon.name should equal(@"animal");
+        [racoon isNewRecord] should equal(@(FALSE));
     });
 
 
