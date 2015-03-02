@@ -10,10 +10,9 @@
 
 @implementation DifferentTableName
 
-@dynamic title;
-@dynamic userId;
-
-belongs_to_imp(User, user, ARDependencyDestroy);
+belongs_to_imp(User, user, ARDependencyDestroy)
+column_imp(key,userId)
+column_imp(string,title)
 
 + (NSString *)recordName {
     return @"different_table_name";

@@ -11,17 +11,16 @@
 
 @implementation Animal
 
-@dynamic name;
-@dynamic state;
-@dynamic title;
+column_imp(string,name)
+column_imp(string,state)
+column_imp(string,title)
 
 validation_do(
     validate_field_with_validator(name, AnimalValidator)
 )
 
-- (ActiveRecord *)mergeExistingRecord {
+- (VinylRecord *)mergeExistingRecord {
     return nil;
 }
-
 
 @end

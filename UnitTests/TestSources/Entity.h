@@ -6,10 +6,8 @@
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
-@interface Entity : ActiveRecord
-
-@property (nonatomic, retain) NSString *property;
-
+@interface Entity : VinylRecord
+column_dec(string,property)
 @end

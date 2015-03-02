@@ -9,7 +9,5 @@
 #import "DecimalRecord.h"
 
 @implementation DecimalRecord
-
-@dynamic decimal;
-
+column_imp(decimal,decimal)
 @end

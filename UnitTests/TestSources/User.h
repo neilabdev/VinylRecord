@@ -6,14 +6,14 @@
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
 /*
     User belongs to group
     and has many projects
  */
 
-@interface User : ActiveRecord
+@interface User : VinylRecord
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, retain) NSArray *ignoredProperty;

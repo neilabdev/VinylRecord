@@ -125,14 +125,12 @@
 
 
 
-
-#define AR_DECIMAL_NUM(number) [NSDecimalNumber numberWithDouble: number]
-#define AR_DECIMAL_STR(number_string) [NSDecimalNumber decimalNumberWithString: number_string]
-#define AR_INTEGER_NUM(number) [NSNumber numberWithInt: number]
-#define AR_INTEGER_STR(number_string) [number_string intValue]
-
 #define attr_accessor_dec(ar_type,propertyName) field_##ar_type##_dec(propertyName);
 #define attr_accessor_imp(ar_type,propertyName) field_##ar_type##_imp(propertyName);
+#define field_dec(ar_type,propertyName) field_##ar_type##_dec(propertyName);
+#define field_imp(ar_type,propertyName) field_##ar_type##_imp(propertyName);
+#define column_dec(ar_type,propertyName) field_##ar_type##_dec(propertyName);
+#define column_imp(ar_type,propertyName) field_##ar_type##_imp(propertyName);
 
 
 /* This marco's are helpers to generate methods to allow assigning primitive types */

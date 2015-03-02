@@ -6,17 +6,14 @@
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
 /*
     Group has many users
  */
 
-@interface Group : ActiveRecord
-
-@property (nonatomic, copy) NSString *title;
-
+@interface Group : VinylRecord
 has_many_dec(User, users, ARDependencyDestroy)
 has_many_through_dec(Project, ProjectGroupRelationship, groups, ARDependencyNullify)
-
+column_dec(string,title)
 @end

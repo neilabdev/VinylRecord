@@ -4,10 +4,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
 
-@interface UserAnimalRelationship : ActiveRecord
+@interface UserAnimalRelationship : VinylRecord
 @property (nonatomic,retain) NSNumber *animalId;
 @property (nonatomic,retain) NSNumber *userId;
 

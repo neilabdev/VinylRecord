@@ -10,8 +10,7 @@
 
 @implementation Entity
 
-@dynamic property;
-
+column_imp(string,property)
 + (NSString *)recordName {
     return @"new_entity_name";
 }

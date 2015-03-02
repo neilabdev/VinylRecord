@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
-@interface ProjectGroupRelationship : ActiveRecord
+@interface ProjectGroupRelationship : VinylRecord
 
 @property (nonatomic, retain) NSNumber *projectId;
 @property (nonatomic, retain) NSNumber *groupId;

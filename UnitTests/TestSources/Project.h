@@ -6,14 +6,14 @@
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 //#import "User.h"
 
 /*
     Project has many users
  */
 
-@interface Project : ActiveRecord
+@interface Project : VinylRecord
 
 @property (nonatomic, copy) NSString *name;
 
