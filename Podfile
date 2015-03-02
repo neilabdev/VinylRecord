@@ -9,5 +9,5 @@ end
 
 target 'ActiveTwitter' do
   pod 'RestKit'
-  pod 'iActiveRecord', :path => "."
+  pod 'VinylRecord', :path => "."
 end
