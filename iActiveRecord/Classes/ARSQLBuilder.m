@@ -9,6 +9,8 @@
 #import "ARSQLBuilder.h"
 #import "ActiveRecord_Private.h"
 #import "ARColumn.h"
+#import "NSString+sqlRepresentation.h"
+
 
 @implementation ARSQLBuilder
 
@@ -24,9 +26,9 @@
         ARColumn *column = [columnsIterator nextObject];   //FIXME: NSFastEnumerationMutationHandler
         NSString *value = [column sqlValueForRecord:aRecord];
         NSString *updater = [NSString stringWithFormat:
-                             @"\"%@\"=\"%@\"",
+                             @"\"%@\"='%@'",
                              column.columnName,
-                             [value stringByReplacingOccurrencesOfString:@"\"" withString:@"\"\""]];
+                             TO_SQL_VALUE(value)];
         [columnValues addObject:updater];
     }
     NSString *sqlString = [NSString stringWithFormat:@"UPDATE \"%@\" SET %@ WHERE id = %@",

@@ -12,6 +12,7 @@
 #import <objc/runtime.h>
 #import "ActiveRecord_Private.h"
 #import "ARColumn.h"
+#import "NSString+sqlRepresentation.h"
 
 @implementation ARValidatorUniqueness
 
@@ -37,9 +38,9 @@
     id aValue =  [record valueForUndefinedKey: aField];
     ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(recordName)];
     if([record isNewRecord])
-        [fetcher where:@"%@ = %@", aField, aValue, nil];
+        [fetcher where:@"%@ = %@", [aField stringAsColumnName], aValue, nil]; //[aField stringAsColumnName]
     else
-        [fetcher where:@"%@ = %@ and id != %@", aField, aValue,record.id, nil];  //updates should pass
+        [fetcher where:@"%@ = %@ and id != %@", [aField stringAsColumnName], aValue, record.id, nil];  //updates should pass
     NSInteger count = [fetcher count];
     if (count) {
         return NO;

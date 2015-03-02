@@ -7,6 +7,7 @@
 //
 
 #import "ActiveRecord.h"
+#define TO_SQL_VALUE(value) [value respondsToSelector:@selector(toSql)] ? [value toSql] : value
 
 @class ARLazyFetcher;
 @class ARError;

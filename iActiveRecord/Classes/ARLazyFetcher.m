@@ -14,6 +14,7 @@
 #import "ActiveRecord_Private.h"
 #import "ARLazyFetcher_Private.h"
 #import "ActiveRecord_Private.h"
+#import "NSString+sqlRepresentation.h"
 
 @implementation ARLazyFetcher
 
@@ -108,12 +109,12 @@
     NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
     Class relClass = NSClassFromString(hasManyThroughClass);
     [self join:relClass];
-    [self where:@"%@.%@ = %@", [relClass performSelector:@selector(recordName)], relId, row.id, nil];
+    [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], relId, row.id, nil];
 }
 
 - (void)createRecordHasMany {
     NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
-    [self where:@"%@ = %@", selfId, row.id, nil];
+    [self where:@"%@ = %@", [selfId stringAsColumnName], row.id, nil];
 }
 
 
@@ -415,13 +416,16 @@
     va_start(args, aCondition);
     id value = nil;
     while ( (value = va_arg(args, id)) ) {
-        if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSSet class]]) {
+        BOOL isColumnName = [value respondsToSelector:@selector(isColumnName)] ? [value isColumnName] : NO;
+        if(isColumnName && [value isKindOfClass:[NSString class]])  {
+            argument =  [NSString stringWithFormat:@"\"%@\"", value];
+        } else if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSSet class]]) {
             argument = [value performSelector:@selector(toSql)];
         } else {
             if ([value respondsToSelector:@selector(toSql)]) {
                 value = [value performSelector:@selector(toSql)];
             }
-            argument = [NSString stringWithFormat:@"\"%@\"", value]; //FIXME: This should encode with single quotes '
+            argument = [NSString stringWithFormat:@"'%@'", value];
         }
         [sqlArguments addObject:argument];
     }
@@ -469,13 +473,13 @@
 }
 
 - (id) findByKey: (id) key value: (id) value {
-    NSString *condition = [NSString stringWithFormat:@" %@ = %%%@ ",key,@"@"];
+    NSString *condition = [NSString stringWithFormat:@" %@ = %%%@ ",[key stringAsColumnName],@"@"];
     NSArray *results = [[[self where: condition, value,nil] limit:1] fetchRecords];
     return [results firstObject];
 }
 
 - (NSArray *) findAllByKey: (id) key value: (id) value {
-    NSArray *results = [[self where: [NSString stringWithFormat:@" %@ = %%%@ ",key,@"@"], value,nil]  fetchRecords];
+    NSArray *results = [[self where: [NSString stringWithFormat:@" %@ = %%%@ ",[key stringAsColumnName],@"@"], value,nil]  fetchRecords];
     return results;
 }
 
