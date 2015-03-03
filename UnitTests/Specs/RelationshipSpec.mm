@@ -267,7 +267,7 @@ describe(@"HasManyThroughQueue", ^{
         [worldConquest addUser:john];
         [worldConquest addUser:peter];
         [worldConquest save] should equal(TRUE);
-        [[worldConquest.users fetchRecords] count] should equal(2);
+        [worldConquest.users  count] should equal(2);
         [Animal count] should equal(1);
 
         User *fetched_user = [[[[User query] where:@" name = %@ ", @"John", nil  ] fetchRecords] firstObject];

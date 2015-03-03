@@ -1,5 +1,5 @@
 # VinylRecord
-VinylRecord is an ActiveRecord ORM for iOS using SQLite without CoreData. It was fork of a discontinued project, iActiveRecord by Alex Denisov which was a great start for an ORM when they were few others in site. Desiring rapid fixes and new features for an application in dire need of a persistence layer, the API was forked with new name as to avoid confusion with its predecessor, for which it maintains compatibility, and other ORM's with the ActiveRecord name.
+VinylRecord (short for Vinyl ActiveRecord) is an ActiveRecord ORM for iOS using SQLite without CoreData. It was fork of a discontinued project, iActiveRecord by Alex Denisov which was a great start for an ORM when they were few others in site. Desiring rapid fixes and new features for an application in dire need of a persistence layer, the API was forked with new name as to avoid confusion with its predecessor, for which it maintains compatibility, and other ORM's with the ActiveRecord name.
 
 # Features
 * Belongs-To, Has-Many and Has-Many-Through relationships    
@@ -9,6 +9,9 @@ VinylRecord is an ActiveRecord ORM for iOS using SQLite without CoreData. It was
 * Save, Update, and Syncing of Models
 * Traditional and Custom Validations
 * Save/Update Callbacks (NEW)
+
+# Coming Soon
+* Official Swift Support (currently works best via sublcass)
 
 
 # Installation  
@@ -30,11 +33,13 @@ To create the model you should inherit your model class from VinylRecord class.
 Framework will automatically create a database table using the classes inherited from VinylRecord when you run app first time.
 
 So based on this code
+```objective-c
 
     #import <ActiveRecord/VinylRecord.h>
     @interface User : VinylRecord
-        column_dec(string,name)  // or  @property (nonatomic, retain) NSString *name;
+        column_dec(string,name)
         column_dec(boolean,active)
+         // or  @property (nonatomic, retain) NSString *name;
     @end
     
     @implementation User
@@ -42,11 +47,12 @@ So based on this code
         column_imp(boolean,active) // user.is_active = YES or user.has_active not available using @dynamic
     @end
     
+``` 
 
 table 'user' will be created. It will contain 'name' field.  
 
 After describing the model you can start using the framework:
-
+```objective-c
     User *user = [User new];
     user.name = @"Alex";
     [user save];
@@ -54,7 +60,7 @@ After describing the model you can start using the framework:
     NSArray *users = [User allRecords];
     User *userForRemove = [users first];
     [userForRemove dropRecord];
-
+```
 This code creates, retrieves a list and deletes the model.
 
 **Note**: If you are using CocoaPods, you must include the headers so
@@ -66,11 +72,29 @@ instead
     #import <ActiveRecord/VinylRecord.h>
 
 # Data types
-NSDecimalNumber - real  
-NSNumber - integer  
-NSString - text  
-NSData - blob  
-NSDate - date (real)
+
+```objective-c
+
+    @interface DataTypes : VinylRecord
+        column_dec(string,property_of_string) // NSString
+        column_dec(integer,property_of_integer) // NSNumber
+        column_dec(boolean,property_of_boolean) // NSNumber
+        column_dec(decimal,property_of_decimal) // NSDecimalNumber
+        column_dec(blob,property_of_blob) // NSData
+        column_dec(date,property_of_date) // NSDate
+    @end
+    
+    @implementation DataTypes
+        column_imp(string,property_of_string)
+        column_imp(integer,property_of_integer) // dataTypes.int_property_of_integer = 10; or dataTypes.int_property_of_integer = @(10)
+        column_imp(boolean,property_of_bool) // dataTypes.has_property_of_bool,is_property_of_bool or [dataTypes.property_of_bool booleanValue]
+        column_imp(decimal,property_of_decimal)
+        column_imp(blob,property_of_blob)
+        column_imp(date,property_of_date)
+        // or @dynamic property_name which doesn't generate helpers
+    @end
+    
+```
 
 ## Store custom types as fields
 
@@ -107,46 +131,34 @@ This is a simple example:
 
 # Ignoring some fields
 
-What about the properties that should not be stored in a database?  
-Just ignore them:
-
-    @implementation User
-    ...
-    @synthesize ignoredProperty;
-    ...
-    ignore_fields_do(
-        ignore_field(ignoredProperty)
-    )
-    ...
-    @end
-
-All these properties will be ignored during the database table creation.
+What about the properties that should not be stored in a database?  Currently all properties that are not marked @dynamic are ignored.
 
 # Validation
 
-Validations are described in the implementation.  
-We do not need to initiate the validation process for all models, so models which use the validation must implement the protocol. 
-    
+Validations may be registered using the validation_do helper macro inside the implementation of the model. Standard validations, such as validate_uniqueness_of and validate_presence_of will have existing helpers, but you may add your custom validations also:
+
+
+```objective-c
     // User.h
-    @interface User : ActiveRecord
-        <ARValidatableProtocol>
-    ...
-    @property (nonatomic, copy) NSString *name;
-    ...
+    @interface User : VinylRecord  <ARValidatorProtocol>
+        column_dec(string,name)
     @end
+    
     // User.m
     @implementation User
-    ...
-    validation_do(
-        validate_uniqueness_of(name)
-        validate_presence_of(name)
-    )
-    ...
+        column_imp(string,name)
+        
+        validation_do(
+            validate_uniqueness_of(name)
+            validate_presence_of(name)
+        )
     @end
+```
 
 At the moment there are two types of validations: presence and uniqueness, but you can use your own validators.  
 Just describe new class and implement ARValidatorProtocol
 
+```objective-c
     // ARValidatorProtocol
     @protocol ARValidatorProtocol <NSObject>
     @optional
@@ -171,6 +183,7 @@ Just describe new class and implement ARValidatorProtocol
         return valid;
     }
     @end
+```
 
 then add validator to your ActiveRecord implementation
 
@@ -185,7 +198,7 @@ then add validator to your ActiveRecord implementation
 
 Validation errors
 
-    User *user = [User newRecord];
+    User *user = [User new];
     if(![user isValid]){
         NSArray *errors = [user errorMessages];
         //  do something
@@ -193,7 +206,7 @@ Validation errors
 
 or
 
-    User *user = [User newRecord];
+    User *user = [User new];
     if(![user save]){
         NSArray *errors = [user errorMessages];
         //  do something
@@ -204,30 +217,45 @@ or
 ActiveRecord supports simple migrations: you can add new record or new property. 
 Framework will create new table or add new column to already existing table, without loss of data.
 If you don't need migrations, you should disable them at start of application
-
-    - (BOOL)application:(UIApplication *)application 
-    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+```objective-c
+    - (BOOL)application:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
-        [ActiveRecord disableMigrations];
-        ...
+        [VinylRecord applyConfiguration:^(ARConfiguration *config) {
+                        config.databasePath = ARCachesDatabasePath(nil);
+                        config.enableThreadPool = YES; //DEFAULT
+                        config.migrationsEnabled = YES;
+        }];
     }
-
+```
 # Transactions
 
 Simple syntax for transactions
     
-    [ActiveRecord transaction:^{
-        User *alex = [User newRecord];
+    [VinylRecord transaction:^{
+        User *alex = [User new];
         alex.name = @"Alex";
         [alex save];
     }];
 
-    [ActiveRecord transaction:^{
-        User *alex = [User newRecord];
+    [VinylRecord transaction:^{
+        User *alex = [User new];
         alex.name = @"Alex";
         [alex save];
-        rollback
+        ar_rollback;
     }];
+    
+    [VinylRecord savePointTransaction:^(ARTransactionState *state_a) {
+        ... // A Changes.
+        BOOL success = [ActiveRecord savePointTransaction:^(ARTransactionState *state_b) {
+            ... // These changes are folled back
+            ar_rollback_to(state_b);
+    
+        }]; 
+                   
+        if(success) {
+            //we could rollback, or keep state_a change. To rollback: ar_rollback(state_a);        
+        }
+    }]; 
 
 # Relationships
 
@@ -236,7 +264,7 @@ Relationships support "ON DELETE" dependencies: ARDependencyDestroy and ARDepend
 ## HasMany <-> BelongsTo
     
     // User.h
-    @interface User : ActiveRecord
+    @interface User : VinylRecord
     ...
     @property (nonatomic, retain) NSNumber *groupId;
     ...
@@ -263,7 +291,7 @@ ContentManager <->  contentManagerId
 ## Describe reverse relationship
 
     // Group.h
-    @interface Group : ActiveRecord
+    @interface Group : VinylRecord
     ...
     has_many_dec(User, users, ARDependencyDestroy)
     ...
@@ -289,7 +317,7 @@ At the moment it works correctly only if both models are saved, otherwise they h
 To describe this relationship, you need to create another model
     
     // User.h
-    @interface User : ActiveRecord
+    @interface User : VinylRecord
     ...
     has_many_through_dec(Project, UserProjectRelationship, projects, ARDependencyNullify)
     ...
@@ -302,7 +330,7 @@ To describe this relationship, you need to create another model
     @end
     
     // Project.h
-    @interface Project : ActiveRecord
+    @interface Project : VinylRecord
     ...
     has_many_through_dec(User, UserProjectRelationship, users, ARDependencyDestroy)
     ...
@@ -316,8 +344,10 @@ To describe this relationship, you need to create another model
 
 Relationship model
 
+```objective-c
+
     // UserProjectRelationship.h
-    @interface UserProjectRelationship : ActiveRecord
+    @interface UserProjectRelationship : VinylRecord
     @property (nonatomic, retain) NSNumber *userId;
     @property (nonatomic, retain) NSNumber *projectId;
     @end
@@ -326,6 +356,8 @@ Relationship model
     @synthesize userId;
     @synthesize projectId;
     @end
+    
+```
 
 HasManyThrough has the same gaps as HasMany.
 
@@ -334,75 +366,34 @@ HasManyThrough has the same gaps as HasMany.
 The framework allows to obtain a list of records using different filters, all requests are lazy, i.e., being run only on demand.
 A simple example of obtaining a limited number of records:  
 
-    NSArray *users = [[[User lazyFetcher] limit:5] fetchRecords];
+    NSArray *users = [[[User query] limit:5] fetchRecords];
 
 All filters returns an instance of ARLazyFetcher, which allows you to write queries in a single row:
 
-    NSArray *users = [[[[User lazyFetcher] offset:5] limit:2] fetchRecords];
+    NSArray *users = [[[[User query] offset:5] limit:2] fetchRecords];
 
 The fetchRecords method initiates sql-query to the database on the basis of all applied filters:
 
-    ARLazyFetcher *fetcher = [[[User lazyFetcher] offset:2] limit:10];
+    ARLazyFetcher *fetcher = [[[User query] offset:2] limit:10];
     [fetcher whereField:@"name"
            equalToValue:@"Alex"];
     NSArray *users = [fetcher fetchRecords];
 
 There are several options for 'where' methods:
-
-    - (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue;
-    - (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue;
-    - (ARLazyFetcher *)whereField:(NSString *)aField in:(NSArray *)aValues;
-    - (ARLazyFetcher *)whereField:(NSString *)aField notIn:(NSArray *)aValues;
-    - (ARLazyFetcher *)whereField:(NSString *)aField like:(NSString *)aPattern;
-    - (ARLazyFetcher *)whereField:(NSString *)aField notLike:(NSString *)aPattern;
-    - (ARLazyFetcher *)whereField:(NSString *)aField between:(id)startValue and:(id)endValue;
     - (ARLazyFetcher *)where:(NSString *)aFormat, ...;
 
-### Old syntax
-
-In addition, you can use multiple filters at once, linking them with logical operators OR or AND
-    
-    NSNumber *num = [NSNumber numberWithInt:42];
-    ARWhereStatement *nameStatement = [ARWhereStatement whereField:@"name" equalToValue:@"Alex"];
-    ARWhereStatement *idStatement = [ARWhereStatement whereField:@"id" equalToValue:num];
-
-    ARWhereStatement *finalStatement = [ARWhereStatement concatenateStatement:nameStatement
-                                                                withStatement:idStatement
-                                                          useLogicalOperation:ARLogicalOr];
-    ARLazyFetcher *fetcher = [User lazyFetcher];
-    [fetcher setWhereStatement:finalStatement];
-    NSArray *records = [fetcher fetchRecords];
 
 You can also concatenate with finalStatement some "complex" or a simple filter. 
 
 Relationship HasManyThrough is already use the 'where' filter, so if you want to add more, you should use code like this:
 
-    User *user = [[User allRecords] first];
-    ARLazyFetcher *fetcher = [user projects];
-    ARWhereStatement *currentStmt = [fetcher whereStatement];
-    ARWhereStatement *newStatement = [ARWhereStatement whereField:@"name"
-                                                         ofRecord:[user class]
-                                                  notEqualToValue:@"Alex"];
-    ARWhereStatement *finalStmt = [ARWhereStatement concatenateStatement:currentStmt
-                                                           withStatement:newStatement
-                                                     useLogicalOperation:ARLogicalAnd];
-    [fetcher setWhereStatement:finalStmt];
-    NSArray *projects = [fetcher fetchRecords];
-
-### New syntax
-
-You can use more usable style for filtering
-
     NSArray *ids = [NSArray arrayWithObjects:
                    [NSNumber numberWithInt:1],
                    [NSNumber numberWithInt:15], 
                    nil];
-    NSString *username = @"john";
-    ARLazyFetcher *fetcher = [User lazyFetcher];
-    [fetcher where:@"'user'.'name' = %@ or 'user'.'id' in %@", 
-                   username, ids, nil];
-    [fetcher orderBy:@"id"];
-    NSArray *records = [fetcher fetchRecords];
+                  
+    ARLazyFetcher *fetcher = [[User query]  where:@"'name' = %@ or 'id' in %@",  @"john", ids, nil];
+    NSArray *records = [[fetcher orderBy:@"id"] fetchRecords];
 
 New syntax support basic comparisons:
 
@@ -421,7 +412,7 @@ New syntax support basic comparisons:
     - (ARLazyFetcher *)only:(NSString *)aFirstParam, ...;
     - (ARLazyFetcher *)except:(NSString *)aFirstParam, ...;
 
-    ARLazyFetcher *fetcher = [[User lazyFetcher] only:@"name", @"id", nil];
+    ARLazyFetcher *fetcher = [[User query] only:@"name", @"id", nil];
     NSArray *users = [fetcher fetchRecords];
 
 # Sorting
@@ -429,7 +420,7 @@ New syntax support basic comparisons:
     - (ARLazyFetcher *)orderBy:(NSString *)aField ascending:(BOOL)isAscending;
     - (ARLazyFetcher *)orderBy:(NSString *)aField;// ASC by default
 
-    ARLazyFetcher *fetcher = [[[User lazyFetcher] offset:2] limit:10];
+    ARLazyFetcher *fetcher = [[[User query] offset:2] limit:10];
     [[fetcher whereField:@"name"
            equalToValue:@"Alex"] orderBy:@"name"];
     NSArray *users = [fetcher fetchRecords];
@@ -458,13 +449,3 @@ Joined records can be fetched by sending
 
 message to ARLazyFetcher instance.
 
-# Storage
-
-By default database file has name 'database' and being stored in CachesDirectory, but you can change this by a call at the start of application:
-
-    [ActiveRecord registerDatabaseName:@"some-name"
-                          useDirectory:ARStorageDocuments];
-
-# Tests
-
-If you want another database for tests you need to add UNIT_TEST=1 to Preprocessor Macros. After that new database will be named with suffix '-test'.
