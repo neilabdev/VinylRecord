@@ -147,6 +147,12 @@
 #define field_string_imp( property_name ) \
     @dynamic property_name ;
 
+
+#define field_blob_dec( property_name ) \
+    @property ( nonatomic,retain ) NSData * property_name;
+#define field_blob_imp( property_name ) \
+    @dynamic property_name ;
+
 #define field_date_dec( property_name ) \
     @property ( nonatomic, strong) NSDate * property_name;
 #define field_date_imp( property_name ) \

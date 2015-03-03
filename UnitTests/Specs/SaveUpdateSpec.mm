@@ -86,7 +86,7 @@ describe(@"Update", ^{
 #warning separate this specs
     it(@"should be successful", ^{
         NSNumber *recordId = nil;
-        Animal *enot = [Animal newRecord] ;
+        Animal *enot = [Animal new] ;
         enot.name = @"animal";
         enot.title = @"Racoon";
         enot.save should BeTruthy();
@@ -103,7 +103,7 @@ describe(@"Update", ^{
     });
     
     it(@"should not validate properies that don't changed", ^{
-        User *user = [User newRecord];
+        User *user = [User new];
         user.name = @"Alex";
         user.save should BeTruthy();
         user.name = @"Alex";
@@ -112,17 +112,17 @@ describe(@"Update", ^{
     });
     
     it(@"should save values with quotes", ^{
-        User *user = [User newRecord];
+        User *user = [User new];
         user.name = @"Al'ex";
         user.save should be_truthy;
 
-        user = [User newRecord];
+        user = [User new];
         user.name = @"Bo\"b";
         user.save should be_truthy;
     });
     
     it(@"should update values with quotes", ^{
-        User *user = [User newRecord];
+        User *user = [User new];
         user.name = @"Peter";
         user.save should be_truthy;
         User *savedUser = [[User allRecords] lastObject];
@@ -131,7 +131,7 @@ describe(@"Update", ^{
     });
     
     it(@"should save/load record with primitive types", ^{
-        PrimitiveModel *model = [PrimitiveModel newRecord];
+        PrimitiveModel *model = [PrimitiveModel new];
 
         char charValue = -42;
         unsigned char unsignedCharValue = 'q';

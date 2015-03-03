@@ -27,7 +27,7 @@ Tsuga<NSDate>::run(^{
 
     describe(@"NSDate", ^{
         it(@"Should be saved successfully and return the same date", ^{
-            User *alex = [User newRecord];
+            User *alex = [User new];
             alex.name = @"Alex";
             alex.birthDate = [NSDate dateWithTimeIntervalSince1970:0];
             BOOL result = [alex save];
