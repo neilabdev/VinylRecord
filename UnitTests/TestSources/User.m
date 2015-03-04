@@ -11,7 +11,7 @@
 
 @dynamic name;
 @synthesize ignoredProperty;
-@dynamic groupId;
+//@dynamic groupId;
 @dynamic birthDate;
 
 @dynamic imageData;
