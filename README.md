@@ -1,41 +1,61 @@
 # VinylRecord
 VinylRecord (short for Vinyl ActiveRecord) is an ActiveRecord ORM for iOS using SQLite without CoreData. It was fork of a discontinued project, iActiveRecord by Alex Denisov which was a great start for an ORM when they were few others in site. Desiring rapid fixes and new features for an application in dire need of a persistence layer, the API was forked with new name as to avoid confusion with its predecessor, for which it maintains compatibility, and other ORM's with the ActiveRecord name.
 
-# Features
+# FEATURES
 * Belongs-To, Has-Many and Has-Many-Through relationships    
 * Nested SavePointTransactions (NEW)
-* Transactions
-* Thread Safety (NEW)
+* Thread Safe Transactions (NEW)
 * Save, Update, and Syncing of Models
 * Traditional and Custom Validations
 * Save/Update Callbacks (NEW)
 
-# Coming Soon
-* Official Swift Support (currently works best via sublcass)
+# COMING SOON
+* Official Swift Support (currently works best via subclass)
 
-
-# Installation  
-
-    git clone https://github.com/valerius/VinylRecord.git
-
-Open with XCode and build Build_Framework target.  
-The ActiveRecord.framework will be located in ~/Products/, this path can be changed in the shell-script in the Settings tab of target.  
-Open your project Settings and add ActiveRecord.framework and sqlite3.0.dylib to Link Binary With Libraries section.  
-
-Or if you use [CocoaPods](http://cocoapods.org/)
-
+# INSTALLATION  
+## Using CocoaPods (Recommend)
+***
     # Podfile
     pod 'VinylRecord', '1.0.3'
+    
+## Using Source
+***
 
-# Usage
+``` 
+    git clone https://github.com/valerius/VinylRecord.git
+```
+1. Checkout code
+2. Open with XCode and build Build_Framework target.  
+3. The ActiveRecord.framework will be located in ~/Products/, this path can be changed in the shell-script in the Settings tab of target.  
+4. Open your project Settings and add ActiveRecord.framework and sqlite3.0.dylib to Link Binary With Libraries section.  
 
-To create the model you should inherit your model class from VinylRecord class.  
-Framework will automatically create a database table using the classes inherited from VinylRecord when you run app first time.
+
+
+# USAGE
+## Initialize the database
+
+Upon your application loading you should initialize the database. Keep in mind, that a configuration only happens once, so if you use CocoaPods which has VinylRecord as a dependency, you should initialize your database before utilizing the CocoaPods library initialization procedures, if any, otherwise your settings will not have an effect.
+
+```objective-c
+    - (BOOL)application:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+    {
+        [VinylRecord applyConfiguration:^(ARConfiguration *config) {
+                        config.databasePath = ARCachesDatabasePath(nil); //creates default database path
+                        config.enableThreadPool = YES; //Enables a database connection per thread
+                        config.migrationsEnabled = YES; //Enables simple migrations
+        }];
+    }
+```
+
+## Create your models
+To create a model you should subclass the VinylRecord class, which is a descendant of its predecessors ActiveRecord class which it remains compatible with. The Framework will automatically create a database table using the classes inherited from VinylRecord when you run app first time.
 
 So based on this code
 ```objective-c
 
-    #import <ActiveRecord/VinylRecord.h>
+    #import <ActiveRecord/VinylRecord.h> // when not using CocoaPods
+    #import "VinylRecord.h" // when using CocoaPods
+    
     @interface User : VinylRecord
         column_dec(string,name)
         column_dec(boolean,active)
@@ -46,12 +66,12 @@ So based on this code
         column_imp(string,name) // or @dynamic 
         column_imp(boolean,active) // user.is_active = YES or user.has_active not available using @dynamic
     @end
-    
 ``` 
 
-table 'user' will be created. It will contain 'name' field.  
+Table 'user' will be created. It will contain 'name' and 'active' field.  
 
-After describing the model you can start using the framework:
+After describing the model you can start using the framework for persisting and querying objects:
+
 ```objective-c
     User *user = [User new];
     user.name = @"Alex";
@@ -63,15 +83,13 @@ After describing the model you can start using the framework:
 ```
 This code creates, retrieves a list and deletes the model.
 
-**Note**: If you are using CocoaPods, you must include the headers so
+## Excluding certain properties
 
-    #import "VinylRecord.h"
+What about the properties that should not be stored in a database?  Currently all properties that are not marked @dynamic are ignored.
 
-instead
-
-    #import <ActiveRecord/VinylRecord.h>
-
-# Data types
+# DATA TYPES
+## Definitions
+VinylRecord supports the typical sql types, which may be either defined using simple macro definition (recommended), or using standard property definitions with the respective @dynamic attribute in the implementation. The macros are prefered because they easily help you visually distinguish between database columns and in some cases, provides additional helper methods.
 
 ```objective-c
 
@@ -96,23 +114,24 @@ instead
     
 ```
 
-## Store custom types as fields
+## Custom Data Types
 
 All custom property types should implement ARRepresentationProtocol:
 
+```objective-c
     @protocol ARRepresentationProtocol
 
     @required
     + (const char *)sqlType;
-    - (NSString *)toSql;
     + (id)fromSql:(NSString *)sqlData;
-
+     - (NSString *)toSql;
     @end
+```
 
 This is a simple example:
 
+```objective-c
     @implementation NSString (sqlRepresentation)
-
     + (ActiveRecord *)fromSql:(NSString *)sqlData{
         return sqlData;
     }
@@ -124,18 +143,14 @@ This is a simple example:
     + (const char *)sqlType {
         return "text";
     }
-
     @end
+```
 
 
 
-# Ignoring some fields
+# VALIDATION
 
-What about the properties that should not be stored in a database?  Currently all properties that are not marked @dynamic are ignored.
-
-# Validation
-
-Validations may be registered using the validation_do helper macro inside the implementation of the model. Standard validations, such as validate_uniqueness_of and validate_presence_of will have existing helpers, but you may add your custom validations also:
+Validations may be registered using the validation_do helper macro inside the implementation of the model.
 
 
 ```objective-c
@@ -155,23 +170,16 @@ Validations may be registered using the validation_do helper macro inside the im
     @end
 ```
 
-At the moment there are two types of validations: presence and uniqueness, but you can use your own validators.  
-Just describe new class and implement ARValidatorProtocol
+ Standard validations, such as validate_uniqueness_of and validate_presence_of will have existing helpers, but you may add your own custom validations also. Just define a new class and implement <ARValidatorProtocol> as follows:
+ 
 
 ```objective-c
-    // ARValidatorProtocol
-    @protocol ARValidatorProtocol <NSObject>
-    @optional
-    - (NSString *)errorMessage;
-    @required
-    - (BOOL)validateField:(NSString *)aField ofRecord:(id)aRecord;
-    @end
-    
+   
     //  Custom validator
     //  PrefixValidator.h
-    @interface PrefixValidator : NSObject
-        <ARValidatorProtocol>
+    @interface PrefixValidator : NSObject <ARValidatorProtocol>
     @end
+    
     //  PrefixValidator.m
     @implementation PrefixValidator
     - (NSString *)errorMessage {
@@ -212,25 +220,25 @@ or
         //  do something
     }
 
-# Migrations  
+# MIGRATIONS  
 
-ActiveRecord supports simple migrations: you can add new record or new property. 
-Framework will create new table or add new column to already existing table, without loss of data.
-If you don't need migrations, you should disable them at start of application
+VinylRecord supports simple migrations which will automatically add new tables or new columns to an already existing table, without loss of data. if you don't need migrations, you should disable them at start of application.
+
 ```objective-c
     - (BOOL)application:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
         [VinylRecord applyConfiguration:^(ARConfiguration *config) {
-                        config.databasePath = ARCachesDatabasePath(nil);
-                        config.enableThreadPool = YES; //DEFAULT
-                        config.migrationsEnabled = YES;
+                        config.migrationsEnabled = NO;
         }];
     }
 ```
-# Transactions
 
-Simple syntax for transactions
-    
+# TRANSACTIONS
+
+VinylRecords supports regular and save point transactions which are now thread safe, utilizing  SQLite support for Isolation and Concurrency by maintaining a separate database connection for each thread accessing the database which are automatically shutdown when the thread exits and separately, serially queued using GCD. This ensures that transaction in a background thread if rolled back, doesn't rollback unrelated queries placed on a separate thread. You may also nest SAVEPOINT transactions as deep as SQLite and your phone will allow.
+
+```objective-c   
+
     [VinylRecord transaction:^{
         User *alex = [User new];
         alex.name = @"Alex";
@@ -256,13 +264,13 @@ Simple syntax for transactions
             //we could rollback, or keep state_a change. To rollback: ar_rollback(state_a);        
         }
     }]; 
-
-# Relationships
+```
+# RELATIONSHIPS
 
 Relationships support "ON DELETE" dependencies: ARDependencyDestroy and ARDependencyNullify
 
 ## HasMany <-> BelongsTo
-    
+```objective-c 
     // User.h
     @interface User : VinylRecord
     ...
@@ -279,7 +287,7 @@ Relationships support "ON DELETE" dependencies: ARDependencyDestroy and ARDepend
     belongs_to_imp(Group, group, ARDependencyDestroy)
     ...
     @end
-
+```
 belongs_to_dec and belongs_to_imp take two parameters: the model name and accessor's name.  
 
 The main thing to remember when describe the field of relationship, it must match the name of the model and begin with lowercased letters.
@@ -289,7 +297,7 @@ User       <->     userId
 ContentManager <->  contentManagerId  
 
 ## Describe reverse relationship
-
+```objective-c 
     // Group.h
     @interface Group : VinylRecord
     ...
@@ -302,7 +310,7 @@ ContentManager <->  contentManagerId
     has_many_imp(User, users, ARDependencyDestroy)
     ...
     @end
-
+```
 The same as above: model name and accessor.  
 
 In order to add or remove model you can use methods that match this pattern:  
