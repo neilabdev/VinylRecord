@@ -265,50 +265,48 @@ VinylRecords supports regular and save point transactions which are now thread s
         }
     }]; 
 ```
-# RELATIONSHIPS
+# ASSOCIATIONS
 
-Relationships support "ON DELETE" dependencies: ARDependencyDestroy and ARDependencyNullify
+VinylRecords supports mapping relationships, BelongsTo, HasMany, and HasManyThrough, with "ON DELETE" dependencies DESTROY and NULLIFY which may be specified using their respective macros. 
+
 
 ## HasMany <-> BelongsTo
+
+A **belongs_to** association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model. For example, if your application includes users and groups, and each user can be assigned to exactly one group, you'd declare the order model this way:
+
 ```objective-c 
     // User.h
     @interface User : VinylRecord
-    ...
-    @property (nonatomic, retain) NSNumber *groupId;
-    ...
-    belongs_to_dec(Group, group, ARDependencyDestroy)
-    ...
+        belongs_to_dec(Group, group, ARDependencyDestroy) // or ARDependencyNullify
+        column_dec(string,name)
     @end
+    
     // User.m
     @implementation User
-    ...
-    @synthesize groupId;
-    ...
-    belongs_to_imp(Group, group, ARDependencyDestroy)
-    ...
+        belongs_to_imp(Group, group, ARDependencyDestroy)
+        column_imp(string,name)
     @end
 ```
-belongs_to_dec and belongs_to_imp take two parameters: the model name and accessor's name.  
 
-The main thing to remember when describe the field of relationship, it must match the name of the model and begin with lowercased letters.
+Above, the **belongs_to_dec** and **belongs_to_imp** take two parameters: the model name ('Group') and column/property name ('group'). The main thing to remember when describe the field of relationship, it must match the name of the model and begin with lowercased letters.
 
-Group      <->     groupId  
-User       <->     userId  
-ContentManager <->  contentManagerId  
+    Group      <->     groupId  
+    User       <->     userId  
+    ContentManager <->  contentManagerId
+ 
 
-## Describe reverse relationship
+
+### Describe reverse relationship
 ```objective-c 
     // Group.h
     @interface Group : VinylRecord
-    ...
-    has_many_dec(User, users, ARDependencyDestroy)
-    ...
+        has_many_dec(User, users, ARDependencyDestroy)
+        column_dec(string,title)
     @end
     // Group.m
     @implementation Group
-    ...
-    has_many_imp(User, users, ARDependencyDestroy)
-    ...
+        has_many_imp(User, users, ARDependencyDestroy)
+        column_imp(string,title)
     @end
 ```
 The same as above: model name and accessor.  
