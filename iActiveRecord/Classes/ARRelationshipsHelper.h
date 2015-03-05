@@ -30,7 +30,7 @@
     + (ARDependency)_ar_registerBelongsTo ## class { \
         return dependency; \
     } \
-    -(id)getter { \
+    - (ActiveRecord *) getter { \
         NSString *class_name = @ ""#class ""; \
         return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
     } \
@@ -41,7 +41,7 @@
     @dynamic getter ##Id ;
 
 #define belongs_to_dec3(class, getter, dependency) \
-    - (id)getter; \
+- (ActiveRecord *)getter; \
     -(void)set ## class : (ActiveRecord *)aRecord; \
     @property ( nonatomic,strong ) NSNumber * getter ##Id;
 
@@ -49,7 +49,7 @@
     + (ARDependency)_ar_registerBelongsTo ## class { \
         return dependency; \
     } \
-    -(id)getter { \
+    -(ActiveRecord *)getter { \
         NSString *class_name = @ ""#class ""; \
         return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
     } \
@@ -60,7 +60,7 @@
     @dynamic key ;
 
 #define belongs_to_dec4(class, getter, key, dependency) \
-    - (id)getter; \
+    -(ActiveRecord *)getter; \
     -(void)set ## class : (ActiveRecord *)aRecord; \
     @property ( nonatomic,strong ) NSNumber * key;
 
