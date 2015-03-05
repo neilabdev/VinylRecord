@@ -18,7 +18,7 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, retain) NSArray *ignoredProperty;
 //  used in belongs to relationship
-@property (nonatomic, retain) NSNumber *groupId;
+//@property (nonatomic, retain) NSNumber *groupId;
 
 @property (nonatomic, retain) NSData *imageData;
 @property (nonatomic, retain) NSDate *birthDate;

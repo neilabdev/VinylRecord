@@ -10,6 +10,6 @@
 
 @interface DifferentTableName : VinylRecord
 belongs_to_dec(User, user, ARDependencyDestroy)
-column_dec(key,userId)
+//column_dec(key,userId)
 column_dec(string,title)
 @end

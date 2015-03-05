@@ -25,7 +25,7 @@ Tsuga<ARDatabaseManager>::run(^{
     
     describe(@"ARDatabase", ^{
         it(@"Should clear all data", ^{
-            User *user = [User newRecord];
+            User *user = [User new];
             user.name = @"John";
             BOOL result = [user save];
             result should BeTruthy();
@@ -41,7 +41,7 @@ Tsuga<ARDatabaseManager>::run(^{
         
         it(@"save records with different table name", ^{
             NSString *title = @"Does ot works?";
-            DifferentTableName *model = [DifferentTableName newRecord];
+            DifferentTableName *model = [DifferentTableName new];
             model.title = title;
             [model save] should be_truthy;
             

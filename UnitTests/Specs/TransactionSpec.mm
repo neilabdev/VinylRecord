@@ -27,7 +27,7 @@ describe(@"Transaction", ^{
     it(@"should save record", ^{
         NSInteger beforeCount = [User count];
         [ActiveRecord transaction:^{
-            User *alex = [User newRecord];
+            User *alex = [User new];
             alex.name = @"Alex";
             [alex save];
         }];
@@ -37,7 +37,7 @@ describe(@"Transaction", ^{
     it(@"should not save record", ^{
         NSInteger beforeCount = [User count];
         [ActiveRecord transaction:^{
-            User *alex = [User newRecord];
+            User *alex = [User new];
             alex.name = @"Alex";
             [alex save];
             ar_rollback

@@ -32,21 +32,21 @@ describe(@"Dynamic properties", ^{
     
         it(@"should success set value with default accessors", ^{
             NSString *defValue = @"Default";
-            DynamicRecord *record = [DynamicRecord newRecord] ;
+            DynamicRecord *record = [DynamicRecord new] ;
             [record setDefaultProperty:defValue];
             record.defaultProperty should equal(defValue);
         });
         
         it(@"should success set value with custom accessors", ^{
             NSString *defValue = @"Default";
-            DynamicRecord *record = [DynamicRecord newRecord] ;
+            DynamicRecord *record = [DynamicRecord new] ;
             [record customSetter:defValue];
             record.customGetter should equal(defValue);
         });
         
         it(@"should correct set properties for different objects", ^{
-            DynamicRecord *record1 = [DynamicRecord newRecord];
-            DynamicRecord *record2 = [DynamicRecord newRecord];
+            DynamicRecord *record1 = [DynamicRecord new];
+            DynamicRecord *record2 = [DynamicRecord new];
             
             NSString *firstValue = @"FirstValue";
             NSString *secondValue = @"SecondValue";

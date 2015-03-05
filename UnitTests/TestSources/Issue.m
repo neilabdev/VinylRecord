@@ -9,10 +9,6 @@
 #import "Issue.h"
 
 @implementation Issue
-
-@dynamic projectId;
 @dynamic title;
-
 belongs_to_imp(Project, project, ARDependencyNullify)
-
 @end

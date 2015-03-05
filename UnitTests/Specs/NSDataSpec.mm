@@ -27,7 +27,7 @@ Tsuga<NSData>::run(^{
     
     describe(@"NSData", ^{
         it(@"Should be saved successfully into database", ^{
-            User *alex = [User newRecord];
+            User *alex = [User new];
             alex.name = @"Alex";
             NSData *data = [NSData dataWithBytes:"hello"
                                           length:5];
@@ -36,7 +36,7 @@ Tsuga<NSData>::run(^{
             result should BeTruthy();
         });
         it(@"Should be read successfully from database", ^{
-            User *alex = [User newRecord];
+            User *alex = [User new];
             alex.name = @"Alex";
             NSString *octocat = [[NSBundle mainBundle] pathForResource:@"octocat"
                                                                 ofType:@"png"];

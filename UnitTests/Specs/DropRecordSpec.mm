@@ -25,7 +25,7 @@ afterEach(^{
 describe(@"Drop", ^{
     it(@"dropRecord should remove record from database", ^{
         NSString *username = @"Peter";
-        User *peter = [User newRecord];
+        User *peter = [User new];
         peter.name = username;
         [peter save];
         NSInteger beforeCount = [User count];
@@ -35,7 +35,7 @@ describe(@"Drop", ^{
     });
     it(@"dropAllRecord should remove al records from database", ^{
         NSString *username = @"Peter";
-        User *peter = [User newRecord];
+        User *peter = [User new];
         peter.name = username;
         [peter save];
         [User dropAllRecords];

@@ -24,7 +24,7 @@ describe(@"GCD", ^{
         __block NSInteger count = 0;
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            User *user = [User newRecord];
+            User *user = [User new];
             user.name = @"alex";
             [user save];
             dispatch_async(dispatch_get_main_queue(), ^{

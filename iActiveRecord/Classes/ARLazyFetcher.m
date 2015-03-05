@@ -465,7 +465,7 @@
 }
 
 
-#pragma mark - Extensions
+#pragma mark - FindBy Filters
 
 - (id) findById: (id) record_id {
     NSArray *results = [[[self where:@" id = %@", record_id,nil] limit:1] fetchRecords];
@@ -496,6 +496,30 @@
 - (id) fetchFirstRecord {
     ActiveRecord *foundRecord = [[[self limit:1] fetchRecords] firstObject];
     return foundRecord;
+}
+
+#pragma mark - WHERE Filters
+
+- (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue{
+    return [self where:@"%@ = %@",[aField stringAsColumnName],aValue, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue{
+    return [self where:@"%@ != %@",[aField stringAsColumnName],aValue, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField in:(NSArray *)aValues{
+    return [self where:@"%@ IN %@",[aField stringAsColumnName],aValues,nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField notIn:(NSArray *)aValues{
+    return [self where:@"%@ NOT IN %@",[aField stringAsColumnName],aValues,nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField like:(NSString *)aPattern{
+    return [self where:@"%@ LIKE %@",[aField stringAsColumnName],aPattern, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField notLike:(NSString *)aPattern{
+    return [self where:@"%@ NOT LIKE %@",[aField stringAsColumnName],aPattern, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField between:(id)startValue and:(id)endValue{
+    return [self where:@"%@ BETWEEN %@ AND %@",[aField stringAsColumnName], startValue,endValue,nil];
 }
 
 @end

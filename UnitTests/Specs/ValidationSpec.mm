@@ -25,14 +25,14 @@ afterEach(^{
 
 describe(@"Presence", ^{
     it(@"Should not save User with empty name", ^{
-        User *user = [User newRecord];
+        User *user = [User new];
         user.name = @"";
         BOOL result = [user save];
         result should_not BeTruthy();
 //        result should_not BeTruthy();
     });
     it(@"Should save User with some name", ^{
-        User *user = [User newRecord];
+        User *user = [User new];
         user.name = @"John";
         BOOL result = [user save];
         result should BeTruthy();
@@ -42,12 +42,12 @@ describe(@"Presence", ^{
 
 describe(@"Uniqueness", ^{
     it(@"Should not save User with same name", ^{
-        User *john = [User newRecord];
+        User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
 
         result should BeTruthy();
-        User *john2 = [User newRecord];
+        User *john2 = [User new];
         john2.name = @"John";
         result = [john2 save];
         result should_not BeTruthy();
@@ -61,21 +61,21 @@ describe(@"Uniqueness", ^{
 
     });
     it(@"Should save User with some name", ^{
-        User *john = [User newRecord];
+        User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
         result should BeTruthy();
-        User *peter = [User newRecord];
+        User *peter = [User new];
         peter.name = @"Peter";
         result = [peter save];
         result should BeTruthy();
     });
     it(@"Should update fetched User", ^{
-        User *john = [User newRecord];
+        User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
         result should BeTruthy();
-        User *user = [[[[User lazyFetcher] limit:1] fetchRecords] objectAtIndex:0];
+        User *user = [[[[User query] limit:1] fetchRecords] objectAtIndex:0];
         user.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
         user.save should BeTruthy();
     });
@@ -83,12 +83,12 @@ describe(@"Uniqueness", ^{
 
 describe(@"Custom validator", ^{
     it(@"Animal name should be valid", ^{
-        Animal *animal = [Animal newRecord];
+        Animal *animal = [Animal new];
         animal.name = @"animal";
         [animal save] should BeTruthy();
     });
     it(@"Animal name should not be valid", ^{
-        Animal *animal = [Animal newRecord];
+        Animal *animal = [Animal new];
         animal.name = @"bear";
         [animal save] should_not BeTruthy();
     });

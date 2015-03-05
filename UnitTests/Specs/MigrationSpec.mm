@@ -31,7 +31,7 @@ afterEach(^{
 
 describe(@"Add column", ^{
     it(@"animal should have new column", ^{
-        Animal *animal = [Animal newRecord];
+        Animal *animal = [Animal new];
         animal.name = @"animal";
         animal.state = @"Full";
         BOOL result = [animal save];
@@ -41,7 +41,7 @@ describe(@"Add column", ^{
 
 describe(@"Create table", ^{
     it(@"new record should save successfully", ^{
-        Entity *ent = [Entity newRecord];
+        Entity *ent = [Entity new];
         ent.property = @"LooLZ";
         [ent save] should BeTruthy();
     });

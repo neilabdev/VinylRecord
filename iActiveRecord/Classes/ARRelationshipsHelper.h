@@ -7,25 +7,62 @@
 //
 
 #import "NSString+lowercaseFirst.h"
-
 #import <objc/runtime.h>
 
-#define belongs_to_imp(class, getter, dependency) \
+
+#define AR_DECIMAL_NUM(number) [NSDecimalNumber numberWithDouble: number]
+#define AR_DECIMAL_STR(number_string) [NSDecimalNumber decimalNumberWithString: number_string]
+#define AR_INTEGER_NUM(number) [NSNumber numberWithInt: number]
+#define AR_INTEGER_STR(number_string) [number_string intValue]
+
+
+#define VA_NUM_ARGS(...) VA_NUM_ARGS_IMPL(, ##__VA_ARGS__, 5,4,3,2,1,0)
+#define VA_NUM_ARGS_IMPL(_0,_1,_2,_3,_4,_5,N,...) N
+#define macro_dispatcher(func, ...)  macro_dispatcher_(func, VA_NUM_ARGS(__VA_ARGS__))
+#define macro_dispatcher_(func, nargs) macro_dispatcher__(func, nargs)
+#define macro_dispatcher__(func, nargs)  func ## nargs
+
+#define belongs_to_imp(...) macro_dispatcher(belongs_to_imp, __VA_ARGS__)(__VA_ARGS__)
+#define belongs_to_dec(...) macro_dispatcher(belongs_to_dec, __VA_ARGS__)(__VA_ARGS__)
+
+
+#define belongs_to_imp3(class, getter, dependency) \
     + (ARDependency)_ar_registerBelongsTo ## class { \
         return dependency; \
     } \
-    -(id)getter { \
+    - (ActiveRecord *) getter { \
         NSString *class_name = @ ""#class ""; \
         return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
     } \
     -(void)set ## class : (ActiveRecord *)aRecord { \
         NSString *aClassName = @ ""#class ""; \
         objc_msgSend(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
-    }
+    } \
+    @dynamic getter ##Id ;
 
-#define belongs_to_dec(class, getter, dependency) \
-    - (id)getter; \
-    -(void)set ## class : (ActiveRecord *)aRecord;
+#define belongs_to_dec3(class, getter, dependency) \
+- (ActiveRecord *)getter; \
+    -(void)set ## class : (ActiveRecord *)aRecord; \
+    @property ( nonatomic,strong ) NSNumber * getter ##Id;
+
+#define belongs_to_imp4(class, getter, key, dependency) \
+    + (ARDependency)_ar_registerBelongsTo ## class { \
+        return dependency; \
+    } \
+    -(ActiveRecord *)getter { \
+        NSString *class_name = @ ""#class ""; \
+        return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
+    } \
+    -(void)set ## class : (ActiveRecord *)aRecord { \
+        NSString *aClassName = @ ""#class ""; \
+        objc_msgSend(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
+    } \
+    @dynamic key ;
+
+#define belongs_to_dec4(class, getter, key, dependency) \
+    -(ActiveRecord *)getter; \
+    -(void)set ## class : (ActiveRecord *)aRecord; \
+    @property ( nonatomic,strong ) NSNumber * key;
 
 
 #define has_many_dec(relative_class, accessor, dependency) \
@@ -91,24 +128,6 @@
         return; \
     }
 
-#define belonging_to_imp(class, getter, dependency) \
-    + (ARDependency)_ar_registerBelongsTo ## class { \
-        return dependency; \
-    } \
-    -(class *)getter { \
-        NSString *class_name = @ ""#class ""; \
-        return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
-    } \
-    -(void)set ## class : (ActiveRecord *)aRecord { \
-        NSString *aClassName = @ ""#class ""; \
-        objc_msgSend(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
-    }
-
-#define belonging_to_dec(class, getter, dependency) \
-    -(class *)getter; \
-    -(void)set ## class : (ActiveRecord *)aRecord;
-
-
 #define has_none_through_dec has_many_through_imp
 #define has_none_through_imp(relative_class, relationship, accessor, dependency) \
     + (ARDependency)_ar_registerHasManyThrough ## relative_class ## _ar_ ## relationship { \
@@ -145,6 +164,12 @@
 #define field_string_dec( property_name ) \
     @property ( nonatomic,copy ) NSString * property_name;
 #define field_string_imp( property_name ) \
+    @dynamic property_name ;
+
+
+#define field_blob_dec( property_name ) \
+    @property ( nonatomic,retain ) NSData * property_name;
+#define field_blob_imp( property_name ) \
     @dynamic property_name ;
 
 #define field_date_dec( property_name ) \

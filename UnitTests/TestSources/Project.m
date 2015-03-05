@@ -9,16 +9,13 @@
 #import "Project.h"
 
 @implementation Project
-
-@dynamic name;
-
 has_many_through_imp(User, UserProjectRelationship, users, ARDependencyDestroy)
 has_many_imp(Issue, issues, ARDependencyDestroy)
 has_many_through_imp(Group, ProjectGroupRelationsShip, groups, ARDependencyNullify)
+column_imp(string,name)
 
 validation_do(
     validate_presence_of(name)
     validate_uniqueness_of(name)
 )
-
 @end
