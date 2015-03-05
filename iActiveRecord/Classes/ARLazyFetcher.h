@@ -45,7 +45,7 @@ typedef enum {
 - (NSUInteger)count;
 
 
-#pragma mark - Extensions
+#pragma mark - findBy Helpers
 
 - (id) findById: (id) record_id;
 - (id) findByKey: (id) key value: (id) value;
@@ -55,7 +55,7 @@ typedef enum {
 - (NSArray *) findByConditions: (NSDictionary*) conditions;
 - (NSArray *) findAllByConditions: (NSDictionary*) conditions;
 
-#pragma mark -
+#pragma mark - whereFilters
 
 - (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue;
 - (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue;

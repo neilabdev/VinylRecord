@@ -224,52 +224,6 @@ Validation errors
     }
     
 ```
-
-# MIGRATIONS  
-
-VinylRecord supports simple migrations which will automatically add new tables or new columns to an already existing table, without loss of data. if you don't need migrations, you should disable them at start of application.
-
-```objective-c
-    - (BOOL)application:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-    {
-        [VinylRecord applyConfiguration:^(ARConfiguration *config) {
-                        config.migrationsEnabled = NO;
-        }];
-    }
-```
-
-# TRANSACTIONS
-
-VinylRecords supports regular and save point transactions which are now thread safe, utilizing  SQLite support for Isolation and Concurrency by maintaining a separate database connection for each thread accessing the database which are automatically shutdown when the thread exits and separately, serially queued using GCD. This ensures that transaction in a background thread if rolled back, doesn't rollback unrelated queries placed on a separate thread. You may also nest SAVEPOINT transactions as deep as SQLite and your phone will allow.
-
-```objective-c   
-
-    [VinylRecord transaction:^{
-        User *alex = [User new];
-        alex.name = @"Alex";
-        [alex save];
-    }];
-
-    [VinylRecord transaction:^{
-        User *alex = [User new];
-        alex.name = @"Alex";
-        [alex save];
-        ar_rollback;
-    }];
-    
-    [VinylRecord savePointTransaction:^(ARTransactionState *state_a) {
-        ... // A Changes.
-        BOOL success = [ActiveRecord savePointTransaction:^(ARTransactionState *state_b) {
-            ... // These changes are folled back
-            ar_rollback_to(state_b);
-    
-        }]; 
-                   
-        if(success) {
-            //we could rollback, or keep state_a change. To rollback: ar_rollback(state_a);        
-        }
-    }]; 
-```
 # ASSOCIATIONS
 
 VinylRecords supports mapping relationships, BelongsTo, HasMany, and HasManyThrough, with "ON DELETE" dependencies DESTROY and NULLIFY which may be specified using their respective macros. 
@@ -353,6 +307,7 @@ Thus, you may add Users to Groups below:
       }
     @end
 ```
+
 ## HasManyThrough
 
 A **has_many_through** association is often used to set up a many-to-many connection with another model. This association indicates that the declaring model can be matched with zero or more instances of another model by proceeding "through" a third model.
@@ -421,27 +376,74 @@ Example usage:
 ```
 
 
-# Requests and filters
 
-The framework allows to obtain a list of records using different filters, all requests are lazy, i.e., being run only on demand.
-A simple example of obtaining a limited number of records:  
+# TRANSACTIONS
 
-    NSArray *users = [[[User query] limit:5] fetchRecords];
+VinylRecords supports regular and save point transactions which are now thread safe, utilizing  SQLite support for Isolation and Concurrency by maintaining a separate database connection for each thread accessing the database which are automatically shutdown when the thread exits and separately, serially queued using GCD. This ensures that transaction in a background thread if rolled back, doesn't rollback unrelated queries placed on a separate thread. You may also nest SAVEPOINT transactions as deep as SQLite and your phone will allow.
 
-All filters returns an instance of ARLazyFetcher, which allows you to write queries in a single row:
+```objective-c   
+
+    [VinylRecord transaction:^{
+        User *alex = [User new];
+        alex.name = @"Alex";
+        [alex save];
+    }];
+
+    [VinylRecord transaction:^{
+        User *alex = [User new];
+        alex.name = @"Alex";
+        [alex save];
+        ar_rollback;
+    }];
+    
+    [VinylRecord savePointTransaction:^(ARTransactionState *state_a) {
+        ... // A Changes.
+        BOOL success = [ActiveRecord savePointTransaction:^(ARTransactionState *state_b) {
+            ... // These changes are folled back
+            ar_rollback_to(state_b);
+    
+        }]; 
+                   
+        if(success) {
+            //we could rollback, or keep state_a change. To rollback: ar_rollback(state_a);        
+        }
+    }]; 
+```
+
+
+# QUERIES WITH FILTERS AND FINDERS
+
+VinylRecord supports numerous methods to allow querying records, including using **where** statements, objective-C query **whereField:** methods,  and predefined **findBy** methods.
+
+All methods except **findBy** helpers returns an instance of ARLazyFetcher, which allows you to chain queries in a single row:
+
+```objective-c
 
     NSArray *users = [[[[User query] offset:5] limit:2] fetchRecords];
 
-The fetchRecords method initiates sql-query to the database on the basis of all applied filters:
+```
+
+The fetchRecords method initiates sql-query to the database on the basis of all conditions applied:
+
+```objective-c
 
     ARLazyFetcher *fetcher = [[[User query] offset:2] limit:10];
     [fetcher whereField:@"name"
            equalToValue:@"Alex"];
     NSArray *users = [fetcher fetchRecords];
 
+```
 There are several options for 'where' methods:
-    - (ARLazyFetcher *)where:(NSString *)aFormat, ...;
 
+```
+    - (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue;
+    - (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue;
+    - (ARLazyFetcher *)whereField:(NSString *)aField in:(NSArray *)aValues;
+    - (ARLazyFetcher *)whereField:(NSString *)aField notIn:(NSArray *)aValues;
+    - (ARLazyFetcher *)whereField:(NSString *)aField like:(NSString *)aPattern;
+    - (ARLazyFetcher *)whereField:(NSString *)aField notLike:(NSString *)aPattern;
+    - (ARLazyFetcher *)whereField:(NSString *)aField between:(id)startValue and:(id)endValue;
+```
 
 You can also concatenate with finalStatement some "complex" or a simple filter. 
 
@@ -455,7 +457,7 @@ Relationship HasManyThrough is already use the 'where' filter, so if you want to
     ARLazyFetcher *fetcher = [[User query]  where:@"'name' = %@ or 'id' in %@",  @"john", ids, nil];
     NSArray *records = [[fetcher orderBy:@"id"] fetchRecords];
 
-New syntax support basic comparisons:
+SQLite SQL comparisons:
 
  - =, == - equality
  - >= - left-hand operand greater or equal then right-hand operand
@@ -467,7 +469,7 @@ New syntax support basic comparisons:
  - IN, NOT IN container - records which fields are in container (NSArray, NSSet etc.)
  - BETWEEN %1 AND %2 - records with fields in range(%1, %2)
 
-# Fetch only needed fields
+## Fetch only needed fields
 
     - (ARLazyFetcher *)only:(NSString *)aFirstParam, ...;
     - (ARLazyFetcher *)except:(NSString *)aFirstParam, ...;
@@ -475,7 +477,7 @@ New syntax support basic comparisons:
     ARLazyFetcher *fetcher = [[User query] only:@"name", @"id", nil];
     NSArray *users = [fetcher fetchRecords];
 
-# Sorting
+## Sorting
 
     - (ARLazyFetcher *)orderBy:(NSString *)aField ascending:(BOOL)isAscending;
     - (ARLazyFetcher *)orderBy:(NSString *)aField;// ASC by default
@@ -485,7 +487,7 @@ New syntax support basic comparisons:
            equalToValue:@"Alex"] orderBy:@"name"];
     NSArray *users = [fetcher fetchRecords];
 
-# Join
+## Join
 
 The framework supports the use of joins:
 
@@ -509,3 +511,15 @@ Joined records can be fetched by sending
 
 message to ARLazyFetcher instance.
 
+# MIGRATIONS  
+
+VinylRecord supports simple migrations which will automatically add new tables or new columns to an already existing table, without loss of data. if you don't need migrations, you should disable them at start of application.
+
+```objective-c
+    - (BOOL)application:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+    {
+        [VinylRecord applyConfiguration:^(ARConfiguration *config) {
+                        config.migrationsEnabled = NO;
+        }];
+    }
+```
