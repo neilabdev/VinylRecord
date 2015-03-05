@@ -6,9 +6,9 @@
 //
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
-@interface PrimitiveModel : ActiveRecord
+@interface PrimitiveModel : VinylRecord
 
 @property (nonatomic, readwrite) char charProperty;
 @property (nonatomic, readwrite) unsigned char unsignedCharProperty;

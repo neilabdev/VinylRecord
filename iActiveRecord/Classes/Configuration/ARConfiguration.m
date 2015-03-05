@@ -33,6 +33,7 @@ NSString *ARDocumentsDatabasePath(NSString *databaseName) {
     self = [super init];
     if (self) {
         self.migrationsEnabled = YES;
+        self.enableThreadPool = YES;
         self.databasePath = ARDocumentsDatabasePath(nil);
     }
     return self;

@@ -14,6 +14,7 @@
 #import "ActiveRecord_Private.h"
 #import "ARLazyFetcher_Private.h"
 #import "ActiveRecord_Private.h"
+#import "NSString+sqlRepresentation.h"
 
 @implementation ARLazyFetcher
 
@@ -108,12 +109,12 @@
     NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
     Class relClass = NSClassFromString(hasManyThroughClass);
     [self join:relClass];
-    [self where:@"%@.%@ = %@", [relClass performSelector:@selector(recordName)], relId, row.id, nil];
+    [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], relId, row.id, nil];
 }
 
 - (void)createRecordHasMany {
     NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
-    [self where:@"%@ = %@", selfId, row.id, nil];
+    [self where:@"%@ = %@", [selfId stringAsColumnName], row.id, nil];
 }
 
 
@@ -376,15 +377,16 @@
 }
 
 - (id)objectAtIndex: (NSUInteger)index {
-
+    NSArray *rows = nil;
     if(!arrayRows) {
         arrayRows = [self fetchRecords];
     }
+    rows = arrayRows;
 
     return [arrayRows objectAtIndex:index];
 }
 
-- (NSInteger)count {
+- (NSUInteger)count {
 
     if(arrayRows)
         return [arrayRows count];
@@ -398,10 +400,12 @@
                         [recordClass performSelector:@selector(recordName)]];
     NSString *where = [self createWhereStatement];
     NSString *join = [self createJoinStatement];
+    NSInteger resultCount = 0;
     [sql appendString:select];
     [sql appendString:join];
     [sql appendString:where];
-    return [[ARDatabaseManager sharedManager] functionResult:sql];
+    resultCount =  [[ARDatabaseManager sharedManager] functionResult:sql];
+    return limit ? MIN([limit intValue],resultCount) : resultCount;
 }
 
 - (ARLazyFetcher *)where:(NSString *)aCondition, ...{
@@ -412,13 +416,16 @@
     va_start(args, aCondition);
     id value = nil;
     while ( (value = va_arg(args, id)) ) {
-        if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSSet class]]) {
+        BOOL isColumnName = [value respondsToSelector:@selector(isColumnName)] ? [value isColumnName] : NO;
+        if(isColumnName && [value isKindOfClass:[NSString class]])  {
+            argument =  [NSString stringWithFormat:@"\"%@\"", value];
+        } else if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSSet class]]) {
             argument = [value performSelector:@selector(toSql)];
         } else {
             if ([value respondsToSelector:@selector(toSql)]) {
                 value = [value performSelector:@selector(toSql)];
             }
-            argument = [NSString stringWithFormat:@"\"%@\"", value];
+            argument = [NSString stringWithFormat:@"'%@'", value];
         }
         [sqlArguments addObject:argument];
     }
@@ -455,6 +462,64 @@
         self.whereStatement = [NSMutableString stringWithFormat:@"%@ AND %@", self.whereStatement, sqlQuery];
     }
     return self;
+}
+
+
+#pragma mark - FindBy Filters
+
+- (id) findById: (id) record_id {
+    NSArray *results = [[[self where:@" id = %@", record_id,nil] limit:1] fetchRecords];
+    return [results firstObject];
+}
+
+- (id) findByKey: (id) key value: (id) value {
+    NSString *condition = [NSString stringWithFormat:@" %@ = %%%@ ",[key stringAsColumnName],@"@"];
+    NSArray *results = [[[self where: condition, value,nil] limit:1] fetchRecords];
+    return [results firstObject];
+}
+
+- (NSArray *) findAllByKey: (id) key value: (id) value {
+    NSArray *results = [[self where: [NSString stringWithFormat:@" %@ = %%%@ ",[key stringAsColumnName],@"@"], value,nil]  fetchRecords];
+    return results;
+}
+
+- (NSArray *) findByConditions: (NSDictionary*) conditions {
+    NSMutableArray *results = [NSMutableArray array];
+    return results;
+}
+
+- (NSArray *) findAllByConditions: (NSDictionary*) conditions {
+    NSMutableArray *results = [NSMutableArray array];
+    return results;
+}
+
+- (id) fetchFirstRecord {
+    ActiveRecord *foundRecord = [[[self limit:1] fetchRecords] firstObject];
+    return foundRecord;
+}
+
+#pragma mark - WHERE Filters
+
+- (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue{
+    return [self where:@"%@ = %@",[aField stringAsColumnName],aValue, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue{
+    return [self where:@"%@ != %@",[aField stringAsColumnName],aValue, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField in:(NSArray *)aValues{
+    return [self where:@"%@ IN %@",[aField stringAsColumnName],aValues,nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField notIn:(NSArray *)aValues{
+    return [self where:@"%@ NOT IN %@",[aField stringAsColumnName],aValues,nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField like:(NSString *)aPattern{
+    return [self where:@"%@ LIKE %@",[aField stringAsColumnName],aPattern, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField notLike:(NSString *)aPattern{
+    return [self where:@"%@ NOT LIKE %@",[aField stringAsColumnName],aPattern, nil];
+}
+- (ARLazyFetcher *)whereField:(NSString *)aField between:(id)startValue and:(id)endValue{
+    return [self where:@"%@ BETWEEN %@ AND %@",[aField stringAsColumnName], startValue,endValue,nil];
 }
 
 @end

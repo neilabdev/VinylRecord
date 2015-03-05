@@ -9,11 +9,9 @@
 #import "Group.h"
 
 @implementation Group
-
-@dynamic title;
-
 has_many_imp(User, users, ARDependencyDestroy)
 has_many_through_imp(Project, ProjectGroupRelationship, groups, ARDependencyNullify)
+column_imp(string,title)
 
 validation_do(
     validate_uniqueness_of(title)

@@ -5,10 +5,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 #import "ARSynchronizationProtocol.h"
 
-@interface Item : ActiveRecord     <ARSynchronizationProtocol>
+@interface Item : VinylRecord     <ARSynchronizationProtocol>
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *text;

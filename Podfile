@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '6.0'
+platform :ios, '7.0'
 
 target 'UnitTests' do
   pod 'Cedar', '0.9.5'
@@ -9,5 +9,5 @@ end
 
 target 'ActiveTwitter' do
   pod 'RestKit'
-  pod 'iActiveRecord', :path => "."
+  pod 'VinylRecord', :path => "."
 end

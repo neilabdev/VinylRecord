@@ -28,17 +28,17 @@ afterEach(^{
 describe(@"Join", ^{
     beforeEach(^{
         for(int i=0;i<10;i++){
-            Group *group = [Group newRecord];
+            Group *group = [Group new];
             group.title = [NSString stringWithFormat:@"group%d", i];
             [group save];
-            User *user = [User newRecord];
+            User *user = [User new];
             user.name = [NSString stringWithFormat:@"user%d", i];
             user.groupId = group.id;
             [user save];
         }
     });
     it(@"should return array of dictionaries", ^{
-        ARLazyFetcher *fetcher = [[User lazyFetcher] join:[Group class]
+        ARLazyFetcher *fetcher = [[User query] join:[Group class]
                                                   useJoin:ARJoinInner
                                                   onField:@"groupId"
                                                  andField:@"id"];
@@ -48,7 +48,7 @@ describe(@"Join", ^{
         result should BeTruthy();
     });
     it(@"returned dictionary should contain fields of two records", ^{
-        ARLazyFetcher *fetcher = [[User lazyFetcher] join:[Group class]
+        ARLazyFetcher *fetcher = [[User query] join:[Group class]
                                                   useJoin:ARJoinInner
                                                   onField:@"groupId"
                                                  andField:@"id"];

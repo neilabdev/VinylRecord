@@ -25,10 +25,10 @@ afterEach(^{
 
 describe(@"Unicode search", ^{
     it(@"should find records", ^{
-        User *alex = [User newRecord];
+        User *alex = [User new];
         alex.name = @"Алексей";
         [alex save];
-        ARLazyFetcher *fetcher = [[User lazyFetcher] where:@"name LIKE '%%ксей%%'", nil];
+        ARLazyFetcher *fetcher = [[User query] where:@"name LIKE '%%ксей%%'", nil];
         fetcher.count should_not equal(0);
     });
 });

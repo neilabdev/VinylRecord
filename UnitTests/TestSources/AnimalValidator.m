@@ -9,11 +9,9 @@
 #import "AnimalValidator.h"
 
 @implementation AnimalValidator
-
 - (BOOL)validateField:(NSString *)aField ofRecord:(id)aRecord {
-    NSString *aValue = [aRecord valueForKey:aField];
+    NSString *aValue = [aRecord valueForUndefinedKey:aField];
     BOOL valid = [aValue isEqualToString:@"animal"];
     return valid;
 }
-
 @end

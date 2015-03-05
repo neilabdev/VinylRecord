@@ -9,11 +9,13 @@
 #import "ARSQLBuilder.h"
 #import "ActiveRecord_Private.h"
 #import "ARColumn.h"
+#import "NSString+sqlRepresentation.h"
+
 
 @implementation ARSQLBuilder
 
 + (const char *)sqlOnUpdateRecord:(ActiveRecord *)aRecord {
-    NSSet *changedColumns = [aRecord changedColumns];
+    NSSet *changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
     NSInteger columnsCount = changedColumns.count;
     if (columnsCount == 0) {
         return NULL;
@@ -24,9 +26,9 @@
         ARColumn *column = [columnsIterator nextObject];   //FIXME: NSFastEnumerationMutationHandler
         NSString *value = [column sqlValueForRecord:aRecord];
         NSString *updater = [NSString stringWithFormat:
-                             @"\"%@\"=\"%@\"",
+                             @"\"%@\"='%@'",
                              column.columnName,
-                             [value stringByReplacingOccurrencesOfString:@"\"" withString:@"\"\""]];
+                             TO_SQL_VALUE(value)];
         [columnValues addObject:updater];
     }
     NSString *sqlString = [NSString stringWithFormat:@"UPDATE \"%@\" SET %@ WHERE id = %@",
@@ -68,7 +70,7 @@
 
 + (const char *)sqlOnCreateIndex:(NSString *)aColumnName forRecord:(ActiveRecord *)aRecord {
     NSString *sqlString = [NSString stringWithFormat:
-                           @"CREATE UNIQUE INDEX IF NOT EXISTS index_%@ ON \"%@\" (\"%@\")",
+                           @"CREATE INDEX IF NOT EXISTS index_%@ ON \"%@\" (\"%@\")",
                            aColumnName,
                            [aRecord recordName],
                            aColumnName];

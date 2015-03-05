@@ -7,11 +7,14 @@
 //
 
 #import "ActiveRecord.h"
+#define TO_SQL_VALUE(value) [value respondsToSelector:@selector(toSql)] ? [value toSql] : value
 
 @class ARLazyFetcher;
 @class ARError;
 @class ARColumn;
-
+@protocol ActiveRecordPrivateMethods <ActiveRecord>
++ (ActiveRecord*)persistedRecord;
+@end
 @interface ActiveRecord ()
 {
     @private
@@ -38,7 +41,7 @@
 + (void)validateField:(NSString *)aField withValidator:(NSString *)aValidator;
 
 #pragma mark - Resetting
-
+- (void)markAsPersisted;
 - (void)resetErrors;
 - (void)resetChanges;
 

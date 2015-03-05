@@ -10,7 +10,7 @@
 
 @implementation NSString (stringWithEscapedQuote)
 
-- (NSString *)stringWithEscapedQuote {
+- (NSString *)stringWithEscapedQuote { //TODO: Depricate this. [NSString toSQL] escapes with  (') instead of (").
     return [self stringByReplacingOccurrencesOfString:@"\"" withString:@"\"\""];
 }
 

@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
 
-#import "ActiveRecord.h"
+#import "VinylRecord.h"
 
-@interface DynamicRecord : ActiveRecord
+@interface DynamicRecord : VinylRecord
 
 @property (nonatomic, 
            retain, 

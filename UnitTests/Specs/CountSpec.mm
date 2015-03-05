@@ -26,10 +26,10 @@ afterEach(^{
 describe(@"Count", ^{
     it(@"should return 2", ^{
         NSString *username = @"Peter";
-        User *peter = [User newRecord];
+        User *peter = [User new];
         peter.name = username;
         [peter save];
-        User *john = [User newRecord];
+        User *john = [User new];
         john.name = @"john";
         [john save];
         NSInteger count = [User count];

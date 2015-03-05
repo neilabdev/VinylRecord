@@ -12,10 +12,8 @@
 @dynamic title;
 
 
-- (ActiveRecord *)mergeExistingRecord {
+- (VinylRecord *)mergeExistingRecord {
     Item *existingItem = [[[[[Item lazyFetcher] where:@"name == %@", self.name, nil] limit:1] fetchRecords] firstObject];
     return existingItem;
 }
-
-
 @end

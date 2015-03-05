@@ -12,11 +12,16 @@
 @class ActiveRecord;
 @class ARConfiguration;
 
-@interface ARDatabaseManager : NSObject
-{
-    @private
-    sqlite3 *database;
-}
+
+@interface ARDatabaseConnection : NSObject {}
+@property (nonatomic, readonly)  sqlite3 *database ;
+@property(nonatomic,retain) ARConfiguration *configuration;
++ (instancetype) connectionWithConfiguration: (ARConfiguration *) config;
+- (id) initWithConfiguration: (ARConfiguration*) config;
+@end
+
+
+@interface ARDatabaseManager : NSObject {}
 
 @property (nonatomic, strong) ARConfiguration *configuration;
 

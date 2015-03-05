@@ -6,13 +6,10 @@
 //  Copyright (c) 2013 okolodev.org. All rights reserved.
 //
 
-#import <ActiveRecord/ActiveRecord.h>
+#import "VinylRecord.h"
 
-@interface DifferentTableName : ActiveRecord
-
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSNumber* userId;
-
+@interface DifferentTableName : VinylRecord
 belongs_to_dec(User, user, ARDependencyDestroy)
-
+//column_dec(key,userId)
+column_dec(string,title)
 @end

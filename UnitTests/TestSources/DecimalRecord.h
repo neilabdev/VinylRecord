@@ -6,10 +6,8 @@
 //
 //
 
-#import <ActiveRecord/ActiveRecord.h>
+#import "VinylRecord.h"
 
-@interface DecimalRecord : ActiveRecord
-
-@property(nonatomic, retain) NSDecimalNumber *decimal;
-
+@interface DecimalRecord : VinylRecord
+column_dec(decimal,decimal)
 @end
