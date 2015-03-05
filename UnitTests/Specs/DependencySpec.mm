@@ -29,19 +29,20 @@ describe(@"Destroy", ^{
     it(@"HasMany", ^{
         User *john = [User new];
         john.name = @"John";
-        [john save];
+    //    [john save];
         
         User *alex = [User new];
         alex.name = @"Alex";
-        [alex save];
+     //   [alex save];
         
         Group *students = [Group new];
         students.title = @"Students";
-        [students save];
-        
         [students addUser:john];
         [students addUser:alex];
-        
+        [students.users count] should equal(2); //cached count
+
+        [students save];
+        [students.users count] should equal(2); //persisted count
         [students dropRecord];
         [alex release];
         [john release];
@@ -74,9 +75,10 @@ describe(@"Destroy", ^{
         
         Project *makeTea = [Project new];
         makeTea.name = @"Make tea";
-        [makeTea save];
-        
         [makeTea addUser:john];
+        [makeTea save];
+        [makeTea.users count] should equal(1);
+
         [john dropRecord];
         
         [User count] should equal(0);
@@ -187,6 +189,7 @@ describe(@"Queued Destroy", ^{
         [makeTea addUser:john];
         [makeTea save];
 
+        [john.projects count] should equal(1);
         [john dropRecord];
 
         [User count] should equal(0);
