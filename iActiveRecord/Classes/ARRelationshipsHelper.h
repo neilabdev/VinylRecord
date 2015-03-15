@@ -32,7 +32,7 @@
     } \
     - (ActiveRecord *) getter { \
         NSString *class_name = @ ""#class ""; \
-        return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
+        return  ((id(*)(id, SEL, id))objc_msgSend)(self, @selector(belongsTo:), class_name) ; \
     } \
     -(void)set ## class : (ActiveRecord *)aRecord { \
         NSString *aClassName = @ ""#class ""; \
@@ -51,7 +51,7 @@
     } \
     -(ActiveRecord *)getter { \
         NSString *class_name = @ ""#class ""; \
-        return [self performSelector : @selector(belongsTo:) withObject : class_name]; \
+        return  ((id(*)(id, SEL, id))objc_msgSend)(self, @selector(belongsTo:), class_name) ; \
     } \
     -(void)set ## class : (ActiveRecord *)aRecord { \
         NSString *aClassName = @ ""#class ""; \
