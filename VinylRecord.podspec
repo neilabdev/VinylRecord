@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name     = 'VinylRecord'
-  s.version  = '1.0.3'
+  s.version  = '1.0.4'
   s.license  = 'MIT'
-  s.summary  = 'ORM for iOS without CoreData, only SQLite.'
+  s.summary  = 'Pure SQLite ORM for iOS without CoreData.'
   s.homepage = 'https://github.com/valerius/VinylRecord.git'
   s.description = %{
-    ORM for iOS without CoreData. Only SQLite.
+    Pure SQLite ORM for iOS without CoreData.
     For more details check Wiki on Github.
   }
   s.author   = { 'James Whitfield' => 'jwhitfield@neilab.com' }
