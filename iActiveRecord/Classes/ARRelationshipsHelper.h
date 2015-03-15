@@ -36,7 +36,7 @@
     } \
     -(void)set ## class : (ActiveRecord *)aRecord { \
         NSString *aClassName = @ ""#class ""; \
-        objc_msgSend(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
+        ((void(*)(id, SEL, id,id))objc_msgSend)(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
     } \
     @dynamic getter ##Id ;
 
@@ -55,7 +55,7 @@
     } \
     -(void)set ## class : (ActiveRecord *)aRecord { \
         NSString *aClassName = @ ""#class ""; \
-        objc_msgSend(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
+        ((void(*)(id, SEL, id,id))objc_msgSend)(self, sel_getUid("setRecord:belongsTo:"), aRecord, aClassName); \
     } \
     @dynamic key ;
 
@@ -76,13 +76,13 @@
     } \
     -(ARLazyFetcher *)accessor { \
         NSString *class_name = @ ""#relative_class ""; \
-        return objc_msgSend(self, sel_getUid("hasManyRecords:"), class_name); \
+        return ((id(*)(id, SEL, id))objc_msgSend)(self, sel_getUid("hasManyRecords:"), class_name); \
     } \
     -(void)add ## relative_class : (ActiveRecord *)aRecord { \
-        objc_msgSend(self, sel_getUid("addRecord:"), aRecord); \
+        ((void(*)(id, SEL, id))objc_msgSend)(self, sel_getUid("addRecord:"), aRecord); \
     } \
     -(void)remove ## relative_class : (ActiveRecord *)aRecord { \
-        objc_msgSend(self, sel_getUid("removeRecord:"), aRecord); \
+        ((void(*)(id, SEL, id))objc_msgSend)(self, sel_getUid("removeRecord:"), aRecord); \
     }
 
 #define has_many_through_dec(relative_class, relationship, accessor, dependency) \
@@ -98,16 +98,16 @@
     { \
         NSString *className = @ ""#relative_class ""; \
         NSString *relativeClassName = @ ""#relationship ""; \
-        return objc_msgSend(self, sel_getUid("hasMany:through:"), className, relativeClassName); \
+        return  ((id(*)(id, SEL, id,id))objc_msgSend)(self, sel_getUid("hasMany:through:"), className, relativeClassName); \
     } \
     -(void)add ## relative_class : (ActiveRecord *)aRecord { \
         NSString *className = @ ""#relative_class ""; \
         NSString *relativeClassName = @ ""#relationship ""; \
-        objc_msgSend(self, sel_getUid("addRecord:ofClass:through:"), aRecord, className, relativeClassName); \
+         ((void(*)(id, SEL, id,id,id))objc_msgSend)(self, sel_getUid("addRecord:ofClass:through:"), aRecord, className, relativeClassName); \
     } \
     -(void)remove ## relative_class : (ActiveRecord *)aRecord { \
         NSString *className = @ ""#relationship ""; \
-        objc_msgSend(self, sel_getUid("removeRecord:through:"), aRecord, className); \
+         ((void(*)(id, SEL, id,id))objc_msgSend)(self, sel_getUid("removeRecord:through:"), aRecord, className); \
     }
 
 
@@ -195,13 +195,13 @@
     }  \
     - (void) setIs_##property_name: (BOOL ) value  { \
         NSString *propertyName =  @"" #property_name ; \
-        NSString *propertySetter =  [propertyName asSetterMethodName]; ; \
-        objc_msgSend(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithInt: value ]) ; \
+        NSString *propertySetter =  [propertyName asSetterMethodName]; \
+        ((void(*)(id, SEL, id))objc_msgSend)(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithBool: value ]) ; \
     } \
     - (void) setHas_##property_name: (BOOL ) value  { \
         NSString *propertyName =  @"" #property_name ; \
-        NSString *propertySetter =  [propertyName asSetterMethodName]; ; \
-        objc_msgSend(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithInt: value ]) ; \
+        NSString *propertySetter =  [propertyName asSetterMethodName]; \
+        ((void(*)(id, SEL, id))objc_msgSend)(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithBool: value ]) ; \
     }
 
 
@@ -218,7 +218,7 @@
     - (void) setInt_##property_name: (NSInteger ) value  { \
         NSString *propertyName =  @"" #property_name ; \
         NSString *propertySetter =  [propertyName asSetterMethodName] ; \
-        objc_msgSend(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithInt: value ]) ; \
+        ((void(*)(id, SEL, id))objc_msgSend)(self,sel_getUid([propertySetter UTF8String]), [NSNumber numberWithInt: value ]) ; \
     }
 
 
@@ -235,5 +235,5 @@
     - (void) setDouble_##property_name: (double) value  { \
         NSString *propertyName =  @"" #property_name ; \
         NSString *propertySetter =  [propertyName asSetterMethodName]; \
-        objc_msgSend(self,sel_getUid([propertySetter UTF8String]), [NSDecimalNumber numberWithDouble: value ]) ; \
+        ((void(*)(id, SEL, id))objc_msgSend)(self,sel_getUid([propertySetter UTF8String]), [NSDecimalNumber numberWithDouble: value ]) ; \
     }
