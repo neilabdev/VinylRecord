@@ -1,8 +1,3 @@
-TODO: add changelog
 
- - primitive data types support
- - @dynamic for table columns
- - @synthesize properties are ignored
- - indices
- - Raw sql
- - SQL functions
+
+1.0.4 - Fixed issues running on ARM64 as objc_msgSend must be cast or crash

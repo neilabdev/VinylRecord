@@ -29,7 +29,7 @@ PODS:
   - TransitionKit (2.1.0)
   - Tsuga (0.0.8):
     - Cedar (~> 0.9)
-  - VinylRecord (1.0.2)
+  - VinylRecord (1.0.3)
 
 DEPENDENCIES:
   - Cedar (= 0.9.5)
@@ -52,6 +52,6 @@ SPEC CHECKSUMS:
   SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
   TransitionKit: 6a6f3ddda38ae758778aa889dcb930e4f8d64edc
   Tsuga: de163f93d8b73d6bc0712103b53e483135a4694e
-  VinylRecord: 03b40d81e5c4788bcd40cb57bd41218c9d24ea05
+  VinylRecord: 8638f449b152dcefd223481a3402bb748ddddd2d
 
 COCOAPODS: 0.35.0
