@@ -27,6 +27,10 @@
 @protocol ActiveRecord <NSObject>
 #pragma mark - TableName
 + (NSString *)recordName;
+- (NSString *)recordName;
+#pragma mark - Foreign Key Name
++ (NSString *)foreignKeyName;
+- (NSString *)foreignKeyName;
 @end
 
 @class ARConfiguration;

@@ -290,6 +290,23 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return name;
 }
 
++ (NSString*)foreignKeyName {
+    NSString *name = [[self class] className];
+    NSArray *components = [name componentsSeparatedByString:@"."];
+    
+    // Swift returns Package.ClassName and we only want ClassName
+    if(components)
+        name = [components lastObject];
+
+    return [NSString stringWithFormat:@"%@Id",
+            [name lowercaseFirst]];
+}
+
+- (NSString *)foreignKeyName {
+    return [[self class] foreignKeyName];
+}
+
+
 - (NSString *)recordName {
     return [[self class] recordName];
 }
@@ -681,7 +698,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark BelongsTo
 
 - (id)belongsTo:(NSString *)aClassName {
-    NSString *selectorString = [NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]];
+    Class belongsToClass = NSClassFromString(aClassName);
+    NSString *selectorString = [belongsToClass performSelector: @selector(foreignKeyName)];
     SEL selector = NSSelectorFromString(selectorString);
     
 #pragma clang diagnostic push
@@ -697,7 +715,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     }
 
 
-    ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:NSClassFromString(aClassName)];
+    ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:belongsToClass];
     [fetcher where:@"id = %@", rec_id, nil];
     NSArray *records = [fetcher fetchRecords];
     return records.count ? [self setCachedEntity:[records objectAtIndex:0] forKey:selectorString] : nil;
@@ -705,7 +723,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 
 - (void)setRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
-    NSString *selectorString = [NSString stringWithFormat:@"%@Id", [aRelation lowercaseFirst]];
+    
+    NSString *selectorString = [[aRecord class] performSelector: @selector(foreignKeyName)];
 
     [self setCachedEntity:aRecord forKey:selectorString];
 
@@ -725,8 +744,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
-    NSString *relId = [NSString stringWithFormat:
-            @"%@Id", [aRelation lowercaseFirst]];
+    NSString *relId = [[aRecord class] performSelector: @selector(foreignKeyName)];
     ARColumn *column = [self columnNamed:relId];
     BOOL success  = YES;
 
@@ -744,7 +762,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)addRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
+    NSString *entityKey = [[self class] performSelector: @selector(foreignKeyName)];
     [self addCachedEntity:aRecord forKey:entityKey];
 
     if(![aRecord isNewRecord] &&  [self persistRecord:aRecord])
@@ -758,7 +776,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord {
-    NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
+    NSString *relationIdKey = [[self class] performSelector: @selector(foreignKeyName)];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
     [aRecord setValue:self.id forColumn:column];
     return [aRecord save];
@@ -767,7 +785,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void)removeRecord:(ActiveRecord *)aRecord {
     NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
 
-    NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
+    NSString *relationIdKey = [[self class] performSelector: @selector(foreignKeyName)];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
 
     [self removeCachedEntity:aRecord forKey:entityKey];
@@ -833,8 +851,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
               through:(NSString *)aRelationshipClassName {
     Class RelationshipClass = NSClassFromString(aRelationshipClassName);
 
-    NSString *currentId = [NSString stringWithFormat:@"%@ID", [self recordName]];
-    NSString *relId = [NSString stringWithFormat:@"%@ID", [aRecord recordName]];
+    NSString *currentId = [self foreignKeyName];
+    NSString *relId = [aRecord foreignKeyName];
     ARLazyFetcher *fetcher = [RelationshipClass lazyFetcher];
 
     if( ([aRecord isNewRecord] || [aRecord isDirty]) && ![aRecord save]) {
@@ -864,12 +882,12 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void)removeRecord:(ActiveRecord *)aRecord through:(NSString *)aClassName {
     Class relationsClass = NSClassFromString(aClassName);
-    NSString *currentId = [NSString stringWithFormat:@"%@ID", [self recordName]];
-    NSString *relId = [NSString stringWithFormat:@"%@ID", [aRecord recordName]];
+    NSString *currentId = [self foreignKeyName];
+    NSString *relId = [aRecord foreignKeyName];
 
-    //TODO: There should be a test to ensure that removing a relation also remove the item through the cache.
+    //TODO There should be a test to ensure that removing a relation also remove the item through the cache.
     NSString *entityKey = [[aRecord recordName] lowercaseFirst];
-    NSString *entityRelationKey = [NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]] ;
+    NSString *entityRelationKey = [relationsClass performSelector: @selector(foreignKeyName)] ;
     [self removeCachedEntity:aRecord forKey:entityKey];
     [aRecord setCachedEntity:nil forKey:entityRelationKey];
 

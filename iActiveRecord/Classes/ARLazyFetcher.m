@@ -106,14 +106,14 @@
 
 
 - (void)createRecordHasManyThrough {
-    NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
+    NSString *relId = [row foreignKeyName];
     Class relClass = NSClassFromString(hasManyThroughClass);
     [self join:relClass];
     [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], relId, row.id, nil];
 }
 
 - (void)createRecordHasMany {
-    NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
+    NSString *selfId = [[row foreignKeyName] description];
     [self where:@"%@ = %@", [selfId stringAsColumnName], row.id, nil];
 }
 
@@ -301,8 +301,7 @@
 - (ARLazyFetcher *)join:(Class)aJoinRecord {
 
     NSString *_recordField = @"id";
-    NSString *_joinField = [NSString stringWithFormat:@"%@Id",
-                            [[recordClass description] lowercaseFirst]];
+    NSString *_joinField = [recordClass foreignKeyName];
     [self join:aJoinRecord
        useJoin:ARJoinInner
        onField:_recordField
