@@ -203,9 +203,11 @@
     NSMutableArray *fields = [NSMutableArray array];
     NSString *fieldname = nil;
     for (NSString *field in [self recordFields]) {
+        NSString* recordName = [recordClass performSelector:@selector(recordName)];
         fieldname = [NSString stringWithFormat:
-                     @"\"%@\".\"%@\"",
-                     [recordClass performSelector:@selector(recordName)],
+                     @"\"%@\".\"%@\" AS \"%@\"",
+                     recordName,
+                     field,
                      field];
         [fields addObject:fieldname];
     }
