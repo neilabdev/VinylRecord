@@ -291,6 +291,7 @@
 		CAE9227C171495880082A97C /* ARFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9227B171495880082A97C /* ARFactory.m */; };
 		CAE9227F17149A080082A97C /* octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = CAE9227E17149A080082A97C /* octocat.png */; };
 		E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698C98D19F2B2AA00E13A61 /* Dog.swift */; };
+		F5FCDD391AE53936006B8914 /* CustomUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FCDD381AE53936006B8914 /* CustomUser.m */; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -531,6 +532,8 @@
 		E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E698C98D19F2B2AA00E13A61 /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F5FCDD371AE53913006B8914 /* CustomUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomUser.h; sourceTree = "<group>"; };
+		F5FCDD381AE53936006B8914 /* CustomUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -694,6 +697,8 @@
 				5DC6AE7546108C8F460608B0 /* Item.h */,
 				E698C98D19F2B2AA00E13A61 /* Dog.swift */,
 				E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */,
+				F5FCDD371AE53913006B8914 /* CustomUser.h */,
+				F5FCDD381AE53936006B8914 /* CustomUser.m */,
 			);
 			name = "Test Entities";
 			path = TestSources;
@@ -1513,6 +1518,7 @@
 				CA91ECCC1715AEC10085A27B /* GCDSpec.mm in Sources */,
 				75F56DBA1717003C00A1DF7B /* DecimalRecord.m in Sources */,
 				75F56DBC171700D300A1DF7B /* NSDecimalNumberSpec.mm in Sources */,
+				F5FCDD391AE53936006B8914 /* CustomUser.m in Sources */,
 				CA06017C1738EBBD009C0FE6 /* DifferentTableName.m in Sources */,
 				CA44DE541748D17C00831183 /* ARConfigurationSpec.mm in Sources */,
 				5DC6A16A9F723443CA1352CA /* NSDateSpec.mm in Sources */,
