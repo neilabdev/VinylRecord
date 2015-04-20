@@ -864,11 +864,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if ([fetcher count] != 0) {
         return YES; // while it couldn't save, it already exists which has same effect.
     }
-    NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@Id:", [[self class] description]];
-    NSString *relativeIdSlectorString = [NSString stringWithFormat:@"set%@Id:", aClassname];
-
+    NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@:", [[self foreignKeyName] description]];
+    NSString *relativeIdSelectorString = [NSString stringWithFormat:@"set%@:", [aRecord foreignKeyName]];
+    
     SEL currentIdSelector = NSSelectorFromString(currentIdSelectorString);
-    SEL relativeIdSelector = NSSelectorFromString(relativeIdSlectorString);
+    SEL relativeIdSelector = NSSelectorFromString(relativeIdSelectorString);
     ActiveRecord *relationshipRecord = [RelationshipClass newRecord];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
