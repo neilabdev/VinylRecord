@@ -776,7 +776,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)addRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [[self class] performSelector: @selector(foreignKeyName)];
+    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
     [self addCachedEntity:aRecord forKey:entityKey];
 
     if(![aRecord isNewRecord] &&  [self persistRecord:aRecord])
@@ -797,7 +797,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)removeRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
+    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
 
     NSString *relationIdKey = [[self class] performSelector: @selector(foreignKeyName)];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
