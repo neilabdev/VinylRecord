@@ -724,8 +724,14 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void)setRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
     
-    NSString *selectorString = [[aRecord class] performSelector: @selector(foreignKeyName)];
-
+    NSString *selectorString = nil;
+    
+    if (aRecord == nil){
+        selectorString = [NSClassFromString(aRelation) performSelector: @selector(foreignKeyName)];
+    } else {
+        selectorString = [[aRecord class] performSelector: @selector(foreignKeyName)];
+    }
+    
     [self setCachedEntity:aRecord forKey:selectorString];
 
     if(![aRecord isNewRecord] && ![self isNewRecord] &&
@@ -744,7 +750,15 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
-    NSString *relId = [[aRecord class] performSelector: @selector(foreignKeyName)];
+    
+    NSString *relId = nil;
+    
+    if (aRecord == nil){
+        relId = [NSClassFromString(aRelation) performSelector: @selector(foreignKeyName)];
+    } else {
+        relId = [[aRecord class] performSelector: @selector(foreignKeyName)];
+    }
+    
     ARColumn *column = [self columnNamed:relId];
     BOOL success  = YES;
 
