@@ -8,6 +8,7 @@
 
 #import "ActiveRecord.h"
 #import "ARDatabaseManager.h"
+#import "NSString+uppercaseFirst.h"
 #import "NSString+lowercaseFirst.h"
 #import <objc/runtime.h>
 #import <CommonCrypto/CommonDigest.h>
@@ -878,10 +879,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if ([fetcher count] != 0) {
         return YES; // while it couldn't save, it already exists which has same effect.
     }
-    NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@Id:", [[self class] description]];
-    NSString *relativeIdSelectorString = [NSString stringWithFormat:@"set%@Id:", aClassname];
-    //NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@:", [[self foreignKeyName] description]];
-    //NSString *relativeIdSelectorString = [NSString stringWithFormat:@"set%@:", [aRecord foreignKeyName]];
+    NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@:", [[[self foreignKeyName] description] uppercaseFirst]];
+    NSString *relativeIdSelectorString = [NSString stringWithFormat:@"set%@:", [[aRecord foreignKeyName] uppercaseFirst]];
     
     SEL currentIdSelector = NSSelectorFromString(currentIdSelectorString);
     SEL relativeIdSelector = NSSelectorFromString(relativeIdSelectorString);
