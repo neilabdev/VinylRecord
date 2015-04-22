@@ -291,11 +291,6 @@
 		CAE9227C171495880082A97C /* ARFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9227B171495880082A97C /* ARFactory.m */; };
 		CAE9227F17149A080082A97C /* octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = CAE9227E17149A080082A97C /* octocat.png */; };
 		E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698C98D19F2B2AA00E13A61 /* Dog.swift */; };
-		F5D8BADA1AE55CE6001378D3 /* CustomUserAnimalRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8BAD71AE55CE6001378D3 /* CustomUserAnimalRelationship.m */; };
-		F5D8BADB1AE55CE6001378D3 /* CustomUserProjectRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8BAD91AE55CE6001378D3 /* CustomUserProjectRelationship.m */; };
-		F5DAA7E51AE7D0F600CFA781 /* CustomGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAA7E41AE7D0F600CFA781 /* CustomGroup.m */; };
-		F5FCDD391AE53936006B8914 /* CustomUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FCDD381AE53936006B8914 /* CustomUser.m */; };
-		F5FCDD3D1AE53B20006B8914 /* CustomRelationshipSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F5FCDD3C1AE53B20006B8914 /* CustomRelationshipSpec.mm */; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -536,15 +531,6 @@
 		E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E698C98D19F2B2AA00E13A61 /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		F5D8BAD61AE55CE6001378D3 /* CustomUserAnimalRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUserAnimalRelationship.h; sourceTree = "<group>"; };
-		F5D8BAD71AE55CE6001378D3 /* CustomUserAnimalRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUserAnimalRelationship.m; sourceTree = "<group>"; };
-		F5D8BAD81AE55CE6001378D3 /* CustomUserProjectRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUserProjectRelationship.h; sourceTree = "<group>"; };
-		F5D8BAD91AE55CE6001378D3 /* CustomUserProjectRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUserProjectRelationship.m; sourceTree = "<group>"; };
-		F5DAA7E31AE7D0E200CFA781 /* CustomGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomGroup.h; sourceTree = "<group>"; };
-		F5DAA7E41AE7D0F600CFA781 /* CustomGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomGroup.m; sourceTree = "<group>"; };
-		F5FCDD371AE53913006B8914 /* CustomUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomUser.h; sourceTree = "<group>"; };
-		F5FCDD381AE53936006B8914 /* CustomUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUser.m; sourceTree = "<group>"; };
-		F5FCDD3C1AE53B20006B8914 /* CustomRelationshipSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomRelationshipSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -609,7 +595,6 @@
 			children = (
 				CA0BAEC815C9A8EC008985E6 /* ColumnSpec.mm */,
 				CA3B7B9D15C91B7D00757498 /* CountSpec.mm */,
-				F5FCDD3C1AE53B20006B8914 /* CustomRelationshipSpec.mm */,
 				CA3B7B9715C9187D00757498 /* DatabaseManagerSpec.mm */,
 				CA0BAEBC15C9A5D2008985E6 /* DependencySpec.mm */,
 				CA3B7B9B15C91B0500757498 /* DropRecordSpec.mm */,
@@ -681,14 +666,6 @@
 				CAE92251171495290082A97C /* Animal.m */,
 				CAE92252171495290082A97C /* AnimalValidator.h */,
 				CAE92253171495290082A97C /* AnimalValidator.m */,
-				F5DAA7E31AE7D0E200CFA781 /* CustomGroup.h */,
-				F5DAA7E41AE7D0F600CFA781 /* CustomGroup.m */,
-				F5FCDD371AE53913006B8914 /* CustomUser.h */,
-				F5FCDD381AE53936006B8914 /* CustomUser.m */,
-				F5D8BAD61AE55CE6001378D3 /* CustomUserAnimalRelationship.h */,
-				F5D8BAD71AE55CE6001378D3 /* CustomUserAnimalRelationship.m */,
-				F5D8BAD81AE55CE6001378D3 /* CustomUserProjectRelationship.h */,
-				F5D8BAD91AE55CE6001378D3 /* CustomUserProjectRelationship.m */,
 				75F56DB81717003C00A1DF7B /* DecimalRecord.h */,
 				75F56DB91717003C00A1DF7B /* DecimalRecord.m */,
 				CA06017A1738EBBD009C0FE6 /* DifferentTableName.h */,
@@ -1509,7 +1486,6 @@
 				CA3B7B9C15C91B0500757498 /* DropRecordSpec.mm in Sources */,
 				CA3B7B9E15C91B7D00757498 /* CountSpec.mm in Sources */,
 				CA3B7BA015C91C3600757498 /* LazyFetcherSpec.mm in Sources */,
-				F5D8BADB1AE55CE6001378D3 /* CustomUserProjectRelationship.m in Sources */,
 				CA0BAEBB15C9A522008985E6 /* FactorySpec.mm in Sources */,
 				CA0BAEBD15C9A5D2008985E6 /* DependencySpec.mm in Sources */,
 				CA0BAEBF15C9A68E008985E6 /* MigrationSpec.mm in Sources */,
@@ -1537,7 +1513,6 @@
 				CA91ECCC1715AEC10085A27B /* GCDSpec.mm in Sources */,
 				75F56DBA1717003C00A1DF7B /* DecimalRecord.m in Sources */,
 				75F56DBC171700D300A1DF7B /* NSDecimalNumberSpec.mm in Sources */,
-				F5FCDD391AE53936006B8914 /* CustomUser.m in Sources */,
 				CA06017C1738EBBD009C0FE6 /* DifferentTableName.m in Sources */,
 				CA44DE541748D17C00831183 /* ARConfigurationSpec.mm in Sources */,
 				5DC6A16A9F723443CA1352CA /* NSDateSpec.mm in Sources */,
@@ -1561,7 +1536,6 @@
 				5DC6A162DF1D432EE3E3F5BB /* ARValidation.m in Sources */,
 				5DC6A6B9C101B2874279387C /* NSSet+toSql.m in Sources */,
 				5DC6A49D58FCC3671123F75A /* NSMutableDictionary+valueToArray.m in Sources */,
-				F5D8BADA1AE55CE6001378D3 /* CustomUserAnimalRelationship.m in Sources */,
 				5DC6A472E77C727CAAC60255 /* NSDate+sqlRepresentation.m in Sources */,
 				5DC6AF911C4B7810DEB01EE1 /* NSDate+isPresented.m in Sources */,
 				5DC6A5B4E9F83143925281BA /* NSData+sqlRepresentation.m in Sources */,
@@ -1592,9 +1566,7 @@
 				5DC6ACEBEA546D70980C95B5 /* DoubleColumn.mm in Sources */,
 				5DC6A665D072872D9DF317C3 /* NSStringColumn.mm in Sources */,
 				5DC6A70257D1550C0F9F3F2C /* NSDateColumn.mm in Sources */,
-				F5DAA7E51AE7D0F600CFA781 /* CustomGroup.m in Sources */,
 				5DC6ABB09C28CB0F27CBB801 /* NSDecimalNumberColumn.mm in Sources */,
-				F5FCDD3D1AE53B20006B8914 /* CustomRelationshipSpec.mm in Sources */,
 				5DC6AB4C264D6467940CDF6F /* NSNumberColumn.mm in Sources */,
 				5DC6A6BA9256EE09FFC2F9F6 /* ARDynamicAccessor.mm in Sources */,
 				5DC6AA0F298A3F2C7BDDA817 /* ARColumn.mm in Sources */,

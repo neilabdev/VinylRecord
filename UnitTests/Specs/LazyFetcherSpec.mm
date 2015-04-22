@@ -257,7 +257,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 [dtn save] should BeTruthy();
                 
                 //try to fetch the joined records
-                NSArray* results = [[[User query] join: DifferentTableName.class useJoin: ARJoinInner onField: @"id" andField: @"userId"] fetchJoinedRecords];
+                NSArray* results = [[[User query] join: DifferentTableName.class useJoin: ARJoinInner onField: @"id" andField: [User foreignKeyName]] fetchJoinedRecords];
 
                 results should_not BeNil();
                 results.count should equal(1);

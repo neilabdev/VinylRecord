@@ -840,8 +840,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
           ofClass:(NSString *)aClassname
           through:(NSString *)aRelationshipClassName
 {
-
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [aClassname lowercaseFirst]];
+    NSString *entityKey = [aRecord foreignKeyName];
+//    NSString *entityKey = [NSString stringWithFormat:@"%@", [aClassname lowercaseFirst]];
+    
     [self addCachedEntity:aRecord forKey:entityKey];
     /* If the record being added is not a new record and self is not new it is not necessary
     *  to queue the request. This allows use to mimic existing behavior while adding lazy

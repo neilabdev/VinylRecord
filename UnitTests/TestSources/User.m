@@ -9,6 +9,14 @@
 
 @implementation User
 
++ (NSString*)foreignKeyName {
+    return @"customUserForeignKey";
+}
+
+- (NSString *)foreignKeyName {
+    return [[self class] foreignKeyName];
+}
+
 @dynamic name;
 @synthesize ignoredProperty;
 //@dynamic groupId;

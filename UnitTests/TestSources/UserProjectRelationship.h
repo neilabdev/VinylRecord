@@ -10,7 +10,7 @@
 
 @interface UserProjectRelationship : VinylRecord
 
-@property (nonatomic, retain) NSNumber *userId;
+@property (nonatomic, retain) NSNumber *customUserForeignKey;
 @property (nonatomic, retain) NSNumber *projectId;
 
 @end
