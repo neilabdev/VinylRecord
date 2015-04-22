@@ -293,6 +293,7 @@
 		E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698C98D19F2B2AA00E13A61 /* Dog.swift */; };
 		F5D8BADA1AE55CE6001378D3 /* CustomUserAnimalRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8BAD71AE55CE6001378D3 /* CustomUserAnimalRelationship.m */; };
 		F5D8BADB1AE55CE6001378D3 /* CustomUserProjectRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8BAD91AE55CE6001378D3 /* CustomUserProjectRelationship.m */; };
+		F5DAA7E51AE7D0F600CFA781 /* CustomGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAA7E41AE7D0F600CFA781 /* CustomGroup.m */; };
 		F5FCDD391AE53936006B8914 /* CustomUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FCDD381AE53936006B8914 /* CustomUser.m */; };
 		F5FCDD3D1AE53B20006B8914 /* CustomRelationshipSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F5FCDD3C1AE53B20006B8914 /* CustomRelationshipSpec.mm */; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
@@ -539,6 +540,8 @@
 		F5D8BAD71AE55CE6001378D3 /* CustomUserAnimalRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUserAnimalRelationship.m; sourceTree = "<group>"; };
 		F5D8BAD81AE55CE6001378D3 /* CustomUserProjectRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUserProjectRelationship.h; sourceTree = "<group>"; };
 		F5D8BAD91AE55CE6001378D3 /* CustomUserProjectRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUserProjectRelationship.m; sourceTree = "<group>"; };
+		F5DAA7E31AE7D0E200CFA781 /* CustomGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomGroup.h; sourceTree = "<group>"; };
+		F5DAA7E41AE7D0F600CFA781 /* CustomGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomGroup.m; sourceTree = "<group>"; };
 		F5FCDD371AE53913006B8914 /* CustomUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomUser.h; sourceTree = "<group>"; };
 		F5FCDD381AE53936006B8914 /* CustomUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUser.m; sourceTree = "<group>"; };
 		F5FCDD3C1AE53B20006B8914 /* CustomRelationshipSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomRelationshipSpec.mm; sourceTree = "<group>"; };
@@ -678,6 +681,8 @@
 				CAE92251171495290082A97C /* Animal.m */,
 				CAE92252171495290082A97C /* AnimalValidator.h */,
 				CAE92253171495290082A97C /* AnimalValidator.m */,
+				F5DAA7E31AE7D0E200CFA781 /* CustomGroup.h */,
+				F5DAA7E41AE7D0F600CFA781 /* CustomGroup.m */,
 				F5FCDD371AE53913006B8914 /* CustomUser.h */,
 				F5FCDD381AE53936006B8914 /* CustomUser.m */,
 				F5D8BAD61AE55CE6001378D3 /* CustomUserAnimalRelationship.h */,
@@ -1587,6 +1592,7 @@
 				5DC6ACEBEA546D70980C95B5 /* DoubleColumn.mm in Sources */,
 				5DC6A665D072872D9DF317C3 /* NSStringColumn.mm in Sources */,
 				5DC6A70257D1550C0F9F3F2C /* NSDateColumn.mm in Sources */,
+				F5DAA7E51AE7D0F600CFA781 /* CustomGroup.m in Sources */,
 				5DC6ABB09C28CB0F27CBB801 /* NSDecimalNumberColumn.mm in Sources */,
 				F5FCDD3D1AE53B20006B8914 /* CustomRelationshipSpec.mm in Sources */,
 				5DC6AB4C264D6467940CDF6F /* NSNumberColumn.mm in Sources */,

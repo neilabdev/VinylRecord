@@ -26,7 +26,7 @@
 
 @dynamic imageData;
 
-belongs_to_imp(Group, group, ARDependencyDestroy)
+belongs_to_imp(CustomGroup, group, ARDependencyDestroy)
 has_many_through_imp(Project, CustomUserProjectRelationship, projects, ARDependencyDestroy)
 has_many_through_imp(Animal, CustomUserAnimalRelationship, pets, ARDependencyDestroy)
 

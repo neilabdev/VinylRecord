@@ -9,7 +9,7 @@
 #import "SpecHelper.h"
 
 #import "CustomUser.h"
-#import "Group.h"
+#import "CustomGroup.h"
 #import "Project.h"
 #import "ARDatabaseManager.h"
 #import "CustomUserProjectRelationship.h"
@@ -37,11 +37,11 @@ describe(@"HasMany", ^{
         peter.name = @"Peter";
         result = [peter save];
         result should BeTruthy();
-        Group *students = [Group new];
+        CustomGroup *students = [CustomGroup new];
         students.title = @"students";
         [students save] should BeTruthy();
-        [students addUser:john];
-        [students addUser:peter];
+        [students addCustomUser:john];
+        [students addCustomUser:peter];
         NSInteger count = [[students users] count];
         count should equal(2);
     });
@@ -71,14 +71,14 @@ describe(@"HasMany", ^{
         count should equal(0);
     });
     it(@"When I remove custom user, custom user should not have group", ^{
-        Group *group = [Group new];
+        CustomGroup *group = [CustomGroup new];
         group.title = @"PSV 1-16";
         [group save];
         CustomUser *user = [CustomUser new];
         user.name = @"Alex";
         [user save];
-        [user setGroup:group];
-        [group removeUser:user];
+        [user setCustomGroup: group];
+        [group removeCustomUser: user];
         user.group should BeNil();
     });
 });
@@ -93,34 +93,34 @@ describe(@"BelongsTo", ^{
         peter.name = @"Peter";
         result = [peter save];
         result should BeTruthy();
-        Group *students = [Group new];
+        CustomGroup *students = [CustomGroup new];
         students.title = @"students";
         [students save];
-        [students addUser:john];
-        [students addUser:peter];
-        Group *group = [john group];
+        [students addCustomUser:john];
+        [students addCustomUser:peter];
+        CustomGroup *group = [john group];
         [group title] should equal([students title]);
     });
     it(@"when i set belongsTo group, group should contain this custom user", ^{
-        Group *group = [Group new];
+        CustomGroup *group = [CustomGroup new];
         group.title = @"PSV 1-16";
         [group save];
         CustomUser *user = [CustomUser new];
         user.name = @"Alex";
         [user save];
-        [user setGroup:group];
+        [user setCustomGroup:group];
         CustomUser *foundedUser = [[[group users] fetchRecords] objectAtIndex:0];
         foundedUser.name should equal(user.name);
     });
     it(@"when i set belongsTo nil, i should remove relation", ^{
-        Group *group = [Group new];
+        CustomGroup *group = [CustomGroup new];
         group.title = @"PSV 1-16";
         [group save];
         CustomUser *user = [CustomUser new];
         user.name = @"Alex";
         [user save];
-        [user setGroup:group];
-        [user setGroup:nil];
+        [user setCustomGroup:group];
+        [user setCustomGroup:nil];
         group.users.count should equal(0);
     });
 });
