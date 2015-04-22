@@ -791,7 +791,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord {
-    NSString *relationIdKey = [[self class] performSelector: @selector(foreignKeyName)];
+    NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
     [aRecord setValue:self.id forColumn:column];
     return [aRecord save];
@@ -800,7 +800,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void)removeRecord:(ActiveRecord *)aRecord {
     NSString *entityKey = [[aRecord recordName] lowercaseFirst];
 
-    NSString *relationIdKey = [[self class] performSelector: @selector(foreignKeyName)];
+    NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
 
     [self removeCachedEntity:aRecord forKey:entityKey];
@@ -879,6 +879,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if ([fetcher count] != 0) {
         return YES; // while it couldn't save, it already exists which has same effect.
     }
+    //NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@Id:", [[self class] description]];
+    //NSString *relativeIdSelectorString = [NSString stringWithFormat:@"set%@Id:", aClassname];
     NSString *currentIdSelectorString = [NSString stringWithFormat:@"set%@:", [[[self foreignKeyName] description] uppercaseFirst]];
     NSString *relativeIdSelectorString = [NSString stringWithFormat:@"set%@:", [[aRecord foreignKeyName] uppercaseFirst]];
     

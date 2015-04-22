@@ -10,6 +10,7 @@
 
 @implementation Project
 has_many_through_imp(User, UserProjectRelationship, users, ARDependencyDestroy)
+has_many_through_imp(CustomUser, CustomUserProjectRelationship, custom_users, ARDependencyDestroy)
 has_many_imp(Issue, issues, ARDependencyDestroy)
 has_many_through_imp(Group, ProjectGroupRelationsShip, groups, ARDependencyNullify)
 column_imp(string,name)
