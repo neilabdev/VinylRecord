@@ -777,7 +777,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)addRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
+    
+    NSString *entityKey = [[[aRecord class] description] lowercaseFirst];
     [self addCachedEntity:aRecord forKey:entityKey];
 
     if(![aRecord isNewRecord] &&  [self persistRecord:aRecord])
@@ -798,12 +799,13 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)removeRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
 
     NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
-
+    
+    NSString *entityKey = [[[aRecord class] description] lowercaseFirst];
     [self removeCachedEntity:aRecord forKey:entityKey];
+    
     //[aRecord removeCachedEntity:self forKey:relationIdKey];//;[[self recordName] lowercaseFirst]
     [aRecord setCachedEntity:nil forKey:relationIdKey];
 
@@ -840,10 +842,10 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
           ofClass:(NSString *)aClassname
           through:(NSString *)aRelationshipClassName
 {
-    NSString *entityKey = [aRecord foreignKeyName];
-//    NSString *entityKey = [NSString stringWithFormat:@"%@", [aClassname lowercaseFirst]];
-    
+    // key used for caching: just the lowercase classname
+    NSString *entityKey = [aClassname lowercaseFirst];
     [self addCachedEntity:aRecord forKey:entityKey];
+    
     /* If the record being added is not a new record and self is not new it is not necessary
     *  to queue the request. This allows use to mimic existing behavior while adding lazy
     *  persistence support.  */
@@ -903,10 +905,13 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     NSString *currentId = [self foreignKeyName];
     NSString *relId = [aRecord foreignKeyName];
 
-    //TODO There should be a test to ensure that removing a relation also remove the item through the cache.
-    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
-    NSString *entityRelationKey = [relationsClass performSelector: @selector(foreignKeyName)] ;
+    //TODO There should be a test to ensure that removing a relation also removes the item through the cache.
+    
+    //NSString *entityKey = [[aRecord recordName] lowercaseFirst];
+    NSString *entityKey = [[[aRecord class] description] lowercaseFirst];
     [self removeCachedEntity:aRecord forKey:entityKey];
+    
+    NSString *entityRelationKey = [relationsClass performSelector: @selector(foreignKeyName)] ;
     [aRecord setCachedEntity:nil forKey:entityRelationKey];
 
     ARLazyFetcher *fetcher = [relationsClass lazyFetcher];
