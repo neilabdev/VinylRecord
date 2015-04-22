@@ -6,8 +6,8 @@
 #import <Foundation/Foundation.h>
 #import "VinylRecord.h"
 
-
 @interface CustomUserAnimalRelationship : VinylRecord
+
 @property (nonatomic,retain) NSNumber *animalId;
 @property (nonatomic,retain) NSNumber *aDifferentUserForeignKey;
 

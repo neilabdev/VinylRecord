@@ -40,7 +40,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   VinylRecord:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
@@ -54,4 +54,4 @@ SPEC CHECKSUMS:
   Tsuga: adbc3a27b5f0d005a246f77f8477ddb0365b52d5
   VinylRecord: 49d5f76472d5d3d0a424340603dcf99b90b22384
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.36.4

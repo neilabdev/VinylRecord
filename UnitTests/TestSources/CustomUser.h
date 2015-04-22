@@ -8,7 +8,7 @@
 
 #import "VinylRecord.h"
 
-@interface CustomUser : ActiveRecord
+@interface CustomUser : VinylRecord
 
 #pragma mark - Foreign Key Name
 + (NSString *)foreignKeyName;

@@ -12,7 +12,7 @@
 #import "Group.h"
 #import "Project.h"
 #import "ARDatabaseManager.h"
-#import "UserProjectRelationship.h"
+#import "CustomUserProjectRelationship.h"
 #import "Animal.h"
 
 using namespace Cedar::Matchers;

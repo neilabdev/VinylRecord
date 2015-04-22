@@ -8,9 +8,11 @@
 
 #import "CustomUserProjectRelationship.h"
 
-@implementation CustomUserProjectRelationship
+@implementation CustomUserProjectRelationship {
+    
+}
 
-@dynamic aDifferentUserForeignKey;
 @dynamic projectId;
+@dynamic aDifferentUserForeignKey;
 
 @end
