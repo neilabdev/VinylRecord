@@ -46,7 +46,6 @@ static NSMutableDictionary *relationshipsDictionary = nil;
 @end
 
 @implementation ActiveRecord
-
 @dynamic id;
 @dynamic createdAt;
 @dynamic updatedAt;
@@ -225,6 +224,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)dealloc {
+    NSLog(@"%@: deallocated", [self recordName]);
+
     for (ARColumn *column in self.columns) {
         objc_setAssociatedObject(self, column.columnKey,
                                  nil, OBJC_ASSOCIATION_ASSIGN);
@@ -233,10 +234,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     self.id = nil;
     self.updatedAt = nil;
     self.createdAt = nil;
-    self.belongsToPersistentQueue = nil;
-    self.hasManyPersistentQueue = nil;
-    self.hasManyThroughRelationsQueue = nil;
-    self.entityCache = nil;
+    [_belongsToPersistentQueue removeAllObjects];
+    [_hasManyThroughRelationsQueue removeAllObjects];
+    [_hasManyPersistentQueue removeAllObjects];
+    [_entityCache removeAllObjects];
+    [_changedColumns removeAllObjects];
 }
 
 - (void)markAsNew {
@@ -345,16 +347,16 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (ActiveRecord *) cachedEntityForKey: (NSString *) field {
-    return [self.entityCache objectForKey:field];
+    return (ActiveRecord*)[self.entityCache objectForKey:field];
 }
 
 - (NSArray*) cachedArrayForKey: (NSString *) field {
-    return [self.entityCache objectForKey:field];
+    return (NSArray*) [self.entityCache objectForKey:field];
 }
 
 - (void) addCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
     NSString *fieldKey = field;
-    NSMutableArray *entityArray = [self.entityCache objectForKey:fieldKey];
+    NSMutableArray *entityArray = (NSArray*)[self.entityCache objectForKey:fieldKey];
 
     if(!entityArray) {
         entityArray = [NSMutableArray array];
@@ -716,12 +718,12 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     }
 
     ARPersistentQueueEntity *entity = [ARPersistentQueueEntity entityBelongingToRecord:aRecord relation:aRelation];
-    if(!_belongsToPersistentQueue) {
-        _belongsToPersistentQueue = [NSMutableSet new];
+    if(!self.belongsToPersistentQueue ) {
+        self.belongsToPersistentQueue = [NSMutableSet new];
     }
 
-    [_belongsToPersistentQueue removeObject:entity];
-    [_belongsToPersistentQueue addObject:entity];
+    [self.belongsToPersistentQueue  removeObject:entity];
+    [self.belongsToPersistentQueue  addObject:entity];
 }
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
