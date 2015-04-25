@@ -129,7 +129,7 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (NSArray *)findAllByConditions:(NSDictionary *)conditions;
 
-+ (instancetype)findByConditions:(NSDictionary *)conditions;
++ (NSArray*)findByConditions:(NSDictionary *)conditions;
 
 + (void)addSearchOn:(NSString *)aField;
 

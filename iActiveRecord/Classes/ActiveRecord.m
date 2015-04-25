@@ -356,7 +356,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void) addCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
     NSString *fieldKey = field;
-    NSMutableArray *entityArray = (NSArray*)[self.entityCache objectForKey:fieldKey];
+    NSMutableArray *entityArray = (NSMutableArray*)[self.entityCache objectForKey:fieldKey];
 
     if(!entityArray) {
         entityArray = [NSMutableArray array];
@@ -1096,7 +1096,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return [[self lazyFetcher] findAllByConditions:conditions];
 }
 
-+ (instancetype) findByConditions: (NSDictionary *) conditions {
++ (NSArray*) findByConditions: (NSDictionary *) conditions {
     return [[self lazyFetcher] findByConditions:conditions];
 }
 
