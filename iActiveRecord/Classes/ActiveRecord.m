@@ -39,11 +39,6 @@
 static NSMutableDictionary *relationshipsDictionary = nil;
 
 
-@interface ActiveRecord () {
-
-    BOOL shouldSync;
-}
-@end
 
 @implementation ActiveRecord
 @dynamic id;
@@ -59,6 +54,15 @@ static NSMutableDictionary *relationshipsDictionary = nil;
     [self initializeValidators];
     [self initializeDynamicAccessors];
     [self registerRelationships];
+}
+
+
++ (instancetype) record {
+    return [self new: nil];
+}
+
++ (instancetype) record: (NSDictionary *) values {
+    return [self new: values];
 }
 
 + (instancetype) new {
@@ -221,6 +225,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if (self) {
         self.createdAt = self.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
         self.entityCache = [NSMutableDictionary dictionary];
+        self.changedColumns = [NSMutableSet setWithCapacity: 1];
         shouldSync = NO;
     }
     return self;
@@ -235,10 +240,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     self.id = nil;
     self.updatedAt = nil;
     self.createdAt = nil;
-
-    if(![NSThread isMainThread]) {
-        NSLog(@"%@: not release on main thread",[self recordName]);
-    }
+    self.entityCache = nil;
 }
 
 - (void)markAsNew {
@@ -249,11 +251,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 #pragma mark -
 - (BOOL) isDirty {
-    return  [_changedColumns count]>0 || [self hasQueuedRelationships];
+    return  [self.changedColumns count]>0 || [self hasQueuedRelationships];
 }
 
 - (void)resetChanges {
-    [_changedColumns removeAllObjects];
+    [self.changedColumns removeAllObjects];
 }
 
 - (void)resetErrors {
@@ -267,7 +269,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void)addError:(ARError *)anError {
     if (nil == errors) {
-        errors = [NSMutableSet new];
+        errors = [NSMutableSet setWithCapacity: 1];
     }
     [errors addObject:anError];
 }
@@ -322,10 +324,12 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 
 #pragma mark - Fetchers
-
-+ (NSArray *)allRecords {
++ (NSArray *) all {
     ARLazyFetcher *fetcher = [[ARLazyFetcher alloc] initWithRecord:[self class]];
     return [fetcher fetchRecords];
+}
++ (NSArray *)allRecords {
+    return [self all];
 }
 
 + (ARLazyFetcher *)lazyFetcher {
@@ -342,9 +346,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     else
         [self.entityCache removeObjectForKey:fieldKey];
 
-    if(![NSThread isMainThread]) {
-        NSLog(@"%@: setting on main thread",[self recordName]);
-    }
     return entity;
 }
 
@@ -361,7 +362,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     NSMutableArray *entityArray = (NSMutableArray*)[self.entityCache objectForKey:fieldKey];
 
     if(!entityArray) {
-        entityArray = [NSMutableArray array];
+        entityArray = [NSMutableArray arrayWithCapacity:1];
         [self.entityCache setObject:entityArray forKey:fieldKey];
     }
 
@@ -371,12 +372,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void) removeCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
         NSString *fieldKey = field;
         NSMutableArray *entityArray = [self.entityCache objectForKey:fieldKey];
-
-        if(!entityArray) {
-            entityArray = [NSMutableArray array];
-            [self.entityCache setObject:entityArray forKey:fieldKey];
-        }
-
         [entityArray removeObject :entity];
 }
 
@@ -556,7 +551,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
     if(![copy isKindOfClass:[self class]])  return;
 
-    NSSet *columnSet = [NSSet setWithSet: _changedColumns];
+    NSSet *columnSet = [NSSet setWithSet: self.changedColumns];
 
     for(ARColumn *col in [copy columns]) {
         if(merge && [columnSet containsObject:col])
@@ -721,7 +716,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
     ARPersistentQueueEntity *entity = [ARPersistentQueueEntity entityBelongingToRecord:aRecord relation:aRelation];
     if(!self.belongsToPersistentQueue ) {
-        self.belongsToPersistentQueue = [NSMutableSet new];
+        self.belongsToPersistentQueue = [NSMutableSet setWithCapacity: 1];
     }
 
     [self.belongsToPersistentQueue  removeObject:entity];
@@ -755,7 +750,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         return;
 
     if(!self.hasManyPersistentQueue) {
-       self.hasManyPersistentQueue = [NSMutableSet new];
+       self.hasManyPersistentQueue = [NSMutableSet setWithCapacity: 1];
     }
 
     [self.hasManyPersistentQueue addObject: [ARPersistentQueueEntity entityHavingManyRecord:aRecord]];
@@ -824,7 +819,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         return;
 
     if(!self.hasManyThroughRelationsQueue) {
-        self.hasManyThroughRelationsQueue = [NSMutableSet new];
+        self.hasManyThroughRelationsQueue = [NSMutableSet setWithCapacity: 1];
     }
 
     [self.hasManyThroughRelationsQueue addObject:[ARPersistentQueueEntity entityHavingManyRecord:aRecord
@@ -980,9 +975,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return [[self class] columnWithGetterNamed:aGetterName];
 }
 
-- (NSSet *)changedColumns {
-    return _changedColumns;
-}
 
 #pragma mark - Dynamic Properties
 
@@ -1000,10 +992,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     if (aColumn == nil) {
         return;
     }
-    if (_changedColumns == nil) {
-        _changedColumns = [NSMutableSet new];
-    }
-    
+
     id oldValue = objc_getAssociatedObject(self, aColumn.columnKey);
     if ( (oldValue == nil && aValue == nil) || ([oldValue isEqual:aValue]) ) {
         return;
@@ -1022,7 +1011,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         NSLog(@"%@: setting on main thread",[self recordName]);
     }
     
-    [_changedColumns addObject:aColumn];
+    [self.changedColumns addObject:aColumn];
 }
 
 - (id)valueForColumn:(ARColumn *)aColumn {
