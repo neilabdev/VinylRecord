@@ -233,7 +233,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 john.groupId = [NSNumber numberWithInt:145];
                 [john save];
                 User *user = [[fetcher fetchRecords] lastObject];
-                user.groupId should BeNil();
+                user.groupId should be_nil;
             });
             it(@"except should return only not listed fields", ^{
                 ARLazyFetcher *fetcher = [[User query] except:@"name", nil];
@@ -242,7 +242,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 john.groupId = [NSNumber numberWithInt:145];
                 [john save];
                 User *user = [[fetcher fetchRecords] lastObject];
-                user.name should BeNil();
+                user.name should be_nil;
             });
         });
         
@@ -250,23 +250,23 @@ Tsuga<ARLazyFetcher>::run(^{
             it(@"should be able to fetch joined records with different table names", ^{
                 User *john = [User new];
                 john.name = @"john";
-                john.save should BeTruthy();
+                john.save should be_truthy;
                 DifferentTableName* dtn = [DifferentTableName new];
                 dtn.title = @"testTitle";
                 dtn.user = john;
-                [dtn save] should BeTruthy();
+                [dtn save] should be_truthy;
                 
                 //try to fetch the joined records
                 NSArray* results = [[[User query] join: DifferentTableName.class useJoin: ARJoinInner onField: @"id" andField: @"userId"] fetchJoinedRecords];
 
-                results should_not BeNil();
+                results should_not be_nil;
                 results.count should equal(1);
-                [[results objectAtIndex: 0] objectForKey: @"User"] should_not BeNil();
+                [[results objectAtIndex: 0] objectForKey: @"User"] should_not be_nil;
                 [[[results objectAtIndex: 0] objectForKey: @"User"] isKindOfClass: User.class ] should equal(YES);
                 
                 User* user = [[results objectAtIndex: 0] objectForKey: @"User"];
                 [john.id isEqualToNumber: user.id] should equal(YES);
-                [[results objectAtIndex: 0] objectForKey: @"DifferentTableName"] should_not BeNil();
+                [[results objectAtIndex: 0] objectForKey: @"DifferentTableName"] should_not be_nil;
                 [[[results objectAtIndex: 0] objectForKey: @"DifferentTableName"] isKindOfClass: DifferentTableName.class] should equal(YES);
                 
                 
@@ -278,7 +278,7 @@ Tsuga<ARLazyFetcher>::run(^{
             it(@"should be able to return belongs_to cached result before save", ^{
                 User *john = [User new];
                 john.name = @"john";
-               // john.save should BeTruthy();
+               // john.save should be_truthy;
                 DifferentTableName* dtn = [DifferentTableName new];
                 dtn.title = @"testTitle";
                 dtn.user = john;
@@ -319,7 +319,7 @@ Tsuga<ARLazyFetcher>::run(^{
             it(@"should be able to return belongs_to cached result before save", ^{
                 User *john = [User new];
                 john.name = @"john";
-                // john.save should BeTruthy();
+                // john.save should be_truthy;
                 DifferentTableName* dtn = [DifferentTableName new];
                 dtn.title = @"testTitle";
                 dtn.user = john;

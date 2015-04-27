@@ -32,14 +32,14 @@ describe(@"HasMany", ^{
         User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
         User *peter = [User new];
         peter.name = @"Peter";
         result = [peter save];
-        result should BeTruthy();
+        result should be_truthy;
         Group *students = [Group new];
         students.title = @"students";
-        [students save] should BeTruthy();
+        [students save] should be_truthy;
         [students addUser:john];
         [students addUser:peter];
         NSInteger count = [[students users] count];
@@ -48,10 +48,10 @@ describe(@"HasMany", ^{
     it(@"Group should not add two equal users", ^{
         User *alex = [User new];
         alex.name = @"Alex";
-        [alex save] should BeTruthy();
+        [alex save] should be_truthy;
         Project *project = [Project new];
         project.name = @"students";
-        project.save should BeTruthy();
+        project.save should be_truthy;
         [project addUser:alex];
         [project addUser:alex];
         NSInteger count = project.users.count;
@@ -61,10 +61,10 @@ describe(@"HasMany", ^{
         [[ARDatabaseManager sharedManager] clearDatabase];
         User *alex = [User new];
         alex.name = @"Alex";
-        [alex save] should BeTruthy();
+        [alex save] should be_truthy;
         Project *project = [Project new];
         project.name = @"students";
-        project.save should BeTruthy();
+        project.save should be_truthy;
         [project addUser:alex];
         [project removeUser:alex];
         NSInteger count = [UserProjectRelationship count];
@@ -79,7 +79,7 @@ describe(@"HasMany", ^{
         [user save];
         [user setGroup:group];
         [group removeUser:user];
-        user.group should BeNil();
+        user.group should be_nil;
     });
 });
 
@@ -88,17 +88,17 @@ describe(@"BelongsTo", ^{
         User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
         User *peter = [User new];
         peter.name = @"Peter";
         result = [peter save];
-        result should BeTruthy();
+        result should be_truthy;
         Group *students = [Group new];
         students.title = @"students";
         [students save];
         [students addUser:john];
         [students addUser:peter];
-        Group *group = [john group];
+        Group *group = (Group*)[john group];
         [group title] should equal([students title]);
     });
     it(@"when i set belongsTo group, group should contain this user", ^{
@@ -204,57 +204,63 @@ describe(@"HasManyThrough", ^{
 
 describe(@"HasManyThroughQueue", ^{
     it(@"Queued User should have many projects ", ^{
-        User *john = [User new];
-        john.name = @"John";
-        User *peter = [User new];
-        peter.name = @"Peter";
-        User *vova = [User new];
-        vova.name = @"Vladimir";
 
-        Project *worldConquest = [Project new];
-        worldConquest.name = @"Conquest of the World";
+            User *john = [User new];
+            john.name = @"John";
+            User *peter = [User new];
+            peter.name = @"Peter";
+            User *vova = [User new];
+            vova.name = @"Vladimir";
+
+            Project *worldConquest = [Project new];
+            worldConquest.name = @"Conquest of the World";
 
 
-        Project *makeTea = [Project new];
-        makeTea.name = @"Make tea";
+            Project *makeTea = [Project new];
+            makeTea.name = @"Make tea";
 
-        [worldConquest addUser:john];
-        [worldConquest addUser:peter];
-        [worldConquest save];
+            [worldConquest addUser:john];
+            [worldConquest addUser:peter];
+            [worldConquest save];
 
-        [makeTea addUser:john];
-        [makeTea addUser:vova];
-        [makeTea save];
+            [makeTea addUser:john];
+            [makeTea addUser:vova];
+            [makeTea save];
 
-        NSArray *projects = [[john projects] fetchRecords];
-        projects.count should equal(2);
+            NSArray *projects = [[john projects] fetchRecords];
+            projects.count should equal(2);
+
+
+
     });
     it(@"Queued Project should have many users", ^{
-        User *john = [User new];
-        john.name = @"John";
 
-        User *peter = [User new];
-        peter.name = @"Peter";
+            User *john = [User new];
+            john.name = @"John";
 
-        User *vova = [User new];
-        vova.name = @"Vladimir";
+            User *peter = [User new];
+            peter.name = @"Peter";
 
-        Project *worldConquest = [Project new];
-        worldConquest.name = @"Conquest of the World";
+            User *vova = [User new];
+            vova.name = @"Vladimir";
 
-        Project *makeTea = [Project new];
-        makeTea.name = @"Make tea";
+            Project *worldConquest = [Project new];
+            worldConquest.name = @"Conquest of the World";
 
-        [worldConquest addUser:john];
-        [worldConquest addUser:peter];
-        [worldConquest save];
+            Project *makeTea = [Project new];
+            makeTea.name = @"Make tea";
 
-        [makeTea addUser:john];
-        [makeTea addUser:vova];
-        [makeTea save];
+            [worldConquest addUser:john];
+            [worldConquest addUser:peter];
+            [worldConquest save];
 
-        NSArray *users = [[worldConquest users] fetchRecords];
-        users.count should equal(2);
+            [makeTea addUser:john];
+            [makeTea addUser:vova];
+            [makeTea save];
+
+            NSArray *users = [[worldConquest users] fetchRecords];
+            users.count should equal(2);
+
     });
 
     it(@"Project should create many pets through HasManyThrough relationship with existing child", ^{

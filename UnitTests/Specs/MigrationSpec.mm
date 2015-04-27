@@ -35,7 +35,7 @@ describe(@"Add column", ^{
         animal.name = @"animal";
         animal.state = @"Full";
         BOOL result = [animal save];
-        result should BeTruthy();
+        result should be_truthy;
     });
 });
 
@@ -43,7 +43,7 @@ describe(@"Create table", ^{
     it(@"new record should save successfully", ^{
         Entity *ent = [Entity new];
         ent.property = @"LooLZ";
-        [ent save] should BeTruthy();
+        [ent save] should be_truthy;
     });
 });
 

@@ -28,7 +28,7 @@ Tsuga<ARDatabaseManager>::run(^{
             User *user = [User new];
             user.name = @"John";
             BOOL result = [user save];
-            result should BeTruthy();
+            result should be_truthy;
             [[ARDatabaseManager sharedManager] clearDatabase];
             NSInteger count = [[User allRecords] count];
             count should equal(0);

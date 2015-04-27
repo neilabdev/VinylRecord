@@ -33,7 +33,7 @@ Tsuga<NSData>::run(^{
                                           length:5];
             alex.imageData = data;
             BOOL result = [alex save];
-            result should BeTruthy();
+            result should be_truthy;
         });
         it(@"Should be read successfully from database", ^{
             User *alex = [User new];
@@ -43,7 +43,7 @@ Tsuga<NSData>::run(^{
             NSData *data = [NSData dataWithContentsOfFile:octocat];
             alex.imageData = data;
             BOOL result = [alex save];
-            result should BeTruthy();
+            result should be_truthy;
             
             User *fetchedUser = [[User allRecords] objectAtIndex:0];
             alex.imageData should equal(fetchedUser.imageData);

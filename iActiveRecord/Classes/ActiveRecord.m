@@ -66,19 +66,22 @@ static NSMutableDictionary *relationshipsDictionary = nil;
 }
 
 + (instancetype) new: (NSDictionary *) values {
-    ActiveRecord *newRow = [self newRecord];
+    ActiveRecord *newRow = [[self alloc] init];
+    [newRow markAsNew];
+
     if(values) for(id key in values) {
          //   ARColumn *column =  [self columnWithGetterNamed:key];
-            NSString *baseName = [key stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[key substringToIndex:1] uppercaseString]];
+            NSString *baseName = [key stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                                              withString:[[key substringToIndex:1] uppercaseString]];
             SEL setterMethod = NSSelectorFromString([NSString stringWithFormat:@"set%@:",baseName]);
             id columnValue = [values objectForKey:key];
 
-            NSAssert([newRow respondsToSelector:setterMethod],@"'%@' is not an existing column for %@ class.",key,  NSStringFromClass([newRow class]));
+            NSAssert([newRow respondsToSelector:setterMethod],
+                     @"'%@' is not an existing column for %@ class.",key,  NSStringFromClass([newRow class]));
 
-         //   if([newRow respondsToSelector:setterMethod])
-                [newRow performSelector:setterMethod withObject: columnValue ];
-           // [newRow setValue:columnValue forColumn:column];
-        }
+           //  [newRow performSelector:setterMethod withObject: columnValue ];
+        ((void (*)(id, SEL,id))[newRow methodForSelector:setterMethod])(newRow, setterMethod,columnValue);
+    }
     return newRow;
 }
 
@@ -224,8 +227,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)dealloc {
-    NSLog(@"%@: deallocated", [self recordName]);
-
     for (ARColumn *column in self.columns) {
         objc_setAssociatedObject(self, column.columnKey,
                                  nil, OBJC_ASSOCIATION_ASSIGN);
@@ -234,11 +235,10 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     self.id = nil;
     self.updatedAt = nil;
     self.createdAt = nil;
-    [_belongsToPersistentQueue removeAllObjects];
-    [_hasManyThroughRelationsQueue removeAllObjects];
-    [_hasManyPersistentQueue removeAllObjects];
-    [_entityCache removeAllObjects];
-    [_changedColumns removeAllObjects];
+
+    if(![NSThread isMainThread]) {
+        NSLog(@"%@: not release on main thread",[self recordName]);
+    }
 }
 
 - (void)markAsNew {
@@ -303,10 +303,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     return record;
 }
 + (instancetype)newRecord {
-    ActiveRecord *record = [[self alloc] init];
-    [record markAsNew];
-    return record;
-}
+    return [self new: nil];
+   }
 
 - (instancetype)reload {
     [self.entityCache removeAllObjects];
@@ -343,6 +341,10 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         [self.entityCache setObject:entity forKey:fieldKey];
     else
         [self.entityCache removeObjectForKey:fieldKey];
+
+    if(![NSThread isMainThread]) {
+        NSLog(@"%@: setting on main thread",[self recordName]);
+    }
     return entity;
 }
 
@@ -1016,6 +1018,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
                              aColumn.columnKey,
                              aValue,
                              aColumn.associationPolicy);
+    if(![NSThread isMainThread]) {
+        NSLog(@"%@: setting on main thread",[self recordName]);
+    }
     
     [_changedColumns addObject:aColumn];
 }

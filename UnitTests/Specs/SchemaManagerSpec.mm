@@ -31,7 +31,7 @@ Tsuga<ARSchemaManager>::run(^{
         it(@"should return nil on undefined column", ^{
             [[ARSchemaManager sharedInstance] registerSchemeForRecord:[User class]];
             ARColumn *column = [User columnNamed:@"FUUU"];
-            column should BeNil();
+            column should be_nil;
         });
     });
     

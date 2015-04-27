@@ -28,15 +28,15 @@ describe(@"Presence", ^{
         User *user = [User new];
         user.name = @"";
         BOOL result = [user save];
-        result should_not BeTruthy();
-//        result should_not BeTruthy();
+        result should_not be_truthy;
+//        result should_not be_truthy;
     });
     it(@"Should save User with some name", ^{
         User *user = [User new];
         user.name = @"John";
         BOOL result = [user save];
-        result should BeTruthy();
-//        result should BeTruthy();
+        result should be_truthy;
+//        result should be_truthy;
     });
 });
 
@@ -46,38 +46,38 @@ describe(@"Uniqueness", ^{
         john.name = @"John";
         BOOL result = [john save];
 
-        result should BeTruthy();
+        result should be_truthy;
         User *john2 = [User new];
         john2.name = @"John";
         result = [john2 save];
-        result should_not BeTruthy();
+        result should_not be_truthy;
         //Updates should not validate uniqueness
 
         john.name = @"Johns";
         john.name = @"John";
         john.birthDate = [NSDate date];
         result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
 
     });
     it(@"Should save User with some name", ^{
         User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
         User *peter = [User new];
         peter.name = @"Peter";
         result = [peter save];
-        result should BeTruthy();
+        result should be_truthy;
     });
     it(@"Should update fetched User", ^{
         User *john = [User new];
         john.name = @"John";
         BOOL result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
         User *user = [[[[User query] limit:1] fetchRecords] objectAtIndex:0];
         user.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-        user.save should BeTruthy();
+        user.save should be_truthy;
     });
 });
 
@@ -85,12 +85,12 @@ describe(@"Custom validator", ^{
     it(@"Animal name should be valid", ^{
         Animal *animal = [Animal new];
         animal.name = @"animal";
-        [animal save] should BeTruthy();
+        [animal save] should be_truthy;
     });
     it(@"Animal name should not be valid", ^{
         Animal *animal = [Animal new];
         animal.name = @"bear";
-        [animal save] should_not BeTruthy();
+        [animal save] should_not be_truthy;
     });
 });
 
