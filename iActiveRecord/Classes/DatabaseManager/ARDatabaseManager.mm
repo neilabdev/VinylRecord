@@ -583,16 +583,24 @@ static NSArray *records = nil;
 }
 
 - (NSInteger)saveRecord:(ActiveRecord *)aRecord {
-    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    
+    NSDate *originalUpdatedAt = aRecord.updatedAt;
+    NSDate *originalCreatedAt = aRecord.createdAt;
     NSSet *changedColumns = [aRecord changedColumns];
     NSInteger columnsCount = changedColumns.count;
-    if (!columnsCount) {
-        return 0;
+    __block int result = 0;
+
+    if(columnsCount) { //TODO: refactor
+        if(!originalUpdatedAt)
+            aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+        if(!aRecord.createdAt)
+            aRecord.createdAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+        changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+        columnsCount = changedColumns.count;
     }
 
-    __block int result = 0;
-    
+    if(columnsCount)
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
@@ -665,25 +673,36 @@ static NSArray *records = nil;
         }
 
     });
+
+    if(result == 0) {
+        aRecord.createdAt = originalCreatedAt;
+        aRecord.updatedAt = originalUpdatedAt;
+    }
+
     return result;
 }
 
 
 - (NSInteger)updateRecord:(ActiveRecord *)aRecord {
-    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSSet *changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+    NSDate *originalUpdatedAt = aRecord.updatedAt;
+    NSDate *originalCreatedAt = aRecord.createdAt;
+    NSSet *changedColumns = [aRecord changedColumns];
     NSInteger columnsCount = changedColumns.count;
-    if (!columnsCount) {
-        return 0;
+
+    if(columnsCount) {
+        aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+        changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+        columnsCount = changedColumns.count;
     }
+
 
     __block int result = SQLITE_OK;
 
+    if(columnsCount)
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
         const char *sql;
-
 
         NSMutableArray *columns = [NSMutableArray arrayWithCapacity:columnsCount];
         NSArray *orderedColumns = [changedColumns allObjects];
@@ -741,6 +760,11 @@ static NSArray *records = nil;
         }
 
     });
+
+    if(result != SQLITE_OK) {
+        aRecord.updatedAt = originalUpdatedAt;
+    }
+
     return result != SQLITE_OK ? 0 : 1;
 }
 

@@ -29,15 +29,15 @@ afterEach(^{
 
 describe(@"HasMany", ^{
     it(@"Group should have two users", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
         result should be_truthy;
-        User *peter = [User new];
+        User *peter = [User record];
         peter.name = @"Peter";
         result = [peter save];
         result should be_truthy;
-        Group *students = [Group new];
+        Group *students = [Group record];
         students.title = @"students";
         [students save] should be_truthy;
         [students addUser:john];
@@ -46,10 +46,10 @@ describe(@"HasMany", ^{
         count should equal(2);
     });
     it(@"Group should not add two equal users", ^{
-        User *alex = [User new];
+        User *alex = [User record];
         alex.name = @"Alex";
         [alex save] should be_truthy;
-        Project *project = [Project new];
+        Project *project = [Project record];
         project.name = @"students";
         project.save should be_truthy;
         [project addUser:alex];
@@ -59,10 +59,10 @@ describe(@"HasMany", ^{
     });
     it(@"Should remove relationship record", ^{
         [[ARDatabaseManager sharedManager] clearDatabase];
-        User *alex = [User new];
+        User *alex = [User record];
         alex.name = @"Alex";
         [alex save] should be_truthy;
-        Project *project = [Project new];
+        Project *project = [Project record];
         project.name = @"students";
         project.save should be_truthy;
         [project addUser:alex];
@@ -71,10 +71,10 @@ describe(@"HasMany", ^{
         count should equal(0);
     });
     it(@"When I remove user, user should not have group", ^{
-        Group *group = [Group new];
+        Group *group = [Group record];
         group.title = @"PSV 1-16";
         [group save];
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"Alex";
         [user save];
         [user setGroup:group];
@@ -85,15 +85,15 @@ describe(@"HasMany", ^{
 
 describe(@"BelongsTo", ^{
     it(@"User should have one group", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
         result should be_truthy;
-        User *peter = [User new];
+        User *peter = [User record];
         peter.name = @"Peter";
         result = [peter save];
         result should be_truthy;
-        Group *students = [Group new];
+        Group *students = [Group record];
         students.title = @"students";
         [students save];
         [students addUser:john];
@@ -102,10 +102,10 @@ describe(@"BelongsTo", ^{
         [group title] should equal([students title]);
     });
     it(@"when i set belongsTo group, group should contain this user", ^{
-        Group *group = [Group new];
+        Group *group = [Group record];
         group.title = @"PSV 1-16";
         [group save];
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"Alex";
         [user save];
         [user setGroup:group];
@@ -113,10 +113,10 @@ describe(@"BelongsTo", ^{
         foundedUser.name should equal(user.name);
     });
     it(@"when i set belongsTo nil, i should remove relation", ^{
-        Group *group = [Group new];
+        Group *group = [Group record];
         group.title = @"PSV 1-16";
         [group save];
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"Alex";
         [user save];
         [user setGroup:group];
@@ -127,21 +127,21 @@ describe(@"BelongsTo", ^{
 
 describe(@"HasManyThrough", ^{
     it(@"User should have many projects", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         [john save];
-        User *peter = [User new];
+        User *peter = [User record];
         peter.name = @"Peter";
         [peter save];
-        User *vova = [User new];
+        User *vova = [User record];
         vova.name = @"Vladimir";
         [vova save];
         
-        Project *worldConquest = [Project new];
+        Project *worldConquest = [Project record];
         worldConquest.name = @"Conquest of the World";
         [worldConquest save];
         
-        Project *makeTea = [Project new];
+        Project *makeTea = [Project record];
         makeTea.name = @"Make tea";
         [makeTea save];
         
@@ -155,21 +155,21 @@ describe(@"HasManyThrough", ^{
         projects.count should equal(2);
     });
     it(@"Project should have many users", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         [john save];
-        User *peter = [User new];
+        User *peter = [User record];
         peter.name = @"Peter";
         [peter save];
-        User *vova = [User new];
+        User *vova = [User record];
         vova.name = @"Vladimir";
         [vova save];
         
-        Project *worldConquest = [Project new];
+        Project *worldConquest = [Project record];
         worldConquest.name = @"Conquest of the World";
         [worldConquest save];
         
-        Project *makeTea = [Project new];
+        Project *makeTea = [Project record];
         makeTea.name = @"Make tea";
         [makeTea save];
         
@@ -185,10 +185,10 @@ describe(@"HasManyThrough", ^{
 
 
     it(@"when I remove user, group should not contain this user", ^{
-        User *alex = [User new];
+        User *alex = [User record];
         alex.name = @"Alex";
         [alex save];
-        Project *makeTea = [Project new];
+        Project *makeTea = [Project record];
         makeTea.name = @"Make tea";
         [makeTea save];
         
@@ -205,18 +205,18 @@ describe(@"HasManyThrough", ^{
 describe(@"HasManyThroughQueue", ^{
     it(@"Queued User should have many projects ", ^{
 
-            User *john = [User new];
+            User *john = [User record];
             john.name = @"John";
-            User *peter = [User new];
+            User *peter = [User record];
             peter.name = @"Peter";
-            User *vova = [User new];
+            User *vova = [User record];
             vova.name = @"Vladimir";
 
-            Project *worldConquest = [Project new];
+            Project *worldConquest = [Project record];
             worldConquest.name = @"Conquest of the World";
 
 
-            Project *makeTea = [Project new];
+            Project *makeTea = [Project record];
             makeTea.name = @"Make tea";
 
             [worldConquest addUser:john];
@@ -235,19 +235,19 @@ describe(@"HasManyThroughQueue", ^{
     });
     it(@"Queued Project should have many users", ^{
 
-            User *john = [User new];
+            User *john = [User record];
             john.name = @"John";
 
-            User *peter = [User new];
+            User *peter = [User record];
             peter.name = @"Peter";
 
-            User *vova = [User new];
+            User *vova = [User record];
             vova.name = @"Vladimir";
 
-            Project *worldConquest = [Project new];
+            Project *worldConquest = [Project record];
             worldConquest.name = @"Conquest of the World";
 
-            Project *makeTea = [Project new];
+            Project *makeTea = [Project record];
             makeTea.name = @"Make tea";
 
             [worldConquest addUser:john];
@@ -264,12 +264,12 @@ describe(@"HasManyThroughQueue", ^{
     });
 
     it(@"Project should create many pets through HasManyThrough relationship with existing child", ^{
-        User *john = [User new: @{@"name": @"John"}];
-        User *peter =  [User new: @{@"name": @"Peter"}];
+        User *john = [User record: @{@"name": @"John"}];
+        User *peter =  [User record: @{@"name": @"Peter"}];
 
-        [john addAnimal:[Animal new: @{@"name":@"animal", @"state":@"good", @"title" : @"test title"}]];
+        [john addAnimal:[Animal record: @{@"name":@"animal", @"state":@"good", @"title" : @"test title"}]];
 
-        Project *worldConquest = [Project new: @{@"name": @"Conquest of the World"}];
+        Project *worldConquest = [Project record: @{@"name": @"Conquest of the World"}];
         [worldConquest addUser:john];
         [worldConquest addUser:peter];
         [worldConquest save] should equal(TRUE);
@@ -281,7 +281,7 @@ describe(@"HasManyThroughQueue", ^{
         fetched_project.name should equal(@"Conquest of the World");
         fetched_user.name should equal(@"John");
 
-        [fetched_user addAnimal:[Animal new: @{@"name":@"animal", @"state":@"okay", @"title" : @"test title2"}] ];
+        [fetched_user addAnimal:[Animal record: @{@"name":@"animal", @"state":@"okay", @"title" : @"test title2"}] ];
         [fetched_project addUser:fetched_user];  // Normally, Animal wouldn't be persisted because the fetched_user relation already exists
         [fetched_project save] should equal(TRUE);
         [fetched_user.pets count] should equal(2);
@@ -289,13 +289,13 @@ describe(@"HasManyThroughQueue", ^{
     });
 
     it(@"Project validation errors should propagate through HasManyThrough relationship", ^{
-        User *john = [User new: @{@"name": @"John"}];
-        User *peter =  [User new: @{@"name": @"Peter"}];
-        Animal *animal = [Animal new: @{@"name":@"animal_error", @"state":@"good", @"title" : @"test title"}];
+        User *john = [User record: @{@"name": @"John"}];
+        User *peter =  [User record: @{@"name": @"Peter"}];
+        Animal *animal = [Animal record: @{@"name":@"animal_error", @"state":@"good", @"title" : @"test title"}];
 
         [john addAnimal:animal];
 
-        Project *worldConquest = [Project new: @{@"name": @"Conquest of the World"}];
+        Project *worldConquest = [Project record: @{@"name": @"Conquest of the World"}];
         [worldConquest addUser:john];
         [worldConquest addUser:peter];
         [worldConquest save] should equal(NO);
@@ -313,10 +313,10 @@ describe(@"HasManyThroughQueue", ^{
     });
 
     it(@"when I remove Queued  user, group should not contain this user", ^{
-        User *alex = [User new];
+        User *alex = [User record];
         alex.name = @"Alex";
 
-        Project *makeTea = [Project new];
+        Project *makeTea = [Project record];
         makeTea.name = @"Make tea";
         [makeTea addUser:alex];
         [makeTea save];

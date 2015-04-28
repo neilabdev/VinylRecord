@@ -28,10 +28,10 @@ afterEach(^{
 describe(@"Join", ^{
     beforeEach(^{
         for(int i=0;i<10;i++){
-            Group *group = [Group new];
+            Group *group = [Group record];
             group.title = [NSString stringWithFormat:@"group%d", i];
             [group save];
-            User *user = [User new];
+            User *user = [User record];
             user.name = [NSString stringWithFormat:@"user%d", i];
             user.groupId = group.id;
             [user save];

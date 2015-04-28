@@ -223,7 +223,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.createdAt = self.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+     //   self.createdAt = self.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
         self.entityCache = [NSMutableDictionary dictionary];
         self.changedColumns = [NSMutableSet setWithCapacity: 1];
         shouldSync = NO;
@@ -300,7 +300,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 
 + (instancetype)persistedRecord {
-    ActiveRecord *record = [[self alloc] init];
+    ActiveRecord *record = [self new:nil];
     [record markAsPersisted];
     return record;
 }
@@ -340,12 +340,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark - cache
 
 - (ActiveRecord*) setCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
-    NSString *fieldKey = field;
-    if(entity)
-        [self.entityCache setObject:entity forKey:fieldKey];
-    else
-        [self.entityCache removeObjectForKey:fieldKey];
-
+    [self.entityCache setValue:entity forKey:field];
     return entity;
 }
 
@@ -591,6 +586,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
     /* If queued belongs_to relationship exists, we should have those before saving ourselves
     *  because validations could rely on the existence of such properties. */
+
+
+
     if(![self persistQueuedBelongsToRelationships]) {
         return NO;
     }
@@ -1007,9 +1005,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
                              aColumn.columnKey,
                              aValue,
                              aColumn.associationPolicy);
-    if(![NSThread isMainThread]) {
-        NSLog(@"%@: setting on main thread",[self recordName]);
-    }
     
     [self.changedColumns addObject:aColumn];
 }

@@ -25,14 +25,14 @@ afterEach(^{
 
 describe(@"Presence", ^{
     it(@"Should not save User with empty name", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"";
         BOOL result = [user save];
         result should_not be_truthy;
 //        result should_not be_truthy;
     });
     it(@"Should save User with some name", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"John";
         BOOL result = [user save];
         result should be_truthy;
@@ -42,12 +42,12 @@ describe(@"Presence", ^{
 
 describe(@"Uniqueness", ^{
     it(@"Should not save User with same name", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
 
         result should be_truthy;
-        User *john2 = [User new];
+        User *john2 = [User record];
         john2.name = @"John";
         result = [john2 save];
         result should_not be_truthy;
@@ -61,17 +61,17 @@ describe(@"Uniqueness", ^{
 
     });
     it(@"Should save User with some name", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
         result should be_truthy;
-        User *peter = [User new];
+        User *peter = [User record];
         peter.name = @"Peter";
         result = [peter save];
         result should be_truthy;
     });
     it(@"Should update fetched User", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
         result should be_truthy;
@@ -83,12 +83,12 @@ describe(@"Uniqueness", ^{
 
 describe(@"Custom validator", ^{
     it(@"Animal name should be valid", ^{
-        Animal *animal = [Animal new];
+        Animal *animal = [Animal record];
         animal.name = @"animal";
         [animal save] should be_truthy;
     });
     it(@"Animal name should not be valid", ^{
-        Animal *animal = [Animal new];
+        Animal *animal = [Animal record];
         animal.name = @"bear";
         [animal save] should_not be_truthy;
     });
