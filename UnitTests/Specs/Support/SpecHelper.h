@@ -8,7 +8,7 @@
 
 #import <Cedar-iOS.h>
 #import <CedarAsync/CedarAsync.h>
-#import <Tsuga/Tsuga.h>
+#import "Tsuga.h"
 
 #import "ARConfiguration.h"
 #import "ActiveRecord.h"
