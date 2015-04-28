@@ -27,25 +27,25 @@ Tsuga<NSData>::run(^{
     
     describe(@"NSData", ^{
         it(@"Should be saved successfully into database", ^{
-            User *alex = [User new];
+            User *alex = [User record];
             alex.name = @"Alex";
             NSData *data = [NSData dataWithBytes:"hello"
                                           length:5];
             alex.imageData = data;
             BOOL result = [alex save];
-            result should BeTruthy();
+            result should be_truthy;
         });
         it(@"Should be read successfully from database", ^{
-            User *alex = [User new];
+            User *alex = [User record];
             alex.name = @"Alex";
             NSString *octocat = [[NSBundle mainBundle] pathForResource:@"octocat"
                                                                 ofType:@"png"];
             NSData *data = [NSData dataWithContentsOfFile:octocat];
             alex.imageData = data;
             BOOL result = [alex save];
-            result should BeTruthy();
+            result should be_truthy;
             
-            User *fetchedUser = [[User allRecords] objectAtIndex:0];
+            User *fetchedUser = [[User all] objectAtIndex:0];
             alex.imageData should equal(fetchedUser.imageData);
         });
     });

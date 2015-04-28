@@ -11,16 +11,26 @@
 #if defined __cplusplus
 extern "C" {
 #endif
-    NSString *ARCachesDatabasePath(NSString *databaseName);
-    NSString *ARDocumentsDatabasePath(NSString *databaseName);
+
+NSString *ARCachesDatabasePath(NSString *databaseName);
+
+NSString *ARDocumentsDatabasePath(NSString *databaseName);
+
 #if defined __cplusplus
 };
 #endif
 
+
+typedef NS_ENUM(NSInteger, ARConfigurationRecycleInterval) {
+    ARConfigurationRecycleIntervalNever = -1
+};
+
 @interface ARConfiguration : NSObject
 
-@property (nonatomic, copy) NSString *databasePath;
-@property (nonatomic, assign) BOOL enableThreadPool;
-@property (nonatomic, getter = isMigrationsEnabled) BOOL migrationsEnabled;
+@property(nonatomic, copy) NSString *databasePath;
+@property(nonatomic, assign) BOOL enableThreadPool;
+@property(nonatomic, assign) NSInteger recycleInterval;
+@property(nonatomic, assign) NSInteger flags;
+@property(nonatomic, getter = isMigrationsEnabled) BOOL migrationsEnabled;
 
 @end

@@ -31,16 +31,16 @@ afterEach(^{
 describe(@"NewAndCreate", ^{
     it(@"should be successful with :new method ", ^{
         NSNumber *recordId = nil;
-        Animal *enot = [Animal new: @{@"name":@"animal", @"title": @"Racoon"}];
-        [enot isNewRecord] should equal(@(TRUE));
-        enot.save should BeTruthy();
+        Animal *enot = [Animal record: @{@"name":@"animal", @"title": @"Racoon"}];
+        [enot isNewRecord] should be_truthy;
+        enot.save should  be_truthy;
         recordId = enot.id;
         Animal *racoon = [[Animal allRecords] objectAtIndex:0];
 
         racoon.id should equal(recordId);
         racoon.title should equal(@"Racoon");
         racoon.name should equal(@"animal");
-        [racoon isNewRecord] should equal(@(FALSE));
+        [racoon isNewRecord] should_not  be_truthy;
     });
 
 
@@ -69,8 +69,8 @@ describe(@"NewAndCreate", ^{
             Item *syncItem = [Item new:@{@"name" : @"Misc Name", @"text":@"text2"}];
             Item *persistedItem = nil;
 
-            initialItem.save should BeTruthy();
-            [syncItem sync] should BeTruthy();
+            initialItem.save should be_truthy;
+            [syncItem sync] should be_truthy;
             persistedItem = [initialItem reload];
 
             syncItem.title should equal(initialItem.title);
@@ -86,10 +86,10 @@ describe(@"Update", ^{
 #warning separate this specs
     it(@"should be successful", ^{
         NSNumber *recordId = nil;
-        Animal *enot = [Animal new] ;
+        Animal *enot = [Animal record] ;
         enot.name = @"animal";
         enot.title = @"Racoon";
-        enot.save should BeTruthy();
+        enot.save should be_truthy;
         recordId = enot.id;
         Animal *record = [[Animal allRecords] objectAtIndex:0];
         record.title = @"Enot";
@@ -103,26 +103,27 @@ describe(@"Update", ^{
     });
     
     it(@"should not validate properies that don't changed", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"Alex";
-        user.save should BeTruthy();
+        user.save should be_truthy;
         user.name = @"Alex";
-        user.save should BeTruthy();
-        user.save should BeTruthy();
+        user.save should be_truthy;
+        user.save should be_truthy;
+        user = nil;
     });
     
     it(@"should save values with quotes", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"Al'ex";
         user.save should be_truthy;
 
-        user = [User new];
+        user = [User record];
         user.name = @"Bo\"b";
         user.save should be_truthy;
     });
     
     it(@"should update values with quotes", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"Peter";
         user.save should be_truthy;
         User *savedUser = [[User allRecords] lastObject];

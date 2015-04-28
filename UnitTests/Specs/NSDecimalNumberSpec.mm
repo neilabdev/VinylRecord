@@ -18,7 +18,7 @@ Tsuga<NSDecimalNumber>::run(^{
     
     describe(@"NSDecimalNumberSpec", ^{
         it(@"should return the same NSDecimalNumber value after saving", ^{
-            DecimalRecord *record = [DecimalRecord new];
+            DecimalRecord *record = [DecimalRecord record];
             NSDecimalNumber *testDecimal = [NSDecimalNumber decimalNumberWithMantissa:1123563 exponent:-3 isNegative:NO];
             record.decimal = testDecimal;
             [record save];

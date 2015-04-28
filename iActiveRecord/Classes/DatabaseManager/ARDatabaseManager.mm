@@ -19,6 +19,7 @@
 @implementation ARDatabaseConnection {
 @private
     sqlite3 *database;
+    __block NSInteger recyles;
 }
 @synthesize database = database;
 
@@ -34,6 +35,7 @@
 - (id)initWithConfiguration:(ARConfiguration *)config {
     if (self = [super init]) {
         database = NULL;
+        recyles = config.recycleInterval;
         self.configuration = config;
         [self openConnection];
     }
@@ -46,30 +48,63 @@
     return connection;
 }
 
+- (void) releaseConnection {
+    if (database) {
+        int rc = sqlite3_close(database);
+        if (rc == SQLITE_BUSY) {
+            NSLog(@"SQLITE_BUSY: not all statements cleanly finalized");
+
+            sqlite3_stmt *stmt;
+            while ((stmt = sqlite3_next_stmt(database, 0x00)) != 0) {
+                NSLog(@"finalizing stmt");
+                sqlite3_finalize(stmt);
+            }
+            rc = sqlite3_close(database);
+        }
+
+        if (rc != SQLITE_OK) {
+            NSLog(@"close not OK.  rc=%d", rc);
+        }
+
+        database = NULL;
+    }
+}
+
 - (void)openConnection {
     dispatch_sync([ARDatabaseConnection connectionQueue], ^{
-        if (!database) if (SQLITE_OK != sqlite3_open([self.configuration.databasePath UTF8String], &database)) {
+        if(database) {
+            if(recyles != ARConfigurationRecycleIntervalNever && --recyles==0) {
+                recyles = self.configuration.recycleInterval;
+                [self releaseConnection];
+                NSLog(@"recycling connection");
+            }
+        }
+
+        if (!database && SQLITE_OK != sqlite3_open_v2([self.configuration.databasePath UTF8String],
+                &database, self.configuration.flags |SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE , NULL)) {
             NSLog(@"Couldn't open database connection: %s", sqlite3_errmsg(database));
+            database = NULL;
         }
     });
 }
 
 - (void)closeConnection {
     dispatch_sync([ARDatabaseConnection connectionQueue], ^{
-        if (database) {
-            sqlite3_close(database);
-        }
+        [self releaseConnection];
     });
+}
+
+- (void) recycleConnection {
+    [self openConnection];
 }
 
 - (void)dealloc {
     [self closeConnection];
 }
-
 @end
 
 @interface ARDatabaseManager ()
-@property(nonatomic, retain) NSMutableDictionary *connections;
+    @property(nonatomic, retain) NSMutableDictionary *connections;
 @end
 
 @implementation ARDatabaseManager
@@ -101,7 +136,6 @@ static NSArray *records = nil;
 }
 
 - (void)dealloc {
-    //[self closeConnection];
     sqlite3_unicode_free();
 }
 
@@ -113,6 +147,8 @@ static NSArray *records = nil;
 
     if(!currentConnection) {
         [threadDictionary setObject:currentConnection=[ARDatabaseConnection connectionWithConfiguration:self.configuration] forKey:@"ARDatabaseConnection"];
+    } else {
+        [currentConnection recycleConnection];
     }
 
     return currentConnection;
@@ -221,7 +257,6 @@ static NSArray *records = nil;
             }
         }
         
-        
     });
     return resultArray;
 }
@@ -263,6 +298,7 @@ static NSArray *records = nil;
             }
         }
         sqlite3_free_table(results);
+
     });
     return resultArray;
 }
@@ -283,6 +319,7 @@ static NSArray *records = nil;
             NSLog( @"Couldn't execute query %s : %s", anSqlQuery, sqlite3_errmsg(connection.database) );
             result = NO;
         }
+
     });
     return result;
 }
@@ -377,7 +414,7 @@ static NSArray *records = nil;
             hasColumns = YES;
         }
         sqlite3_finalize(statement);
-        
+
     });
     
     return resultArray;
@@ -490,7 +527,7 @@ static NSArray *records = nil;
             [resultArray addObject:recordsDictionary];
         }
         sqlite3_finalize(statement);
-        
+
     });
     
     return resultArray;
@@ -539,22 +576,31 @@ static NSArray *records = nil;
         }
         
         sqlite3_free_table(results);
+
     });
     
     return resId;
 }
 
 - (NSInteger)saveRecord:(ActiveRecord *)aRecord {
-    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    
+    NSDate *originalUpdatedAt = aRecord.updatedAt;
+    NSDate *originalCreatedAt = aRecord.createdAt;
     NSSet *changedColumns = [aRecord changedColumns];
     NSInteger columnsCount = changedColumns.count;
-    if (!columnsCount) {
-        return 0;
+    __block int result = 0;
+
+    if(columnsCount) { //TODO: refactor
+        if(!originalUpdatedAt)
+            aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+        if(!aRecord.createdAt)
+            aRecord.createdAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+        changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+        columnsCount = changedColumns.count;
     }
 
-    __block int result = 0;
-    
+    if(columnsCount)
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
@@ -625,26 +671,38 @@ static NSArray *records = nil;
                     break;
             }
         }
+
     });
+
+    if(result == 0) {
+        aRecord.createdAt = originalCreatedAt;
+        aRecord.updatedAt = originalUpdatedAt;
+    }
+
     return result;
 }
 
 
 - (NSInteger)updateRecord:(ActiveRecord *)aRecord {
-    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSSet *changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+    NSDate *originalUpdatedAt = aRecord.updatedAt;
+    NSDate *originalCreatedAt = aRecord.createdAt;
+    NSSet *changedColumns = [aRecord changedColumns];
     NSInteger columnsCount = changedColumns.count;
-    if (!columnsCount) {
-        return 0;
+
+    if(columnsCount) {
+        aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+        changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+        columnsCount = changedColumns.count;
     }
+
 
     __block int result = SQLITE_OK;
 
+    if(columnsCount)
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
         const char *sql;
-
 
         NSMutableArray *columns = [NSMutableArray arrayWithCapacity:columnsCount];
         NSArray *orderedColumns = [changedColumns allObjects];
@@ -700,7 +758,13 @@ static NSArray *records = nil;
                     break;
             }
         }
+
     });
+
+    if(result != SQLITE_OK) {
+        aRecord.updatedAt = originalUpdatedAt;
+    }
+
     return result != SQLITE_OK ? 0 : 1;
 }
 

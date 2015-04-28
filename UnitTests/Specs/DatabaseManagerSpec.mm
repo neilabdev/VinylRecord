@@ -25,12 +25,12 @@ Tsuga<ARDatabaseManager>::run(^{
     
     describe(@"ARDatabase", ^{
         it(@"Should clear all data", ^{
-            User *user = [User new];
+            User *user = [User record];
             user.name = @"John";
             BOOL result = [user save];
-            result should BeTruthy();
+            result should be_truthy;
             [[ARDatabaseManager sharedManager] clearDatabase];
-            NSInteger count = [[User allRecords] count];
+            NSInteger count = [[User all] count];
             count should equal(0);
         });
         
@@ -41,11 +41,11 @@ Tsuga<ARDatabaseManager>::run(^{
         
         it(@"save records with different table name", ^{
             NSString *title = @"Does ot works?";
-            DifferentTableName *model = [DifferentTableName new];
+            DifferentTableName *model = [DifferentTableName record];
             model.title = title;
             [model save] should be_truthy;
             
-            DifferentTableName *loadedModel = [[DifferentTableName allRecords] objectAtIndex:0];
+            DifferentTableName *loadedModel = [[DifferentTableName all] objectAtIndex:0];
             loadedModel.title should equal(title);
         });
     });

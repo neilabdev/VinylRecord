@@ -28,10 +28,10 @@ afterEach(^{
 describe(@"Join", ^{
     beforeEach(^{
         for(int i=0;i<10;i++){
-            Group *group = [Group new];
+            Group *group = [Group record];
             group.title = [NSString stringWithFormat:@"group%d", i];
             [group save];
-            User *user = [User new];
+            User *user = [User record];
             user.name = [NSString stringWithFormat:@"user%d", i];
             user.groupId = group.id;
             [user save];
@@ -45,7 +45,7 @@ describe(@"Join", ^{
         NSArray *records = [fetcher fetchJoinedRecords];
         id first = [records objectAtIndex:0];
         BOOL result = [first isKindOfClass:[NSDictionary class]];
-        result should BeTruthy();
+        result should be_truthy;
     });
     it(@"returned dictionary should contain fields of two records", ^{
         ARLazyFetcher *fetcher = [[User query] join:[Group class]
@@ -56,7 +56,7 @@ describe(@"Join", ^{
         NSDictionary *first = [records objectAtIndex:0];
         NSArray *keys = [first allKeys];
         BOOL result = [keys containsObject:@"User"] && [keys containsObject:@"Group"];
-        result should BeTruthy();
+        result should be_truthy;
     });
 });
 
