@@ -20,14 +20,16 @@
     @private
     BOOL isNew;
     NSMutableSet *errors;
-    NSMutableSet *_changedColumns;
-
+ //   NSMutableSet *_changedColumns;
+    BOOL shouldSync;
 }
 
 @property (nonatomic,strong) NSMutableSet *belongsToPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyThroughRelationsQueue;
 @property (nonatomic,strong) NSMutableDictionary *entityCache;
+
+@property (nonatomic,strong) NSMutableSet *changedColumns;
 #pragma mark - Lazy Persistent Helpers
 - (BOOL)isNewRecord;
 - (BOOL)hasQueuedRelationships;
@@ -98,7 +100,6 @@
 + (ARColumn *)columnWithGetterNamed:(NSString *)aGetterName;
 - (ARColumn *)columnWithGetterNamed:(NSString *)aGetterName;
 
-- (NSSet *)changedColumns;
 
 #pragma mark - Dynamic Properties
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 okolodev.org. All rights reserved.
 //
 
-#import <Cedar-iOS/SpecHelper.h>
+#import <Cedar-iOS.h>
 #import <CedarAsync/CedarAsync.h>
 #import <Tsuga/Tsuga.h>
 

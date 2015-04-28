@@ -1,57 +1,59 @@
 PODS:
   - AFNetworking (1.3.4)
-  - Cedar (0.9.5)
+  - Cedar (0.11.2)
   - CedarAsync (0.0.1):
     - Cedar
   - ISO8601DateFormatterValueTransformer (0.6.0):
     - RKValueTransformers (~> 1.1.0)
-  - RestKit (0.24.0):
-    - RestKit/Core (= 0.24.0)
-  - RestKit/Core (0.24.0):
+  - RestKit (0.24.1):
+    - RestKit/Core (= 0.24.1)
+  - RestKit/Core (0.24.1):
     - RestKit/CoreData
     - RestKit/Network
     - RestKit/ObjectMapping
-  - RestKit/CoreData (0.24.0):
+  - RestKit/CoreData (0.24.1):
     - RestKit/ObjectMapping
-  - RestKit/Network (0.24.0):
+  - RestKit/Network (0.24.1):
     - AFNetworking (~> 1.3.0)
     - RestKit/ObjectMapping
     - RestKit/Support
     - SOCKit
-  - RestKit/ObjectMapping (0.24.0):
+  - RestKit/ObjectMapping (0.24.1):
     - ISO8601DateFormatterValueTransformer (~> 0.6.0)
     - RestKit/Support
     - RKValueTransformers (~> 1.1.0)
-  - RestKit/Support (0.24.0):
-    - TransitionKit (= 2.1.0)
-  - RKValueTransformers (1.1.1)
+  - RestKit/Support (0.24.1):
+    - TransitionKit (~> 2.1.0)
+  - RKValueTransformers (1.1.2)
   - SOCKit (1.1)
-  - TransitionKit (2.1.0)
-  - Tsuga (0.0.8):
-    - Cedar (~> 0.9)
-  - VinylRecord (1.0.3)
+  - TransitionKit (2.1.1)
+  - Tsuga (0.9.9):
+    - Cedar (~> 0.11.2)
+  - VinylRecord (1.0.5)
 
 DEPENDENCIES:
-  - Cedar (= 0.9.5)
+  - Cedar (= 0.11.2)
   - CedarAsync
   - RestKit
-  - Tsuga
+  - Tsuga (from `../Tsuga/Tsuga.podspec`)
   - VinylRecord (from `.`)
 
 EXTERNAL SOURCES:
+  Tsuga:
+    :path: ../Tsuga/Tsuga.podspec
   VinylRecord:
     :path: .
 
 SPEC CHECKSUMS:
-  AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
-  Cedar: d00facacedc3d4d9257ecaa4546fe36ba542e86d
-  CedarAsync: 65137f0cef5f3f38ceaff5fc2aaa45a8792f3a08
-  ISO8601DateFormatterValueTransformer: a705384ea6531255258e25b6480ba1180db703a0
-  RestKit: 8e301e50e1d25ce427215539f4fd72463f4a2a58
-  RKValueTransformers: 67b4ea3eb6a1c1a0b8c3c37eb4e4c05e4febeba2
-  SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
-  TransitionKit: 6a6f3ddda38ae758778aa889dcb930e4f8d64edc
-  Tsuga: de163f93d8b73d6bc0712103b53e483135a4694e
-  VinylRecord: 8638f449b152dcefd223481a3402bb748ddddd2d
+  AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  Cedar: 5fc651dc12640d5045393d2d51309e91c2abcbff
+  CedarAsync: d2bbbff27948d521c7314d7a22f12040230f28e3
+  ISO8601DateFormatterValueTransformer: 3ac3a721381697cab4e792d8049ce2f2e9ad3036
+  RestKit: 1987b5efef289c6b27bd980714d6ca48d3871b78
+  RKValueTransformers: 66ac5e4f077fdbe3496e792d89eeff4c3eb67701
+  SOCKit: c7376ac262bea9115b8f749358f762522a47d392
+  TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
+  Tsuga: 7f9c2f39624409bd94b45f386c6e26d502c8bc22
+  VinylRecord: 30961aaa6e1f942bedb6a8164230785a953e56f6
 
 COCOAPODS: 0.35.0
