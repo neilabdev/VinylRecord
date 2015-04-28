@@ -27,20 +27,15 @@ PODS:
   - RKValueTransformers (1.1.2)
   - SOCKit (1.1)
   - TransitionKit (2.1.1)
-  - Tsuga (0.9.9):
-    - Cedar (~> 0.11.2)
   - VinylRecord (1.0.5)
 
 DEPENDENCIES:
   - Cedar (= 0.11.2)
   - CedarAsync
   - RestKit
-  - Tsuga (from `../Tsuga/Tsuga.podspec`)
   - VinylRecord (from `.`)
 
 EXTERNAL SOURCES:
-  Tsuga:
-    :path: ../Tsuga/Tsuga.podspec
   VinylRecord:
     :path: .
 
@@ -53,7 +48,6 @@ SPEC CHECKSUMS:
   RKValueTransformers: 66ac5e4f077fdbe3496e792d89eeff4c3eb67701
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
-  Tsuga: 7f9c2f39624409bd94b45f386c6e26d502c8bc22
   VinylRecord: 30961aaa6e1f942bedb6a8164230785a953e56f6
 
 COCOAPODS: 0.35.0
