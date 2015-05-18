@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 okolodev.org. All rights reserved.
 //
 
+#import <sqlite3.h>
 #import "ARConfiguration.h"
 
 static NSString *defaultDatabaseName() {
@@ -28,15 +29,15 @@ NSString *ARDocumentsDatabasePath(NSString *databaseName) {
 }
 
 @implementation ARConfiguration
-
 - (instancetype)init {
     self = [super init];
     if (self) {
         self.migrationsEnabled = YES;
         self.enableThreadPool = YES;
+        self.recycleInterval = ARConfigurationRecycleIntervalNever;
         self.databasePath = ARDocumentsDatabasePath(nil);
+        self.flags = SQLITE_OPEN_SHAREDCACHE | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
     }
     return self;
 }
-
 @end

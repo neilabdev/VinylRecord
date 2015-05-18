@@ -122,11 +122,11 @@ Tsuga<ARLazyFetcher>::run(^{
                     [ActiveRecord clearDatabase];
                     NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-MONTH];
                     NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow:DAY];
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = @"John";
                     john.createdAt = [NSDate dateWithTimeIntervalSinceNow:-MONTH * 2];
                     [john save] should equal(YES);
-                    User *alex = [User new];
+                    User *alex = [User record];
                     alex.name = @"Alex";
                     alex.createdAt = [NSDate dateWithTimeIntervalSinceNow:-DAY];
                     [alex save] should equal(YES);
@@ -142,7 +142,7 @@ Tsuga<ARLazyFetcher>::run(^{
             describe(@"Simple where conditions", ^{
                 it(@"whereField equalToValue should find record", ^{
                     NSString *username = @"john";
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = username;
                     [john save];
                     ARLazyFetcher *fetcher = [User query];
@@ -152,7 +152,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 });
                 it(@"whereField notEqualToValue should not find record", ^{
                     NSString *username = @"john";
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = username;
                     [john save];
                     ARLazyFetcher *fetcher = [User query];
@@ -163,7 +163,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 it(@"WhereField in should find record", ^{
                     NSString *username = @"john";
                     NSArray *names = [NSArray arrayWithObjects:@"alex", username, @"peter", nil];
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = username;
                     [john save];
                     ARLazyFetcher *fetcher = [User query];
@@ -174,7 +174,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 it(@"WhereField notIn should not find record", ^{
                     NSString *username = @"john";
                     NSArray *names = [NSArray arrayWithObjects:@"alex", username, @"peter", nil];
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = username;
                     [john save];
                     ARLazyFetcher *fetcher = [User query];
@@ -184,7 +184,7 @@ Tsuga<ARLazyFetcher>::run(^{
                 });
                 it(@"WhereField LIKE should find record", ^{
                     NSString *username = @"john";
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = username;
                     [john save];
                     ARLazyFetcher *fetcher = [User query];
@@ -200,7 +200,7 @@ Tsuga<ARLazyFetcher>::run(^{
                                     [NSNumber numberWithInt:15], 
                                     nil];
                     NSString *username = @"john";
-                    User *john = [User new];
+                    User *john = [User record];
                     john.name = username;
                     [john save];
                     ARLazyFetcher *fetcher = [User query];
@@ -228,45 +228,45 @@ Tsuga<ARLazyFetcher>::run(^{
         describe(@"select", ^{
             it(@"only should return only listed fields", ^{
                 ARLazyFetcher *fetcher = [[User query] only:@"name", @"id", nil];
-                User *john = [User new];
+                User *john = [User record];
                 john.name = @"john";
                 john.groupId = [NSNumber numberWithInt:145];
                 [john save];
                 User *user = [[fetcher fetchRecords] lastObject];
-                user.groupId should BeNil();
+                user.groupId should be_nil;
             });
             it(@"except should return only not listed fields", ^{
                 ARLazyFetcher *fetcher = [[User query] except:@"name", nil];
-                User *john = [User new];
+                User *john = [User record];
                 john.name = @"john";
                 john.groupId = [NSNumber numberWithInt:145];
                 [john save];
                 User *user = [[fetcher fetchRecords] lastObject];
-                user.name should BeNil();
+                user.name should be_nil;
             });
         });
         
         describe(@"joined records", ^{
             it(@"should be able to fetch joined records with different table names", ^{
-                User *john = [User new];
+                User *john = [User record];
                 john.name = @"john";
-                john.save should BeTruthy();
-                DifferentTableName* dtn = [DifferentTableName new];
+                john.save should be_truthy;
+                DifferentTableName* dtn = [DifferentTableName record];
                 dtn.title = @"testTitle";
                 dtn.user = john;
-                [dtn save] should BeTruthy();
+                [dtn save] should be_truthy;
                 
                 //try to fetch the joined records
                 NSArray* results = [[[User query] join: DifferentTableName.class useJoin: ARJoinInner onField: @"id" andField: [User foreignKeyName]] fetchJoinedRecords];
 
-                results should_not BeNil();
+                results should_not be_nil;
                 results.count should equal(1);
-                [[results objectAtIndex: 0] objectForKey: @"User"] should_not BeNil();
+                [[results objectAtIndex: 0] objectForKey: @"User"] should_not be_nil;
                 [[[results objectAtIndex: 0] objectForKey: @"User"] isKindOfClass: User.class ] should equal(YES);
                 
                 User* user = [[results objectAtIndex: 0] objectForKey: @"User"];
                 [john.id isEqualToNumber: user.id] should equal(YES);
-                [[results objectAtIndex: 0] objectForKey: @"DifferentTableName"] should_not BeNil();
+                [[results objectAtIndex: 0] objectForKey: @"DifferentTableName"] should_not be_nil;
                 [[[results objectAtIndex: 0] objectForKey: @"DifferentTableName"] isKindOfClass: DifferentTableName.class] should equal(YES);
                 
                 
@@ -276,10 +276,10 @@ Tsuga<ARLazyFetcher>::run(^{
 
         describe(@"cached records", ^{
             it(@"should be able to return belongs_to cached result before save", ^{
-                User *john = [User new];
+                User *john = [User record];
                 john.name = @"john";
-               // john.save should BeTruthy();
-                DifferentTableName* dtn = [DifferentTableName new];
+               // john.save should be_truthy;
+                DifferentTableName* dtn = [DifferentTableName record];
                 dtn.title = @"testTitle";
                 dtn.user = john;
 
@@ -288,16 +288,16 @@ Tsuga<ARLazyFetcher>::run(^{
             });
 
             it(@"should be able to return has_many cached result before save", ^{
-                User *john = [User new: @{@"name": @"John"}];
-                User *peter =  [User new: @{@"name": @"Peter"}];
-                Animal *animal = [Animal new: @{@"name":@"animal_error", @"state":@"good", @"title" : @"test title"}];
+                User *john = [User record: @{@"name": @"John"}];
+                User *peter =  [User record: @{@"name": @"Peter"}];
+                Animal *animal = [Animal record: @{@"name":@"animal_error", @"state":@"good", @"title" : @"test title"}];
 
                 [john addAnimal:animal];
 
                 [john.pets count] should equal(1);
                 [[john.pets fetchRecords] count] should equal(1);
 
-                Project *worldConquest = [Project new: @{@"name": @"Conquest of the World"}];
+                Project *worldConquest = [Project record: @{@"name": @"Conquest of the World"}];
                 [worldConquest addUser:john];
                 [worldConquest addUser:peter];
                 [worldConquest.users count] should equal(2); //2 items are cached
@@ -317,10 +317,10 @@ Tsuga<ARLazyFetcher>::run(^{
 
         describe(@"NSArray support", ^{
             it(@"should be able to return belongs_to cached result before save", ^{
-                User *john = [User new];
+                User *john = [User record];
                 john.name = @"john";
-                // john.save should BeTruthy();
-                DifferentTableName* dtn = [DifferentTableName new];
+                // john.save should be_truthy;
+                DifferentTableName* dtn = [DifferentTableName record];
                 dtn.title = @"testTitle";
                 dtn.user = john;
 
@@ -329,13 +329,13 @@ Tsuga<ARLazyFetcher>::run(^{
             });
 
             it(@"should be able to iterate of query as an array", ^{
-                User *john = [User new: @{@"name": @"John"}];
-                User *peter =  [User new: @{@"name": @"Peter"}];
-                User *mike =  [User new: @{@"name": @"Mike"}];
+                User *john = [User record: @{@"name": @"John"}];
+                User *peter =  [User record: @{@"name": @"Peter"}];
+                User *mike =  [User record: @{@"name": @"Mike"}];
 
                 NSInteger savedUserCount = 0;
                 NSInteger unsavedUserCount = 0;
-                Project *worldConquest = [Project new: @{@"name": @"Conquest of the World"}];
+                Project *worldConquest = [Project record: @{@"name": @"Conquest of the World"}];
 
                 [worldConquest addUser:john];
                 [worldConquest addUser:peter];

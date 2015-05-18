@@ -334,8 +334,10 @@
 		5DC6A25C78B7306C4E864637 /* FloatColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FloatColumn.mm; sourceTree = "<group>"; };
 		5DC6A279EA6310C06C71ADDE /* UnsignedLongColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnsignedLongColumn.h; sourceTree = "<group>"; };
 		5DC6A29C9DC8BBF65F1421AA /* NSDecimalNumber+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+sqlRepresentation.h"; sourceTree = "<group>"; };
+		5DC6A2A710F08E7882B10CCA /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runner.h; sourceTree = "<group>"; };
 		5DC6A2E32B7ABE9381CA5F03 /* ARSQLBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSQLBuilder.m; sourceTree = "<group>"; };
 		5DC6A38AF3777CA7F875B4DE /* ARPersistentQueueEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPersistentQueueEntity.h; sourceTree = "<group>"; };
+		5DC6A397D735F37D3BAC0264 /* TSConformsTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSConformsTo.h; sourceTree = "<group>"; };
 		5DC6A3A3560845372C1EB7E2 /* ARValidatorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARValidatorProtocol.h; sourceTree = "<group>"; };
 		5DC6A3A63276ADADDFC75095 /* ARRelationBelongsTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelationBelongsTo.h; sourceTree = "<group>"; };
 		5DC6A3A762CE999313FF75B0 /* ARCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCallbacks.h; sourceTree = "<group>"; };
@@ -376,9 +378,11 @@
 		5DC6A8A4845C560B9B5B6FB7 /* ARConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARConfiguration.m; sourceTree = "<group>"; };
 		5DC6A8BEEBB2EF00EAF4CCD2 /* ARDynamicAccessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARDynamicAccessor.mm; sourceTree = "<group>"; };
 		5DC6A9170400F55B74F2A056 /* ARColumnType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARColumnType.h; sourceTree = "<group>"; };
+		5DC6A924F698FAA06E97850C /* Tsuga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tsuga.h; sourceTree = "<group>"; };
 		5DC6A92835028CDAD2082282 /* UnsignedIntColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnsignedIntColumn.h; sourceTree = "<group>"; };
 		5DC6A93FBE2AF997E39FABA4 /* IntColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntColumn.h; sourceTree = "<group>"; };
 		5DC6A95F8D0952748A341A22 /* NSString+isPresented.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+isPresented.m"; sourceTree = "<group>"; };
+		5DC6A9813E927D2737ADC0A4 /* TSRespondsTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSRespondsTo.h; sourceTree = "<group>"; };
 		5DC6A993331E0CF84BC354C5 /* NSString+lowercaseFirst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+lowercaseFirst.m"; sourceTree = "<group>"; };
 		5DC6A9A5871A11D7FA06AB3F /* ARSchemaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSchemaManager.h; sourceTree = "<group>"; };
 		5DC6A9C008CC193B59755C71 /* ARDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDatabaseManager.h; sourceTree = "<group>"; };
@@ -738,6 +742,15 @@
 			name = Validators;
 			sourceTree = "<group>";
 		};
+		5DC6A1A0D02B6714AB7EEC62 /* Matchers */ = {
+			isa = PBXGroup;
+			children = (
+				5DC6A397D735F37D3BAC0264 /* TSConformsTo.h */,
+				5DC6A9813E927D2737ADC0A4 /* TSRespondsTo.h */,
+			);
+			path = Matchers;
+			sourceTree = "<group>";
+		};
 		5DC6A1CC82BCAAA851D5107E /* NSSet */ = {
 			isa = PBXGroup;
 			children = (
@@ -865,6 +878,16 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
+		5DC6A711E34D6BCBFC709402 /* Tsuga */ = {
+			isa = PBXGroup;
+			children = (
+				5DC6AA05749C79B4666C7705 /* Runner */,
+				5DC6A924F698FAA06E97850C /* Tsuga.h */,
+				5DC6A1A0D02B6714AB7EEC62 /* Matchers */,
+			);
+			path = Tsuga;
+			sourceTree = "<group>";
+		};
 		5DC6A73CEB1694A71E35DF51 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -930,6 +953,14 @@
 				5DC6AA43E97CD839F19547A9 /* NSArray+toSql.m */,
 			);
 			name = NSArray;
+			sourceTree = "<group>";
+		};
+		5DC6AA05749C79B4666C7705 /* Runner */ = {
+			isa = PBXGroup;
+			children = (
+				5DC6A2A710F08E7882B10CCA /* Runner.h */,
+			);
+			path = Runner;
 			sourceTree = "<group>";
 		};
 		5DC6AA713A42D4654B291B92 /* NSNumber */ = {
@@ -1082,6 +1113,7 @@
 			isa = PBXGroup;
 			children = (
 				CA44DE581748D22F00831183 /* SpecHelper.h */,
+				5DC6A711E34D6BCBFC709402 /* Tsuga */,
 			);
 			path = Support;
 			sourceTree = "<group>";

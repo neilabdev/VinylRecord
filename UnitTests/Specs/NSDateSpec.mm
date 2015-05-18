@@ -27,12 +27,12 @@ Tsuga<NSDate>::run(^{
 
     describe(@"NSDate", ^{
         it(@"Should be saved successfully and return the same date", ^{
-            User *alex = [User new];
+            User *alex = [User record];
             alex.name = @"Alex";
             alex.birthDate = [NSDate dateWithTimeIntervalSince1970:0];
             BOOL result = [alex save];
 
-            User *fetchedUser = [[User allRecords] objectAtIndex:0];
+            User *fetchedUser = [[User all] objectAtIndex:0];
             fetchedUser should_not be_nil;
             alex.birthDate should equal(fetchedUser.birthDate);
         });

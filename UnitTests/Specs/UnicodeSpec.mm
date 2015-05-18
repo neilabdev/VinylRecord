@@ -25,7 +25,7 @@ afterEach(^{
 
 describe(@"Unicode search", ^{
     it(@"should find records", ^{
-        User *alex = [User new];
+        User *alex = [User record];
         alex.name = @"Алексей";
         [alex save];
         ARLazyFetcher *fetcher = [[User query] where:@"name LIKE '%%ксей%%'", nil];

@@ -31,19 +31,19 @@ afterEach(^{
 
 describe(@"Add column", ^{
     it(@"animal should have new column", ^{
-        Animal *animal = [Animal new];
+        Animal *animal = [Animal record];
         animal.name = @"animal";
         animal.state = @"Full";
         BOOL result = [animal save];
-        result should BeTruthy();
+        result should be_truthy;
     });
 });
 
 describe(@"Create table", ^{
     it(@"new record should save successfully", ^{
-        Entity *ent = [Entity new];
+        Entity *ent = [Entity record];
         ent.property = @"LooLZ";
-        [ent save] should BeTruthy();
+        [ent save] should be_truthy;
     });
 });
 

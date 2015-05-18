@@ -66,6 +66,10 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (instancetype)create:(NSDictionary *)values;
 
++ (instancetype) record;
++ (instancetype) record:(NSDictionary *)values;
+
+
 - (void)copyFrom:(ActiveRecord *)copy;
 
 - (void)copyFrom:(ActiveRecord *)copy merge:(BOOL)merge;
@@ -82,7 +86,9 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (NSInteger)count;
 
-+ (NSArray *)allRecords;
++ (NSArray *) all;
+
++ (NSArray *)allRecords __deprecated;
 
 + (ARLazyFetcher *)lazyFetcher;
 
@@ -133,7 +139,7 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (NSArray *)findAllByConditions:(NSDictionary *)conditions;
 
-+ (instancetype)findByConditions:(NSDictionary *)conditions;
++ (NSArray*)findByConditions:(NSDictionary *)conditions;
 
 + (void)addSearchOn:(NSString *)aField;
 

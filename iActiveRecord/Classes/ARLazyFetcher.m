@@ -336,7 +336,7 @@
     if (relationType == ARRelationTypeHasManyThrough) {
         entities = [row cachedArrayForKey:entityKey];
     } else if (relationType == ARRelationTypeHasMany) {
-        entities = [row cachedEntityForKey:entityKey];
+        entities = [row cachedArrayForKey:entityKey];
     }
     return entities;
 }
