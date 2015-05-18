@@ -9,5 +9,8 @@
 @implementation UserAnimalRelationship {
 
 }
-@dynamic animalId,userId;
+
+@dynamic animalId;
+@dynamic customUserForeignKey;
+
 @end

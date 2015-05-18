@@ -10,7 +10,7 @@
 
 @implementation UserProjectRelationship
 
-@dynamic userId;
+@dynamic customUserForeignKey;
 @dynamic projectId;
 
 @end

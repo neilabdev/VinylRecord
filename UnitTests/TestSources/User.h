@@ -15,6 +15,10 @@
 
 @interface User : VinylRecord
 
+#pragma mark - Foreign Key Name
++ (NSString *)foreignKeyName;
+- (NSString *)foreignKeyName;
+
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, retain) NSArray *ignoredProperty;
 //  used in belongs to relationship

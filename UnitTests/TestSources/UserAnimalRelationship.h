@@ -9,6 +9,6 @@
 
 @interface UserAnimalRelationship : VinylRecord
 @property (nonatomic,retain) NSNumber *animalId;
-@property (nonatomic,retain) NSNumber *userId;
+@property (nonatomic,retain) NSNumber *customUserForeignKey;
 
 @end
