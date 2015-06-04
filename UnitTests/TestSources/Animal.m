@@ -21,10 +21,10 @@ validation_do(
 
 mapping_do(
     column_name(name,new_name)
-    column_map(state,@{
+    column_map(state, (@{
             @"name": @"new_state",
             @"some_other_mapping" : @"mapping_value"
-    })
+    }))
 )
 - (VinylRecord *)mergeExistingRecord {
     return nil;

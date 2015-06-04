@@ -37,8 +37,17 @@
         unsigned int outCount, i;
         objc_property_t *properties = class_copyPropertyList(CurrentClass, &outCount);
         NSString *recordName = [aRecordClass performSelector:@selector(recordName)];
+        NSDictionary *recordMapping = [self.mappings objectForKey:recordName];
+        if(recordMapping) {  //TODO: Remove, just debugging
+            NSLog(@"found mapping %@",recordMapping); //just debugging
+        }
         for (i = 0; i < outCount; i++) {
-            ARColumn *column = [[ARColumn alloc] initWithProperty:properties[i] ofClass:aRecordClass];
+            NSString *propertyName = [[NSString alloc] initWithUTF8String: property_getName(properties[i])];
+            NSDictionary *columnMapping = [recordMapping objectForKey:propertyName];
+            if(columnMapping) { //TODO: Remove, just debugging
+                NSLog(@"found mapping for property %@",propertyName);
+            }
+            ARColumn *column = [[ARColumn alloc] initWithProperty:properties[i] mapping: columnMapping ofClass:aRecordClass];
             if (!column.isDynamic) {
                 continue;
             }
@@ -46,6 +55,8 @@
             [self addColumn:column forRecord:aRecordClass named:column.setter];
             [self addColumn:column forRecord:aRecordClass named:column.getter];
             [self addColumn:column forRecord:aRecordClass named:column.columnName];
+            if(![column.mappingName isEqualToString:column.columnName])
+                [self addColumn:column forRecord:aRecordClass named:column.mappingName];
         }
 
         free(properties);

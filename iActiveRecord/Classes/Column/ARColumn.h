@@ -13,11 +13,7 @@
 @class ActiveRecord;
 
 @interface ARColumn : NSObject
-{
-//@public
-//    char *_columnKey;
-}
-
+@property (nonatomic, copy, readonly) NSString *mappingName;
 @property (nonatomic, copy, readonly) NSString *columnName;
 @property (nonatomic, strong, readonly) Class columnClass;
 @property (nonatomic, strong, readonly) Class recordClass;
@@ -29,6 +25,7 @@
 @property (nonatomic, readwrite) objc_AssociationPolicy associationPolicy;
 
 - (instancetype)initWithProperty:(objc_property_t)property ofClass:(Class)aClass;
+- (instancetype)initWithProperty:(objc_property_t)property mapping:(NSDictionary*) mapping ofClass:(Class)aClass;
 - (NSString *)sqlValueForRecord:(ActiveRecord *)aRecord;
 - (const char *)sqlType;
 

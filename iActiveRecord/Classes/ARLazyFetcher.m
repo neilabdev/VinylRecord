@@ -72,7 +72,7 @@
     } else {
         NSArray *columns = [aRecord columns];
         for (ARColumn *column in columns) {
-            [fields addObject:column.columnName];
+            [fields addObject:column.mappingName];
         }
     }
     if (exceptFields) {

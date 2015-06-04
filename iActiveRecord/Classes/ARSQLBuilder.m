@@ -27,7 +27,7 @@
         NSString *value = [column sqlValueForRecord:aRecord];
         NSString *updater = [NSString stringWithFormat:
                              @"\"%@\"='%@'",
-                             column.columnName,
+                             column.mappingName,
                              TO_SQL_VALUE(value)];
         [columnValues addObject:updater];
     }
@@ -51,7 +51,7 @@
     for (ARColumn *column in [aRecord columns]) {
         if (![column.columnName isEqualToString:@"id"]) {
             [sqlString appendFormat:@",\"%@\" %s",
-             column.columnName, [column sqlType]];
+             column.mappingName, [column sqlType]];
         }
     }
     [sqlString appendFormat:@")"];
@@ -64,16 +64,17 @@
                                   [aRecord recordName]];
     ARColumn *column = [aRecord columnNamed:aColumnName];
     [sqlString appendFormat:@"\"%@\" %s",
-     aColumnName, [column sqlType]];
+     column.mappingName, [column sqlType]];
     return [sqlString UTF8String];
 }
 
 + (const char *)sqlOnCreateIndex:(NSString *)aColumnName forRecord:(ActiveRecord *)aRecord {
+    ARColumn *column = [aRecord columnNamed:aColumnName];
     NSString *sqlString = [NSString stringWithFormat:
                            @"CREATE INDEX IF NOT EXISTS index_%@ ON \"%@\" (\"%@\")",
-                           aColumnName,
+                                    column.mappingName,
                            [aRecord recordName],
-                           aColumnName];
+                           column.mappingName];
     return [sqlString UTF8String];
 }
 

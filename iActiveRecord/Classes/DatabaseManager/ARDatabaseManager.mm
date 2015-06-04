@@ -213,7 +213,7 @@ static NSArray *records = nil;
             NSMutableArray *describedColumns = [NSMutableArray array];
             
             for (ARColumn *column in describedProperties) {
-                [describedColumns addObject:column.columnName];
+                [describedColumns addObject:column.mappingName];
             }
             
             for (NSString *column in describedColumns) {
@@ -330,7 +330,6 @@ static NSArray *records = nil;
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *statement;
-        
         const char *sqlQuery = [aSqlRequest UTF8String];
 
         if (sqlite3_prepare_v2(connection.database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
@@ -356,8 +355,7 @@ static NSArray *records = nil;
                 NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name(statement, columnIndex)];
                
                 if (!hasColumns) {
-                    ARColumn* column = [Record performSelector:@selector(columnNamed:)
-                                                       withObject:columnName];
+                    ARColumn* column = [Record performSelector:@selector(columnNamed:) withObject:columnName];
                     if(column == nil){
                         /*if working with views, sqlite3_column_name(statement, columnIndex) currently returns fully qualified column names
                         * the follwoing code dissembles the fully qualified name to have only the raw column name itself self for the lookup in the
@@ -613,7 +611,7 @@ static NSArray *records = nil;
         NSArray *orderedColumns = [changedColumns allObjects];  //Used to prevent enumeration execeptions should columns change.
 
         for (ARColumn *column in orderedColumns) {
-            [columns addObject:[NSString stringWithFormat:@"'%@'", column.columnName]];
+            [columns addObject:[NSString stringWithFormat:@"'%@'", column.mappingName]];
         }
         
         NSString *sqlString = [NSString stringWithFormat:
@@ -647,7 +645,7 @@ static NSArray *records = nil;
                         NSData *data = value;
                         sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
                     } else {
-                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.mappingName);
                     }
                     
                     break;
@@ -708,7 +706,7 @@ static NSArray *records = nil;
         NSArray *orderedColumns = [changedColumns allObjects];
 
         for (ARColumn *column in orderedColumns) {
-            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.columnName]];
+            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.mappingName]];
         }
 
         NSString *sqlString = [NSString stringWithFormat:
@@ -734,7 +732,7 @@ static NSArray *records = nil;
                         NSData *data = value;
                         sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
                     } else {
-                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.mappingName);
                     }
 
                     break;

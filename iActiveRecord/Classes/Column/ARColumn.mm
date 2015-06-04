@@ -18,12 +18,17 @@
     char *_columnKey;
 }
 
-- (instancetype)initWithProperty:(objc_property_t)property ofClass:(Class)aClass {
+- (instancetype)initWithProperty:(objc_property_t)property ofClass:(Class)aClass  {
+    return [self initWithProperty:property mapping:nil ofClass:aClass];
+}
+
+- (instancetype)initWithProperty:(objc_property_t)property mapping:(NSDictionary*) mapping ofClass:(Class)aClass {
     self = [super init];
     if (self) {
         self.internal = NULL;
-
         self.recordClass = aClass;
+        NSString *mappingName = [mapping objectForKey:@"name"];
+
         _dynamic = NO;
         self->_associationPolicy = OBJC_ASSOCIATION_ASSIGN;
         const char *propertyName = property_getName(property);
@@ -32,6 +37,7 @@
         strcpy(_columnKey, propertyName);
         
         self->_columnName = [[NSString alloc] initWithUTF8String:_columnKey];
+        self->_mappingName = mappingName ? mappingName : [[NSString alloc] initWithUTF8String:_columnKey];
         
         //  set default setter/getter
         [self setSetterFromAttribute:NULL];

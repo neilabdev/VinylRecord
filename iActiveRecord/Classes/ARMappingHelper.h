@@ -3,13 +3,13 @@
         mapping \
     }
 
-#define column_name(properyName, columnName) \
+#define column_name(propertyName, columnName) \
     [self performSelector : @selector(addMappingOn:column:) \
-     withObject : @ ""#properyName "" \
+     withObject : @ ""#propertyName "" \
      withObject : @ ""#columnName ""];
 
 
-#define column_map(properyName, columnMap) \
+#define column_map(propertyName, columnMap) \
     [self performSelector : @selector(addMappingOn:mapping:) \
-     withObject : @ ""#properyName "" \
-     withObject : @ ""#columnMap ""];
+     withObject : @ ""#propertyName "" \
+     withObject : columnMap ];
