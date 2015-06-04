@@ -106,13 +106,13 @@
 
 
 - (void)createRecordHasManyThrough {
-    NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
+    NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]]; //TODO: Refactor method to support mapping
     Class relClass = NSClassFromString(hasManyThroughClass);
     [self join:relClass];
     [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], relId, row.id, nil];
 }
 
-- (void)createRecordHasMany {
+- (void)createRecordHasMany { //TODO: Refactor method to support mapping
     NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
     [self where:@"%@ = %@", [selfId stringAsColumnName], row.id, nil];
 }
@@ -298,7 +298,7 @@
 
 #pragma mark - Joins
 
-- (ARLazyFetcher *)join:(Class)aJoinRecord {
+- (ARLazyFetcher *)join:(Class)aJoinRecord { //TODO: Refactor method to support mapping
 
     NSString *_recordField = @"id";
     NSString *_joinField = [NSString stringWithFormat:@"%@Id",

@@ -764,7 +764,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void)removeRecord:(ActiveRecord *)aRecord {
     NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
-
     NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
 
@@ -828,7 +827,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord
               ofClass:(NSString *)aClassname
-              through:(NSString *)aRelationshipClassName {
+              through:(NSString *)aRelationshipClassName { //TODO: Refactor method to support mapping
     Class RelationshipClass = NSClassFromString(aRelationshipClassName);
 
     NSString *currentId = [NSString stringWithFormat:@"%@ID", [self recordName]];

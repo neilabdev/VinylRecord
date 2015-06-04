@@ -17,7 +17,7 @@
 #define validate_field_with_validator(aField, aValidator) \
     [self performSelector : @selector(validateField:withValidator:) \
      withObject : @ ""#aField "" \
-     withObject : @ ""#aValidator ""]; \
+     withObject : @ ""#aValidator ""];
 
 
 #define validation_do(validations) \
