@@ -185,7 +185,7 @@ static NSArray *records = nil;
     [self createIndices];
 }
 
-- (void)createTable:(Class)aRecord {
+- (void)createTable:(Class <ActiveRecord>)aRecord {
     const char *sqlQuery = [ARSQLBuilder sqlOnCreateTableForRecord:aRecord];
     [self executeSqlQuery:sqlQuery];
 }
@@ -200,8 +200,8 @@ static NSArray *records = nil;
     NSArray *allExisting = [existedViews arrayByAddingObjectsFromArray: existedTables];
     NSArray *describedTables = [self records];
     
-    for (Class tableClass in describedTables) {
-        NSString *tableName = [tableClass recordName];
+    for (Class <ActiveRecord> tableClass in describedTables) {
+        NSString *tableName = [tableClass tableName];
         if (![allExisting containsObject:tableName] ) {
             //only create table if there is no table or view for ist
             [self createTable:tableClass];
@@ -370,7 +370,7 @@ static NSArray *records = nil;
                         //our recovery operation for the column name failed
                         sqlite3_finalize(statement);
                         @throw [ARException exceptionWithName: @"ColumnNotFoundInRecord"
-                                                       reason: [NSString stringWithFormat: @"Column %@ could not be found in record %@", columnName, [Record recordName],nil  ]
+                                                       reason: [NSString stringWithFormat: @"Column %@ could not be found in record %@", columnName, [Record tableName],nil  ]
                                                      userInfo: nil];
                     }
                     columns[columnIndex] = column;
@@ -534,8 +534,7 @@ static NSArray *records = nil;
 - (NSInteger)countOfRecordsWithName:(NSString *)aName {
 #warning remove
     NSString *aSqlRequest = [NSString stringWithFormat:
-                             @"SELECT count(id) FROM '%@'",
-                             [self tableName:aName]];
+                             @"SELECT count(id) FROM '%@'", aName];
     return [self functionResult:aSqlRequest];
 }
 
@@ -616,7 +615,7 @@ static NSArray *records = nil;
         
         NSString *sqlString = [NSString stringWithFormat:
                                @"INSERT INTO '%@'(%@) VALUES(%@)",
-                               [aRecord recordName],
+                               [aRecord tableName],
                                [columns componentsJoinedByString:@","],  //FIXME: Sometimes query generates because no changed columns: "INSERT INTO 'Subscriber'() VALUES(?,?,?,?,?,?)"
                                valueMapping];
         
@@ -711,7 +710,7 @@ static NSArray *records = nil;
 
         NSString *sqlString = [NSString stringWithFormat:
                 @"UPDATE '%@' SET %@ WHERE id = %@",
-                [aRecord recordName],
+                [aRecord tableName],
                 [columns componentsJoinedByString:@","],aRecord.id];
 
         sql = [sqlString UTF8String];

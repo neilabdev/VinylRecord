@@ -23,6 +23,8 @@
 - (ARColumn *)columnNamed:(NSString *)aColumnName;
 + (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
 - (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
++ (NSString*) foreignPropertyKey;
+- (NSString*) foreignPropertyKey;
 @end
 
 @interface ActiveRecord () <ActiveRecordPrivateMethods>
@@ -56,8 +58,6 @@
 - (void)resetErrors;
 - (void)resetChanges;
 
-- (NSArray *)columns;
-+ (NSArray *)columns;
 
 #pragma mark - Relationships
 

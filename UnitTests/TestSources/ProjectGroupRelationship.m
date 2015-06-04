@@ -13,6 +13,7 @@
 @dynamic projectId;
 @dynamic groupId;
 mapping_do(
+        table_name(random_table_name)
         column_name(projectId,different_project_id)
         column_map(groupId, (@{
                 @"name": @"different_group_id"

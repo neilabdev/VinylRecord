@@ -37,8 +37,7 @@
 #import "NSString+sqlRepresentation.h"
 
 static NSMutableDictionary *relationshipsDictionary = nil;
-
-
+static NSMutableDictionary *recordTableName = nil;
 
 @implementation ActiveRecord
 @dynamic id;
@@ -56,7 +55,6 @@ static NSMutableDictionary *relationshipsDictionary = nil;
     [self initializeDynamicAccessors];
     [self registerRelationships];
 }
-
 
 + (instancetype) record {
     return [self new: nil];
@@ -142,11 +140,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     ARDependency dependency = (ARDependency)[self performSelector:selector];
 #pragma clang diagnostic pop
-    ARRelationBelongsTo *relation = [[ARRelationBelongsTo alloc] initWithRecord:[self recordName]
+    ARRelationBelongsTo *relation = [[ARRelationBelongsTo alloc] initWithRecord:[self className]
                                                                        relation:relationName
                                                                       dependent:dependency];
     [relationshipsDictionary addValue:relation
-                         toArrayNamed:[self recordName]];
+                         toArrayNamed:[self className]];
 }
 
 + (void)registerHasMany:(NSString *)aSelectorName {
@@ -160,11 +158,11 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     ARDependency dependency = (ARDependency)[self performSelector:selector];
 #pragma clang diagnostic pop
-    ARRelationHasMany *relation = [[ARRelationHasMany alloc] initWithRecord:[self recordName]
+    ARRelationHasMany *relation = [[ARRelationHasMany alloc] initWithRecord:[self className]
                                                                    relation:relationName
                                                                   dependent:dependency];
     [relationshipsDictionary addValue:relation
-                         toArrayNamed:[self recordName]];
+                         toArrayNamed:[self className]];
 }
 
 + (void)registerHasManyThrough:(NSString *)aSelectorName {
@@ -181,12 +179,12 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     NSArray *components = [records componentsSeparatedByString:@"_ar_"];
     NSString *relationName = [components objectAtIndex:0];
     NSString *throughRelationname = [components objectAtIndex:1];
-    ARRelationHasManyThrough *relation = [[ARRelationHasManyThrough alloc] initWithRecord:[self recordName]
+    ARRelationHasManyThrough *relation = [[ARRelationHasManyThrough alloc] initWithRecord:[self className]
                                                                             throughRecord:throughRelationname
                                                                                  relation:relationName
                                                                                 dependent:dependency];
     [relationshipsDictionary addValue:relation
-                         toArrayNamed:[self recordName]];
+                         toArrayNamed:[self className]];
 }
 
 #pragma mark - private before filter
@@ -278,27 +276,65 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark -
 
 + (NSArray *)relationships {
-    return [relationshipsDictionary objectForKey:[self recordName]];
+    return [relationshipsDictionary objectForKey:[self className]];
 }
 
 - (NSArray *)relationships {
     return [[self class] relationships];
 }
 
-+ (NSString *)recordName {
-    NSString *name = [[self class] className];
-    NSArray *components = [name componentsSeparatedByString:@"."];
++ (NSMutableDictionary *)tableNameDictionary { //to be used by recordName & tableName dictionary always has value
+    if (recordTableName == nil) {
+        recordTableName = [NSMutableDictionary new];
+    }
+    return recordTableName;
+}
 
++ (NSString *)className { //TODO: Rename this, its to be used as the Key for any given model.
+    NSString *name = NSStringFromClass([self class]);
+    NSArray *components = [name componentsSeparatedByString:@"."];
     // Swift returns Package.ClassName and we only want ClassName
     if(components)
         return [components lastObject];
     return name;
 }
 
++ (NSString *)recordName {
+    //TODO: Needs to be refactored, but basically to maintain compat with iActiveRecord, you should be able to ALSO
+    //      just override this method for a table. Wherefore, however mapping takes precedence.
+    NSString *tableName = [self tableNameDictionary][[self className]];
+    if(tableName)
+        return tableName;
+
+    return [self className];
+}
+
 - (NSString *)recordName {
     return [[self class] recordName];
 }
 
+- (NSString*) foreignPropertyKey {
+    //[NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
+    return [self.class foreignPropertyKey];
+}
++ (NSString*) foreignPropertyKey {
+    //[NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
+    return [NSString stringWithFormat:@"%@Id",[[self className] lowercaseFirst] ];
+}
+
++ (void)setTableName:(NSString*) tableName {
+    NSMutableDictionary *dictionary = [self tableNameDictionary];
+    dictionary[[self className]] = tableName;
+}
+
++ (NSString *) tableName {
+    NSString *tableName = recordTableName[[self className]];
+    return tableName ? tableName : [self recordName];
+}
+
+- (NSString *) tableName {
+    return [[self class] tableName];
+}
 
 + (instancetype)persistedRecord {
     ActiveRecord *record = [self new:nil];
@@ -365,6 +401,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     [entityArray addObject:entity];
 }
 
+
 - (void) removeCachedEntity: (ActiveRecord *) entity forKey: (NSString *) field {
         NSString *fieldKey = field;
         NSMutableArray *entityArray = [self.entityCache objectForKey:fieldKey];
@@ -381,19 +418,19 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 + (void)validateUniquenessOfField:(NSString *)aField {
     [ARValidator registerValidator:[ARValidatorUniqueness class]
-                         forRecord:[self recordName]
+                         forRecord:[self className]
                            onField:aField];
 }
 
 + (void)validatePresenceOfField:(NSString *)aField {
     [ARValidator registerValidator:[ARValidatorPresence class]
-                         forRecord:[self recordName]
+                         forRecord:[self className]
                            onField:aField];
 }
 
 + (void)validateField:(NSString *)aField withValidator:(NSString *)aValidator {
     [ARValidator registerValidator:NSClassFromString(aValidator)
-                         forRecord:[self recordName]
+                         forRecord:[self className]
                            onField:aField];
 }
 
@@ -671,7 +708,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 + (NSInteger)count {
-    return [[ARDatabaseManager sharedManager] countOfRecordsWithName:[[self class] description]];
+    return [[ARDatabaseManager sharedManager] countOfRecordsWithName: [self tableName]];
 }
 
 #pragma mark - Relationships
@@ -679,7 +716,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark BelongsTo
 
 - (id)belongsTo:(NSString *)aClassName {
-    NSString *selectorString = [NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]];
+    Class <ActiveRecord> aClass = NSClassFromString(aClassName);
+    NSString *selectorString = [aClass performSelector:@selector(foreignPropertyKey)] ;//[NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]];
     SEL selector = NSSelectorFromString(selectorString);
     
 #pragma clang diagnostic push
@@ -703,7 +741,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 
 - (void)setRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
-    NSString *selectorString = [NSString stringWithFormat:@"%@Id", [aRelation lowercaseFirst]];
+    Class <ActiveRecord> aClass = NSClassFromString(aRelation);
+    NSString *selectorString = [aClass performSelector:@selector(foreignPropertyKey)] ;//[NSString stringWithFormat:@"%@Id", [aRelation lowercaseFirst]];
 
     [self setCachedEntity:aRecord forKey:selectorString];
 
@@ -742,7 +781,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (void)addRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
+    NSString *entityKey = [aRecord foreignPropertyKey];
     [self addCachedEntity:aRecord forKey:entityKey];
 
     if(![aRecord isNewRecord] &&  [self persistRecord:aRecord])
@@ -756,15 +795,15 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 - (BOOL)persistRecord:(ActiveRecord *)aRecord {
-    NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
+    NSString *relationIdKey = [self foreignPropertyKey];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
     [aRecord setValue:self.id forColumn:column];
     return [aRecord save];
 }
 
 - (void)removeRecord:(ActiveRecord *)aRecord {
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
-    NSString *relationIdKey = [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
+    NSString *entityKey = [aRecord foreignPropertyKey]; //[NSString stringWithFormat:@"%@", [[aRecord recordName] lowercaseFirst]];
+    NSString *relationIdKey = [self foreignPropertyKey]; // [NSString stringWithFormat:@"%@Id", [[self recordName] lowercaseFirst]];
     ARColumn *column = [aRecord columnNamed:relationIdKey];
 
     [self removeCachedEntity:aRecord forKey:entityKey];
@@ -804,8 +843,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
           ofClass:(NSString *)aClassname
           through:(NSString *)aRelationshipClassName
 {
+    Class <ActiveRecord > aClass = NSClassFromString(aClassname);
 
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [aClassname lowercaseFirst]];
+    NSString *entityKey =  [aClass performSelector:@selector(foreignPropertyKey)];// [NSString stringWithFormat:@"%@", [ [aClass className] lowercaseFirst]];
     [self addCachedEntity:aRecord forKey:entityKey];
     /* If the record being added is not a new record and self is not new it is not necessary
     *  to queue the request. This allows use to mimic existing behavior while adding lazy
@@ -830,8 +870,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
               through:(NSString *)aRelationshipClassName { //TODO: Refactor method to support mapping
     Class RelationshipClass = NSClassFromString(aRelationshipClassName);
 
-    NSString *currentId = [NSString stringWithFormat:@"%@ID", [self recordName]];
-    NSString *relId = [NSString stringWithFormat:@"%@ID", [aRecord recordName]];
+    NSString *currentId = [self foreignPropertyKey];
+    NSString *relId = [aRecord foreignPropertyKey];
     ARLazyFetcher *fetcher = [RelationshipClass lazyFetcher];
 
     if( ([aRecord isNewRecord] || [aRecord isDirty]) && ![aRecord save]) {
@@ -861,12 +901,12 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 - (void)removeRecord:(ActiveRecord *)aRecord through:(NSString *)aClassName {
     Class relationsClass = NSClassFromString(aClassName);
-    NSString *currentId = [NSString stringWithFormat:@"%@ID", [self recordName]];
-    NSString *relId = [NSString stringWithFormat:@"%@ID", [aRecord recordName]];
+    NSString *currentId =  [self foreignPropertyKey]; // [NSString stringWithFormat:@"%@ID", [self recordName]];
+    NSString *relId = [aRecord foreignPropertyKey];// [NSString stringWithFormat:@"%@ID", [aRecord recordName]];
 
     //TODO: There should be a test to ensure that removing a relation also remove the item through the cache.
-    NSString *entityKey = [[aRecord recordName] lowercaseFirst];
-    NSString *entityRelationKey = [NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]] ;
+    NSString *entityKey =  [[aRecord.class className] lowercaseFirst];
+    NSString *entityRelationKey = [relationsClass foreignPropertyKey];// [NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]] ;
     [self removeCachedEntity:aRecord forKey:entityKey];
     [aRecord setCachedEntity:nil forKey:entityRelationKey];
 
@@ -880,7 +920,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark - Description
 
 - (NSString *)description {
-    NSMutableString *descr = [NSMutableString stringWithFormat:@"%@\n", [self recordName]];
+    NSMutableString *descr = [NSMutableString stringWithFormat:@"%@\n", [self.class className]];
     for (ARColumn *column in [self columns]) {
         [descr appendFormat:@"%@ => %@;", column.columnName, [self valueForColumn:column]];
     }

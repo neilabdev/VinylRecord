@@ -3,6 +3,11 @@
         mapping \
     }
 
+#define table_name(tableName) \
+    [self performSelector : @selector(addMappingOn:column:) \
+     withObject : @"__table__" \
+     withObject : @ ""#tableName ""];
+
 #define column_name(propertyName, columnName) \
     [self performSelector : @selector(addMappingOn:column:) \
      withObject : @ ""#propertyName "" \

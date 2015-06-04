@@ -10,7 +10,9 @@
 
 @protocol ActiveRecord <NSObject>
 #pragma mark - TableName
-+ (NSString *)recordName;
++ (NSString *) recordName __deprecated;
++ (NSString *) tableName;
+- (NSString *) tableName;
 
 #pragma mark - Persistence
 - (BOOL)save;
@@ -20,6 +22,11 @@
 - (BOOL)sync;
 
 - (void)dropRecord;
+
+#pragma mark - Columns
+
+- (NSArray *)columns;
++ (NSArray *)columns;
 
 #pragma mark -
 + (NSInteger)count;
