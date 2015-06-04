@@ -12,5 +12,10 @@
 
 @dynamic projectId;
 @dynamic groupId;
-
+mapping_do(
+        column_name(projectId,different_project_id)
+        column_map(groupId, (@{
+                @"name": @"different_group_id"
+        }))
+)
 @end

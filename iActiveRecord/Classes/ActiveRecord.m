@@ -937,6 +937,15 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 #warning refactor
 
++ (NSString*) stringMappingForColumnNamed: (NSString*) columnName {
+    ARColumn *column = [self columnNamed:columnName];
+    return column.mappingName;
+}
+- (NSString*) stringMappingForColumnNamed: (NSString*) columnName {
+   return [[self class] stringMappingForColumnNamed:columnName];
+}
+
+
 + (ARColumn *)columnNamed:(NSString *)aColumnName {
     ARColumn *cachedColumn = [[ARSchemaManager sharedInstance] columnForRecord:self named:aColumnName];
     if(cachedColumn)

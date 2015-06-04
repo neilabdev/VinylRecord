@@ -12,6 +12,7 @@
 #import "NSString+uppercaseFirst.h"
 #import "ActiveRecord_Private.h"
 #import "ConcreteColumns.h"
+#import "NSString+sqlRepresentation.h"
 
 @implementation ARColumn
 {
@@ -37,7 +38,8 @@
         strcpy(_columnKey, propertyName);
         
         self->_columnName = [[NSString alloc] initWithUTF8String:_columnKey];
-        self->_mappingName = mappingName ? mappingName : [[NSString alloc] initWithUTF8String:_columnKey];
+        self->_mappingName = mappingName ? [mappingName stringAsColumnName] :
+                [[[NSString alloc] initWithUTF8String:_columnKey] stringAsColumnName];
         
         //  set default setter/getter
         [self setSetterFromAttribute:NULL];

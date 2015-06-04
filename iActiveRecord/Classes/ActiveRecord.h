@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <objc/message.h>
-
+#import "ActiveRecordProtocol.h"
 #import "ARRelationshipsHelper.h"
 #import "ARMappingHelper.h"
 #import "ARCallbacksHelper.h"
@@ -25,22 +25,16 @@
 #import "ARSynchronizationProtocol.h"
 #import "ARTransactionState.h"
 
-@protocol ActiveRecord <NSObject>
-#pragma mark - TableName
-+ (NSString *)recordName;
-@end
 
 @class ARConfiguration;
 
 typedef void (^ARTransactionBlock)();
-
 typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 #define ar_rollback \
     [ARException raise];
 
 @interface ActiveRecord : NSObject <ActiveRecord>
-
 @property(nonatomic, retain) NSNumber *id;
 @property(nonatomic, retain) NSDate *updatedAt;
 @property(nonatomic, retain) NSDate *createdAt;
@@ -73,17 +67,9 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 - (instancetype)reload;
 
-- (BOOL)save;
 
-- (BOOL)update;
 
-- (BOOL)sync;
 
-- (void)dropRecord;
-
-+ (NSInteger)count;
-
-+ (NSArray *) all;
 
 + (NSArray *)allRecords __deprecated;
 
@@ -124,19 +110,7 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 
 #pragma mark - Extensions
-+ (ARLazyFetcher *) query;
 
-+ (instancetype)findById:(id)record_id;
-
-+ (instancetype)findByKey:(id)key value:(id)value;
-
-+ (instancetype)findOrBuildByKey:(id)key value:(id)value;
-
-+ (NSArray *)findAllByKey:(id)key value:(id)value;
-
-+ (NSArray *)findAllByConditions:(NSDictionary *)conditions;
-
-+ (NSArray*)findByConditions:(NSDictionary *)conditions;
 
 + (void)addSearchOn:(NSString *)aField;
 

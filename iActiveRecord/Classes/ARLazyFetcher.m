@@ -49,13 +49,13 @@
 
         return self;
     }
-- (instancetype)initWithRecord:(Class)aRecord {
+- (instancetype)initWithRecord:(Class <ActiveRecord> )aRecord {
     self = [self init];
     recordClass = aRecord;
     return self;
 }
 
-- (instancetype)initWithRecord:(Class)aRecord withInitialSql:(NSString *)anInitialSql {
+- (instancetype)initWithRecord:(Class <ActiveRecord> )aRecord withInitialSql:(NSString *)anInitialSql {
     self = [self initWithRecord:aRecord];
     if (self) {
         sqlRequest = [anInitialSql copy];
@@ -107,14 +107,17 @@
 
 - (void)createRecordHasManyThrough {
     NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]]; //TODO: Refactor method to support mapping
-    Class relClass = NSClassFromString(hasManyThroughClass);
+    Class <ActiveRecordPrivateMethods> relClass = NSClassFromString(hasManyThroughClass); //stringMappingForColumnNamed:
+    NSString *mappingId = [relClass stringMappingForColumnNamed:relId];
     [self join:relClass];
-    [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], relId, row.id, nil];
+    [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], mappingId, row.id, nil];
 }
 
 - (void)createRecordHasMany { //TODO: Refactor method to support mapping
-    NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
-    [self where:@"%@ = %@", [selfId stringAsColumnName], row.id, nil];
+    NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
+    Class <ActiveRecordPrivateMethods> relClass = NSClassFromString(hasManyClass); //stringMappingForColumnNamed:
+    NSString *mappingId = [relClass stringMappingForColumnNamed:selfId];
+    [self where:@"%@ = %@", mappingId, row.id, nil];
 }
 
 
@@ -298,15 +301,17 @@
 
 #pragma mark - Joins
 
-- (ARLazyFetcher *)join:(Class)aJoinRecord { //TODO: Refactor method to support mapping
+- (ARLazyFetcher *)join:(Class <ActiveRecord> )aJoinRecord { //TODO: Refactor method to support mapping
 
     NSString *_recordField = @"id";
     NSString *_joinField = [NSString stringWithFormat:@"%@Id",
                             [[recordClass description] lowercaseFirst]];
+    Class <ActiveRecordPrivateMethods> recordClazz =  aJoinRecord;
+    NSString *mappingId = [recordClazz stringMappingForColumnNamed:_joinField];
     [self join:aJoinRecord
        useJoin:ARJoinInner
        onField:_recordField
-      andField:_joinField];
+      andField:mappingId];
     return self;
 }
 

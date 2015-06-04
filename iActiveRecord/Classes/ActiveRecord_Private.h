@@ -12,15 +12,24 @@
 @class ARLazyFetcher;
 @class ARError;
 @class ARColumn;
+
+
+
 @protocol ActiveRecordPrivateMethods <ActiveRecord>
 + (ActiveRecord*)persistedRecord;
+#pragma mark - Column getters
+
++ (ARColumn *)columnNamed:(NSString *)aColumnName;
+- (ARColumn *)columnNamed:(NSString *)aColumnName;
++ (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
+- (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
 @end
-@interface ActiveRecord ()
+
+@interface ActiveRecord () <ActiveRecordPrivateMethods>
 {
     @private
     BOOL isNew;
     NSMutableSet *errors;
- //   NSMutableSet *_changedColumns;
     BOOL shouldSync;
 }
 
@@ -89,17 +98,12 @@
 
 - (void)privateAfterDestroy;
 
-#pragma mark - Column getters
-
-+ (ARColumn *)columnNamed:(NSString *)aColumnName;
-- (ARColumn *)columnNamed:(NSString *)aColumnName;
 
 + (ARColumn *)columnWithSetterNamed:(NSString *)aSetterName;
 - (ARColumn *)columnWithSetterNamed:(NSString *)aSetterName;
 
 + (ARColumn *)columnWithGetterNamed:(NSString *)aGetterName;
 - (ARColumn *)columnWithGetterNamed:(NSString *)aGetterName;
-
 
 #pragma mark - Dynamic Properties
 
