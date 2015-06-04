@@ -49,6 +49,7 @@ static NSMutableDictionary *relationshipsDictionary = nil;
 
 + (void)initialize {
     [super initialize];
+    [self initializeMapping];
     [self initializeIndices];
     [[ARSchemaManager sharedInstance] registerSchemeForRecord:self];
     [self initializeValidators];
@@ -1039,6 +1040,21 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     //  nothing goes there
 }
 
++ (void)initializeMapping {
+
+}
+
++ (void)addMappingOn:(NSString*)properyName column: (NSString*) columnName {
+    [[ARSchemaManager sharedInstance] addMappingOnProperty:properyName
+                                                    column:columnName
+                                                  ofRecord:self];
+
+}
++ (void)addMappingOn:(NSString*)properyName mapping: (NSDictionary*) mapping {
+    [[ARSchemaManager sharedInstance] addMappingOnProperty:properyName
+                                                   mapping:mapping
+                                                  ofRecord:self];
+}
 + (void)addIndexOn:(NSString *)aField {
     [[ARSchemaManager sharedInstance] addIndexOnColumn:aField
                                               ofRecord:self];

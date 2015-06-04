@@ -10,7 +10,7 @@
 #import <objc/message.h>
 
 #import "ARRelationshipsHelper.h"
-#import "ARValidationsHelper.h"
+#import "ARMappingHelper.h"
 #import "ARCallbacksHelper.h"
 #import "ARLazyFetcher.h"
 #import "ARErrorHelper.h"
@@ -20,6 +20,7 @@
 #import "ARValidatorProtocol.h"
 #import "ARException.h"
 #import "ARIndicesMacroHelper.h"
+#import "ARValidationsHelper.h"
 #import "ARConfiguration.h"
 #import "ARSynchronizationProtocol.h"
 #import "ARTransactionState.h"

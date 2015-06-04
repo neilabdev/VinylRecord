@@ -117,17 +117,6 @@
 #define add_search_on(aField) \
     [self performSelector: @selector(addSearchOn:) withObject: @ ""#aField ""];
 
-#define indexes_do(indices) \
-    + (void)initializeIndices { \
-        [super initializeIndices]; \
-        indices \
-    }
-
-#define mapping_do(mapping) \
-    (void) initializeMapping { \
-        return; \
-    }
-
 #define has_none_through_dec has_many_through_imp
 #define has_none_through_imp(relative_class, relationship, accessor, dependency) \
     + (ARDependency)_ar_registerHasManyThrough ## relative_class ## _ar_ ## relationship { \

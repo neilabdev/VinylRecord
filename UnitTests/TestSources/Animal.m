@@ -19,6 +19,10 @@ validation_do(
     validate_field_with_validator(name, AnimalValidator)
 )
 
+mapping_do(
+    column_name(name,new_name)
+    column_map(state,@{@"name":@"new_state"})
+)
 - (VinylRecord *)mergeExistingRecord {
     return nil;
 }

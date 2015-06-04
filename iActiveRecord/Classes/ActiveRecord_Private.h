@@ -28,7 +28,6 @@
 @property (nonatomic,strong) NSMutableSet *hasManyPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyThroughRelationsQueue;
 @property (nonatomic,strong) NSMutableDictionary *entityCache;
-
 @property (nonatomic,strong) NSMutableSet *changedColumns;
 #pragma mark - Lazy Persistent Helpers
 - (BOOL)isNewRecord;
@@ -38,6 +37,7 @@
 #pragma mark - Validations Declaration
 
 + (void)initializeValidators;
++ (void)initializeMapping;
 + (void)validateUniquenessOfField:(NSString *)aField;
 + (void)validatePresenceOfField:(NSString *)aField;
 + (void)validateField:(NSString *)aField withValidator:(NSString *)aValidator;

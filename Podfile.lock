@@ -37,7 +37,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   VinylRecord:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
@@ -48,6 +48,6 @@ SPEC CHECKSUMS:
   RKValueTransformers: 66ac5e4f077fdbe3496e792d89eeff4c3eb67701
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
-  VinylRecord: 30961aaa6e1f942bedb6a8164230785a953e56f6
+  VinylRecord: 7a56c1e83eeb3579d206df2d5efc31493965f225
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.37.2

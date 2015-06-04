@@ -26,6 +26,7 @@
     self.schemes = [NSMutableDictionary new];
     self.indices = [NSMutableDictionary new];
     self.columns = [NSMutableDictionary new];
+    self.mappings = [NSMutableDictionary new];
     return self;
 }
 
@@ -41,8 +42,7 @@
             if (!column.isDynamic) {
                 continue;
             }
-            [self.schemes addValue:column
-                      toArrayNamed:recordName];
+            [self.schemes addValue:column toArrayNamed:recordName];
             [self addColumn:column forRecord:aRecordClass named:column.setter];
             [self addColumn:column forRecord:aRecordClass named:column.getter];
             [self addColumn:column forRecord:aRecordClass named:column.columnName];
@@ -60,7 +60,6 @@
 - (ARColumn *) columnForRecord: (Class)aRecordClass named:(NSString *) columnName {
     NSString *recordName = [aRecordClass performSelector:@selector(recordName)];
     NSMutableDictionary *recordCache = [self.columns objectForKey:recordName];
-
     return recordCache ? [recordCache objectForKey:columnName] : nil;
 }
 
@@ -76,7 +75,6 @@
         [recordCache setObject:column forKey:columnName];
     else
         [recordCache removeObjectForKey:columnName];
-
 }
 
 - (void)addIndexOnColumn:(NSString *)aColumn ofRecord:(Class)aRecordClass {
@@ -84,8 +82,17 @@
               toArrayNamed:[aRecordClass performSelector:@selector(recordName)]];
 }
 
+- (void)addMappingOnProperty: (NSString *)propertyName column:(NSString *)columnName ofRecord:(Class)aRecordClass {
+    [self addMappingOnProperty:propertyName mapping:@{@"name": columnName} ofRecord:aRecordClass];
+}
+
+- (void)addMappingOnProperty: (NSString *)propertyName mapping:(NSDictionary *)mapping ofRecord:(Class)aRecordClass {
+    [self.mappings setValue:mapping
+                    forKey:propertyName
+                toMapNamed:[aRecordClass performSelector:@selector(recordName)]];
+}
+
 - (NSArray *)indicesForRecord:(Class)aRecordClass {
     return [self.indices valueForKey:[aRecordClass performSelector:@selector(recordName)]];
 }
-
 @end
