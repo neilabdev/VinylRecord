@@ -1,14 +1,14 @@
 language: objective-c
 
 before_install:
-- gem update --system
-- gem install cocoapods # Since Travis is not always on latest version
-- brew update
-- pod update
+#- gem update --system
+- gem install cocoapods
+#- brew update
+#- pod update
 
 install:
 - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 
 script:
-- set -o pipefail && xcodebuild test  -workspace iActiveRecord.xcworkspace -scheme SpecTests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
+- set -o pipefail && xcodebuild test -workspace iActiveRecord.xcworkspace -scheme SpecTests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
 - pod lib lint --quick

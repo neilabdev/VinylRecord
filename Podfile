@@ -1,5 +1,4 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '7.0'
 
 target 'UnitTests' do
   pod 'Cedar', '0.11.2'
