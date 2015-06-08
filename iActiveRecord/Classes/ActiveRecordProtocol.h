@@ -10,11 +10,13 @@
 
 @protocol ActiveRecord <NSObject>
 #pragma mark - TableName
-+ (NSString *) recordName __deprecated;
-+ (NSString *) tableName;
-- (NSString *) tableName;
+
++ (NSString *)recordName ; //TODO: Likely to be depricated in favor of tableName which is more clean. Though keeping for capatiablity is good to.
+
++ (NSString *)tableName;
 
 #pragma mark - Persistence
+
 - (BOOL)save;
 
 - (BOOL)update;
@@ -26,14 +28,18 @@
 #pragma mark - Columns
 
 - (NSArray *)columns;
+
 + (NSArray *)columns;
 
 #pragma mark -
+
 + (NSInteger)count;
 
-+ (NSArray *) all;
++ (NSArray *)all;
+
 #pragma mark - Query
-+ (ARLazyFetcher *) query;
+
++ (ARLazyFetcher *)query;
 
 + (instancetype)findById:(id)record_id;
 
@@ -45,6 +51,6 @@
 
 + (NSArray *)findAllByConditions:(NSDictionary *)conditions;
 
-+ (NSArray*)findByConditions:(NSDictionary *)conditions;
++ (NSArray *)findByConditions:(NSDictionary *)conditions;
 
 @end

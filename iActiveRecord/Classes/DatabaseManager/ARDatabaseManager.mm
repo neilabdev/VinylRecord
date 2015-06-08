@@ -200,7 +200,7 @@ static NSArray *records = nil;
     NSArray *allExisting = [existedViews arrayByAddingObjectsFromArray: existedTables];
     NSArray *describedTables = [self records];
     
-    for (Class <ActiveRecord> tableClass in describedTables) {
+    for (Class <ActiveRecordPrivateMethods> tableClass in describedTables) {
         NSString *tableName = [tableClass tableName];
         if (![allExisting containsObject:tableName] ) {
             //only create table if there is no table or view for ist
@@ -801,7 +801,7 @@ static NSArray *records = nil;
         NSMutableArray *clazzes = [NSMutableArray array];
         NSArray *subclasses = class_getSubclasses([ActiveRecord class]);
         for(Class clazz in subclasses) {
-            //TODO: Until VinylRecord becomes the official base class and ActiveRecord compatibility is dropped. the subclass VinylRecord should not create a new table.
+            //TODO: Remove VinylRecord hard class and replace it with a macro to ActiveRecord. Leaving this unecessary.
             if(! (clazz == [VinylRecord class]))
                 [clazzes addObject:clazz];
         }

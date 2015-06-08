@@ -7,51 +7,55 @@
 //
 
 #import "ARLazyFetcher.h"
-#import "ActiveRecordProtocol.h"
+
 static const char *joins[] = {"LEFT", "RIGHT", "INNER", "OUTER"};
 
-static NSString * joinString(ARJoinType type)
-{
-    return [NSString stringWithUTF8String : joins[type]];
+static NSString *joinString(ARJoinType type) {
+    return [NSString stringWithUTF8String:joins[type]];
 }
 
-@interface ARLazyFetcher ()
-{
-    @private
-    Class <ActiveRecord> recordClass;
+@protocol ActiveRecordPrivateMethods;
+
+@interface ARLazyFetcher () {
+@private
+    Class <ActiveRecordPrivateMethods> recordClass;
     NSString *sqlRequest;
     NSMutableDictionary *orderByConditions;
     BOOL useRandomOrder;
     NSMutableSet *onlyFields;
     NSMutableSet *exceptFields;
     ARJoinType joinType;
-    Class  <ActiveRecord> joinClass;
+    Class <ActiveRecordPrivateMethods> joinClass;
     NSString *recordField;
     NSString *joinField;
     BOOL useJoin;
     NSNumber *limit;
     NSNumber *offset;
-    ActiveRecord * row;
+    ActiveRecord *row;
     ARRelationType relationType;
     NSString *hasManyClass;
     NSString *hasManyThroughClass;
     NSArray *arrayRows;
 }
 
-@property (nonatomic, copy) NSMutableString *whereStatement;
+@property(nonatomic, copy) NSMutableString *whereStatement;
 
 - (NSSet *)recordFields;
 
 - (void)buildSql;
+
 - (NSString *)createOrderbyStatement;
+
 - (NSString *)createWhereStatement;
+
 - (NSString *)createLimitOffsetStatement;
+
 - (NSString *)createSelectStatement;
+
 - (NSString *)createJoinedSelectStatement;
+
 - (NSString *)createJoinStatement;
 
 - (NSSet *)fieldsOfRecord:(id)aRecord;
-
-
 
 @end

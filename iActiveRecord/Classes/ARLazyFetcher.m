@@ -13,7 +13,6 @@
 #import "ActiveRecord.h"
 #import "ActiveRecord_Private.h"
 #import "ARLazyFetcher_Private.h"
-#import "ActiveRecord_Private.h"
 #import "NSString+sqlRepresentation.h"
 
 @implementation ARLazyFetcher
@@ -335,7 +334,7 @@
     if(!row) return nil;
 
     NSArray *entities = nil;
-    NSString *entityKey = [recordClass performSelector:@selector(foreignPropertyKey)];
+    NSString *entityKey = [recordClass foreignPropertyKey];
 
     if (relationType == ARRelationTypeHasManyThrough) {
         entities = [row cachedArrayForKey:entityKey];

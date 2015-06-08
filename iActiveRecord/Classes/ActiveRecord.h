@@ -39,7 +39,6 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 @property(nonatomic, retain) NSDate *updatedAt;
 @property(nonatomic, retain) NSDate *createdAt;
 
-- (void)markAsNew;
 
 - (BOOL)isDirty;
 
@@ -66,10 +65,6 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 - (void)copyFrom:(ActiveRecord *)copy merge:(BOOL)merge;
 
 - (instancetype)reload;
-
-
-
-
 
 + (NSArray *)allRecords __deprecated;
 
@@ -107,7 +102,6 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 - (void)beforeSync;
 
 - (void)afterSync;
-
 
 #pragma mark - Extensions
 

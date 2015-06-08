@@ -13,16 +13,21 @@
 @class ARError;
 @class ARColumn;
 
-
-
 @protocol ActiveRecordPrivateMethods <ActiveRecord>
+
+- (void)markAsNew;
+
+- (NSString *)tableName;
+
 + (ActiveRecord*)persistedRecord;
 #pragma mark - Column getters
 
 + (ARColumn *)columnNamed:(NSString *)aColumnName;
 - (ARColumn *)columnNamed:(NSString *)aColumnName;
+
 + (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
 - (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
+
 + (NSString*) foreignPropertyKey;
 - (NSString*) foreignPropertyKey;
 @end

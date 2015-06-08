@@ -273,7 +273,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     [errors addObject:anError];
 }
 
-#pragma mark -
+#pragma mark - Table Mapping
 
 + (NSArray *)relationships {
     return [relationshipsDictionary objectForKey:[self className]];
@@ -298,6 +298,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         return [components lastObject];
     return name;
 }
+
 
 + (NSString *)recordName {
     //TODO: Needs to be refactored, but basically to maintain compat with iActiveRecord, you should be able to ALSO
@@ -341,9 +342,10 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     [record markAsPersisted];
     return record;
 }
+
 + (instancetype)newRecord {
     return [self new: nil];
-   }
+}
 
 - (instancetype)reload {
     [self.entityCache removeAllObjects];
@@ -455,7 +457,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
         // nothing goes here
 }
 
-
 - (void) beforeSave {}
 
 - (void) afterSave {}
@@ -479,8 +480,6 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 - (void) beforeSync {}
 
 - (void) afterSync {}
-
-
 
 #pragma mark - Save/Update/Sync
 
@@ -576,9 +575,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 }
 
 
-    - (void) copyFrom: (ActiveRecord *) copy  {
-        [self copyFrom:copy  merge:NO];
-    }
+- (void)copyFrom:(ActiveRecord *)copy {
+    [self copyFrom:copy merge:NO];
+}
 
 - (void) copyFrom: (ActiveRecord *) copy merge: (BOOL) merge{
 
@@ -716,8 +715,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 #pragma mark BelongsTo
 
 - (id)belongsTo:(NSString *)aClassName {
-    Class <ActiveRecord> aClass = NSClassFromString(aClassName);
-    NSString *selectorString = [aClass performSelector:@selector(foreignPropertyKey)] ;//[NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]];
+    Class <ActiveRecordPrivateMethods> aClass = NSClassFromString(aClassName);
+    NSString *selectorString = [aClass foreignPropertyKey] ;//[NSString stringWithFormat:@"%@Id", [aClassName lowercaseFirst]];
     SEL selector = NSSelectorFromString(selectorString);
     
 #pragma clang diagnostic push
@@ -741,8 +740,8 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
 
 
 - (void)setRecord:(ActiveRecord *)aRecord belongsTo:(NSString *)aRelation {
-    Class <ActiveRecord> aClass = NSClassFromString(aRelation);
-    NSString *selectorString = [aClass performSelector:@selector(foreignPropertyKey)] ;//[NSString stringWithFormat:@"%@Id", [aRelation lowercaseFirst]];
+    Class <ActiveRecordPrivateMethods> aClass = NSClassFromString(aRelation);
+    NSString *selectorString = [aClass foreignPropertyKey];//[NSString stringWithFormat:@"%@Id", [aRelation lowercaseFirst]];
 
     [self setCachedEntity:aRecord forKey:selectorString];
 
@@ -843,9 +842,9 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
           ofClass:(NSString *)aClassname
           through:(NSString *)aRelationshipClassName
 {
-    Class <ActiveRecord > aClass = NSClassFromString(aClassname);
+    Class <ActiveRecordPrivateMethods > aClass = NSClassFromString(aClassname);
 
-    NSString *entityKey =  [aClass performSelector:@selector(foreignPropertyKey)];// [NSString stringWithFormat:@"%@", [ [aClass className] lowercaseFirst]];
+    NSString *entityKey =  [aClass foreignPropertyKey];// [NSString stringWithFormat:@"%@", [ [aClass className] lowercaseFirst]];
     [self addCachedEntity:aRecord forKey:entityKey];
     /* If the record being added is not a new record and self is not new it is not necessary
     *  to queue the request. This allows use to mimic existing behavior while adding lazy
@@ -1082,7 +1081,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     }
 }
 
-#pragma mark - Indices
+#pragma mark - Indices/Mapping
 
 + (void)initializeIndices {
     //  nothing goes there
