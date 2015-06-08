@@ -185,7 +185,7 @@ static NSArray *records = nil;
     [self createIndices];
 }
 
-- (void)createTable:(Class)aRecord {
+- (void)createTable:(Class <ActiveRecord>)aRecord {
     const char *sqlQuery = [ARSQLBuilder sqlOnCreateTableForRecord:aRecord];
     [self executeSqlQuery:sqlQuery];
 }
@@ -200,8 +200,8 @@ static NSArray *records = nil;
     NSArray *allExisting = [existedViews arrayByAddingObjectsFromArray: existedTables];
     NSArray *describedTables = [self records];
     
-    for (Class tableClass in describedTables) {
-        NSString *tableName = [tableClass recordName];
+    for (Class <ActiveRecord> tableClass in describedTables) {
+        NSString *tableName = [tableClass tableName];
         if (![allExisting containsObject:tableName] ) {
             //only create table if there is no table or view for ist
             [self createTable:tableClass];
@@ -213,7 +213,7 @@ static NSArray *records = nil;
             NSMutableArray *describedColumns = [NSMutableArray array];
             
             for (ARColumn *column in describedProperties) {
-                [describedColumns addObject:column.columnName];
+                [describedColumns addObject:column.mappingName];
             }
             
             for (NSString *column in describedColumns) {
@@ -330,7 +330,6 @@ static NSArray *records = nil;
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *statement;
-        
         const char *sqlQuery = [aSqlRequest UTF8String];
 
         if (sqlite3_prepare_v2(connection.database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
@@ -356,8 +355,7 @@ static NSArray *records = nil;
                 NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name(statement, columnIndex)];
                
                 if (!hasColumns) {
-                    ARColumn* column = [Record performSelector:@selector(columnNamed:)
-                                                       withObject:columnName];
+                    ARColumn* column = [Record performSelector:@selector(columnNamed:) withObject:columnName];
                     if(column == nil){
                         /*if working with views, sqlite3_column_name(statement, columnIndex) currently returns fully qualified column names
                         * the follwoing code dissembles the fully qualified name to have only the raw column name itself self for the lookup in the
@@ -372,7 +370,7 @@ static NSArray *records = nil;
                         //our recovery operation for the column name failed
                         sqlite3_finalize(statement);
                         @throw [ARException exceptionWithName: @"ColumnNotFoundInRecord"
-                                                       reason: [NSString stringWithFormat: @"Column %@ could not be found in record %@", columnName, [Record recordName],nil  ]
+                                                       reason: [NSString stringWithFormat: @"Column %@ could not be found in record %@", columnName, [Record tableName],nil  ]
                                                      userInfo: nil];
                     }
                     columns[columnIndex] = column;
@@ -536,8 +534,7 @@ static NSArray *records = nil;
 - (NSInteger)countOfRecordsWithName:(NSString *)aName {
 #warning remove
     NSString *aSqlRequest = [NSString stringWithFormat:
-                             @"SELECT count(id) FROM '%@'",
-                             [self tableName:aName]];
+                             @"SELECT count(id) FROM '%@'", aName];
     return [self functionResult:aSqlRequest];
 }
 
@@ -613,12 +610,12 @@ static NSArray *records = nil;
         NSArray *orderedColumns = [changedColumns allObjects];  //Used to prevent enumeration execeptions should columns change.
 
         for (ARColumn *column in orderedColumns) {
-            [columns addObject:[NSString stringWithFormat:@"'%@'", column.columnName]];
+            [columns addObject:[NSString stringWithFormat:@"'%@'", column.mappingName]];
         }
         
         NSString *sqlString = [NSString stringWithFormat:
                                @"INSERT INTO '%@'(%@) VALUES(%@)",
-                               [aRecord recordName],
+                               [aRecord tableName],
                                [columns componentsJoinedByString:@","],  //FIXME: Sometimes query generates because no changed columns: "INSERT INTO 'Subscriber'() VALUES(?,?,?,?,?,?)"
                                valueMapping];
         
@@ -647,7 +644,7 @@ static NSArray *records = nil;
                         NSData *data = value;
                         sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
                     } else {
-                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.mappingName);
                     }
                     
                     break;
@@ -708,12 +705,12 @@ static NSArray *records = nil;
         NSArray *orderedColumns = [changedColumns allObjects];
 
         for (ARColumn *column in orderedColumns) {
-            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.columnName]];
+            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.mappingName]];
         }
 
         NSString *sqlString = [NSString stringWithFormat:
                 @"UPDATE '%@' SET %@ WHERE id = %@",
-                [aRecord recordName],
+                [aRecord tableName],
                 [columns componentsJoinedByString:@","],aRecord.id];
 
         sql = [sqlString UTF8String];
@@ -734,7 +731,7 @@ static NSArray *records = nil;
                         NSData *data = value;
                         sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
                     } else {
-                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.mappingName);
                     }
 
                     break;

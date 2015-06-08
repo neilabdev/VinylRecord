@@ -9,20 +9,6 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "25922AFA14EC286000CBB58A"
-               BuildableName = "UnitTests.app"
-               BlueprintName = "UnitTests"
-               ReferencedContainer = "container:iActiveRecord.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "YES">
@@ -56,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "25922AFA14EC286000CBB58A"
-            BuildableName = "UnitTests.app"
-            BlueprintName = "UnitTests"
+            BlueprintIdentifier = "E6DE61561B2146B800F299BC"
+            BuildableName = "SpecTests.xctest"
+            BlueprintName = "SpecTests"
             ReferencedContainer = "container:iActiveRecord.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -72,33 +58,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "25922AFA14EC286000CBB58A"
-            BuildableName = "UnitTests.app"
-            BlueprintName = "UnitTests"
+            BlueprintIdentifier = "E6DE61561B2146B800F299BC"
+            BuildableName = "SpecTests.xctest"
+            BlueprintName = "SpecTests"
             ReferencedContainer = "container:iActiveRecord.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "CEDAR_REPORTER_OPTS"
-            value = "nested"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "CEDAR_HEADLESS_SPECS"
-            value = "1"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "CEDAR_REPORTER_CLASS"
-            value = "CDRColorizedReporter"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -108,16 +76,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "25922AFA14EC286000CBB58A"
-            BuildableName = "UnitTests.app"
-            BlueprintName = "UnitTests"
+            BlueprintIdentifier = "E6DE61561B2146B800F299BC"
+            BuildableName = "SpecTests.xctest"
+            BlueprintName = "SpecTests"
             ReferencedContainer = "container:iActiveRecord.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

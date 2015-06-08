@@ -36,7 +36,8 @@ Tsuga<ARDatabaseManager>::run(^{
         
         it(@"should use recordName instead of class name", ^{
             ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
-            databaseManager.tables should contain([DifferentTableName recordName]);
+            NSArray *databaseTables = databaseManager.tables;
+            databaseTables should contain([DifferentTableName tableName]);
         });
         
         it(@"save records with different table name", ^{
