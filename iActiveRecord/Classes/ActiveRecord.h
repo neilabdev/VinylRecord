@@ -5,7 +5,6 @@
 //  Created by Alex Denisov on 10.01.12.
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <objc/message.h>
 #import "ActiveRecordProtocol.h"
@@ -25,10 +24,10 @@
 #import "ARSynchronizationProtocol.h"
 #import "ARTransactionState.h"
 
-
 @class ARConfiguration;
 
 typedef void (^ARTransactionBlock)();
+
 typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 #define ar_rollback \
@@ -57,19 +56,15 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (instancetype)create:(NSDictionary *)values;
 
-+ (instancetype) record;
-+ (instancetype) record:(NSDictionary *)values;
++ (instancetype)record;
 
++ (instancetype)record:(NSDictionary *)values;
 
 - (void)copyFrom:(ActiveRecord *)copy;
 
 - (void)copyFrom:(ActiveRecord *)copy merge:(BOOL)merge;
 
 - (instancetype)reload;
-
-
-
-
 
 + (NSArray *)allRecords __deprecated;
 
@@ -82,7 +77,6 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 + (void)transaction:(ARTransactionBlock)aTransactionBlock;
 
 + (void)applyConfiguration:(ARConfigurationBlock)configBlock;
-
 
 #pragma mark - Callbacks
 
@@ -108,9 +102,7 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 - (void)afterSync;
 
-
 #pragma mark - Extensions
-
 
 + (void)addSearchOn:(NSString *)aField;
 
@@ -120,5 +112,3 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 - (instancetype)recordSaved;
 @end
-
-
