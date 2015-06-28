@@ -14,6 +14,8 @@
 #import "DifferentTableMappingName.h"
 
 #import "ARConfiguration.h"
+#import "ActiveRecord_Private.h"
+#import "ARColumn.h"
 
 using namespace Cedar::Matchers;
 
@@ -56,6 +58,13 @@ Tsuga<ARDatabaseManager>::run(^{
             ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
             NSArray *databaseTables = databaseManager.tables;
             databaseTables should contain([DifferentTableMappingName tableName]);
+        });
+
+        it(@"should use column mapping name instead of property name name", ^{
+            ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
+            NSArray *tableColumns = [databaseManager columnsForTable:[DifferentTableMappingName tableName]]      ;
+            ARColumn *titleColumn = [DifferentTableMappingName columnWithGetterNamed:@"title"];
+            tableColumns should contain( titleColumn.mappingName);
         });
 
         it(@"save records with different table name using mapping", ^{

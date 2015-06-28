@@ -11,5 +11,6 @@ belongs_to_imp(User, user, ARDependencyDestroy)
 column_imp(string,title)
 mapping_do(
         table_name(different_table_name_with_mapping)
+        column_name(title, different_title_name)
 )
 @end
