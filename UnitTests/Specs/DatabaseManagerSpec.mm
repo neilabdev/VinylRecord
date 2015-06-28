@@ -11,6 +11,7 @@
 #import "User.h"
 #import "ARDatabaseManager.h"
 #import "DifferentTableName.h"
+#import "DifferentTableMappingName.h"
 
 #import "ARConfiguration.h"
 
@@ -47,6 +48,23 @@ Tsuga<ARDatabaseManager>::run(^{
             [model save] should be_truthy;
             
             DifferentTableName *loadedModel = [[DifferentTableName all] objectAtIndex:0];
+            loadedModel.title should equal(title);
+        });
+
+
+        it(@"should use mapping name instead of class name", ^{
+            ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
+            NSArray *databaseTables = databaseManager.tables;
+            databaseTables should contain([DifferentTableMappingName tableName]);
+        });
+
+        it(@"save records with different table name using mapping", ^{
+            NSString *title = @"Does ot works?";
+            DifferentTableMappingName *model = [DifferentTableMappingName record];
+            model.title = title;
+            [model save] should be_truthy;
+
+            DifferentTableMappingName *loadedModel = [[DifferentTableMappingName all] objectAtIndex:0];
             loadedModel.title should equal(title);
         });
     });

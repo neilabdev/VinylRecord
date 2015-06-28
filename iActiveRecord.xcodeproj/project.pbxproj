@@ -55,8 +55,10 @@
 		5DC6A1A2F5D13291F707DE1A /* ARRelationHasMany.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AAFF51CF485C2BA2D494 /* ARRelationHasMany.m */; };
 		5DC6A1B282DC9AA5592EC6DD /* LongColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A6FD424BA64BA38700C5 /* LongColumn.h */; };
 		5DC6A1D6718B7BBEEC7B5AAF /* NSDate+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6ABD014D1136631A348B3 /* NSDate+sqlRepresentation.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		5DC6A1E0B84EF73694E2F240 /* DifferentTableMappingName.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7A67329EBC5DFDAD837 /* DifferentTableMappingName.m */; };
 		5DC6A1F1CD8325354769BD82 /* LongLongColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A6CBF14D64DA76D9A1F0 /* LongLongColumn.mm */; };
 		5DC6A1FE37C7DE859C56EFC8 /* ARSQLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A2E32B7ABE9381CA5F03 /* ARSQLBuilder.m */; };
+		5DC6A20B0DFC9E5D1064E989 /* DifferentTableMappingName.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7A67329EBC5DFDAD837 /* DifferentTableMappingName.m */; };
 		5DC6A20FDD154ACC3D40568D /* NSSet+toSql.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A6EA8573BCC64FDA5F4A /* NSSet+toSql.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5DC6A2158D795FDCE2D9D4E0 /* ARPersistentQueueEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A38AF3777CA7F875B4DE /* ARPersistentQueueEntity.h */; };
 		5DC6A226A625CF2B7027C99F /* NSNumber+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6ABEA69166D0C10F32D32 /* NSNumber+sqlRepresentation.m */; };
@@ -106,6 +108,7 @@
 		5DC6A58C7A114E3971700FEA /* NSDate+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AA9A84A15025F8AFC250 /* NSDate+sqlRepresentation.m */; };
 		5DC6A5A34F494C15A352647F /* ARTransactionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A019FD2B87A4B7089250 /* ARTransactionState.m */; };
 		5DC6A5A50025E7BE2DCB66B2 /* ShortColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AF39155FB567AB5D3FB7 /* ShortColumn.mm */; };
+		5DC6A5A53946DC572149975B /* DifferentTableMappingName.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A9E0DF8CB525D4841CA9 /* DifferentTableMappingName.h */; };
 		5DC6A5ADE6E0ED4A22DCF1AA /* ARRelationHasManyThrough.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AE41EAE9F07B774D891C /* ARRelationHasManyThrough.m */; };
 		5DC6A5AF7531C70BBE5076EB /* NSArray+toSql.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AA43E97CD839F19547A9 /* NSArray+toSql.m */; };
 		5DC6A5B4E9F83143925281BA /* NSData+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A06DC63FD1B3C96E61F7 /* NSData+sqlRepresentation.m */; };
@@ -159,6 +162,7 @@
 		5DC6A99E26A8FC34D5C138B6 /* FloatColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A4F233B2651C96A0B988 /* FloatColumn.h */; };
 		5DC6A9ABC235244F9D424425 /* class_getSubclasses.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AA4647BE6210B0AC88CF /* class_getSubclasses.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5DC6A9AE6F7560A2E4C07B4D /* ARLazyFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AD5503099C71ECCEF60B /* ARLazyFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5DC6A9D5C847CCC0D5F1701E /* DifferentTableMappingName.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A7A67329EBC5DFDAD837 /* DifferentTableMappingName.m */; };
 		5DC6A9FF6387D70DDBD1E67C /* ARRelationHasManyThrough.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AE41EAE9F07B774D891C /* ARRelationHasManyThrough.m */; };
 		5DC6AA0F298A3F2C7BDDA817 /* ARColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AA12D58A3ABD1EA42F8D /* ARColumn.mm */; };
 		5DC6AA111620AB8898A86AB3 /* NSDateColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC5AE6DB043254DB4B45 /* NSDateColumn.mm */; };
@@ -405,6 +409,7 @@
 		5DC6A70E34EF372195F9743C /* ARCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCallback.h; sourceTree = "<group>"; };
 		5DC6A75F201E0C49AECF02A2 /* ARException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARException.h; sourceTree = "<group>"; };
 		5DC6A7766472DD1B7A817791 /* UnsignedLongColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnsignedLongColumn.mm; sourceTree = "<group>"; };
+		5DC6A7A67329EBC5DFDAD837 /* DifferentTableMappingName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DifferentTableMappingName.m; sourceTree = "<group>"; };
 		5DC6A7D285F313114CA69DC2 /* ARCallbacksHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCallbacksHelper.h; sourceTree = "<group>"; };
 		5DC6A82F634D46D7BF672EB1 /* ActiveRecordProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveRecordProtocol.h; sourceTree = "<group>"; };
 		5DC6A839E96BE75E11B2F86F /* VinylRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VinylRecord.h; sourceTree = "<group>"; };
@@ -425,6 +430,7 @@
 		5DC6A9C008CC193B59755C71 /* ARDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDatabaseManager.h; sourceTree = "<group>"; };
 		5DC6A9C656DECC49D74730F0 /* ARPersistentQueueEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPersistentQueueEntity.m; sourceTree = "<group>"; };
 		5DC6A9C931FE9944B97ECD1D /* NSString+uppercaseFirst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+uppercaseFirst.h"; sourceTree = "<group>"; };
+		5DC6A9E0DF8CB525D4841CA9 /* DifferentTableMappingName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DifferentTableMappingName.h; sourceTree = "<group>"; };
 		5DC6A9E8B05E648027C6AADF /* ARTransactionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTransactionState.h; sourceTree = "<group>"; };
 		5DC6AA12D58A3ABD1EA42F8D /* ARColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARColumn.mm; sourceTree = "<group>"; };
 		5DC6AA28E74A8622BD202550 /* ARBaseRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBaseRelationship.h; sourceTree = "<group>"; };
@@ -753,6 +759,8 @@
 				5DC6AE7546108C8F460608B0 /* Item.h */,
 				E698C98D19F2B2AA00E13A61 /* Dog.swift */,
 				E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */,
+				5DC6A7A67329EBC5DFDAD837 /* DifferentTableMappingName.m */,
+				5DC6A9E0DF8CB525D4841CA9 /* DifferentTableMappingName.h */,
 			);
 			name = "Test Entities";
 			path = TestSources;
@@ -1408,6 +1416,7 @@
 				5DC6AFB14BBDF1187421F2F9 /* VinylRecord.h in Headers */,
 				5DC6A261691EB8E04100C174 /* ARMappingHelper.h in Headers */,
 				5DC6AFA783D895879595E3F2 /* ActiveRecordProtocol.h in Headers */,
+				5DC6A5A53946DC572149975B /* DifferentTableMappingName.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1772,6 +1781,7 @@
 				5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */,
 				5DC6AA3A6A9ED50E94AAF691 /* ARTransactionState.m in Sources */,
 				5DC6AACBDB7E2E4F66BE483F /* VinylRecord.m in Sources */,
+				5DC6A9D5C847CCC0D5F1701E /* DifferentTableMappingName.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1835,6 +1845,7 @@
 				5DC6A0C80811BE1886CE936C /* ARCallbacks.m in Sources */,
 				5DC6A5A34F494C15A352647F /* ARTransactionState.m in Sources */,
 				5DC6A2D41B8F440C60FA9779 /* VinylRecord.m in Sources */,
+				5DC6A1E0B84EF73694E2F240 /* DifferentTableMappingName.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1870,6 +1881,7 @@
 				5DC6A5379FAACA37D0F3D914 /* ARCallbacks.m in Sources */,
 				5DC6A448F18EC610511FC6EB /* ARTransactionState.m in Sources */,
 				5DC6A27C9E7123FBC7663F38 /* VinylRecord.m in Sources */,
+				5DC6A20B0DFC9E5D1064E989 /* DifferentTableMappingName.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
