@@ -10,6 +10,6 @@ install:
 - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 
 script:
-- set -o pipefail && xctool -workspace iActiveRecord.xcworkspace -scheme SpecTests test
+- set -o pipefail && xctool -workspace iActiveRecord.xcworkspace -scheme SpecTests -sdk iphonesimulator  test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 #- set -o pipefail && xcodebuild test  -workspace iActiveRecord.xcworkspace -scheme SpecTests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
 - pod lib lint --quick
