@@ -11,4 +11,12 @@
 @implementation Issue
 @dynamic title;
 belongs_to_imp(Project, project, ARDependencyNullify)
+
+mapping_do(
+        column_name(projectId,different_project_id)
+        column_map(title, (@{
+                @"name": @"different_title",
+                @"length": @(255) // FYI, this one doesn't do anything, but demonstrates how mapping can be expanding for ALL DB constraints.
+        }))
+)
 @end

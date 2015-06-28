@@ -6,6 +6,13 @@ target 'UnitTests' do
   pod 'CedarAsync'
 end
 
+target 'SpecTests' do
+    pod 'Expecta', '~> 1.0.0'
+    pod 'Specta'
+    pod 'OCMock'
+    pod 'VinylRecord', :path => "."
+end
+
 target 'ActiveTwitter' do
   pod 'RestKit'
   pod 'VinylRecord', :path => "."

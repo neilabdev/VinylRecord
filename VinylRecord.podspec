@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'VinylRecord'
-  s.version  = '1.0.5'
+  s.version  = '1.0.6'
   s.license  = 'MIT'
   s.summary  = 'Pure SQLite ORM for iOS without CoreData.'
   s.homepage = 'https://github.com/valerius/VinylRecord.git'

@@ -18,4 +18,6 @@ validation_do(
     validate_presence_of(name)
     validate_uniqueness_of(name)
 )
+
+
 @end

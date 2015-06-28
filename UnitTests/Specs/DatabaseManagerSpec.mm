@@ -11,8 +11,11 @@
 #import "User.h"
 #import "ARDatabaseManager.h"
 #import "DifferentTableName.h"
+#import "DifferentTableMappingName.h"
 
 #import "ARConfiguration.h"
+#import "ActiveRecord_Private.h"
+#import "ARColumn.h"
 
 using namespace Cedar::Matchers;
 
@@ -36,7 +39,8 @@ Tsuga<ARDatabaseManager>::run(^{
         
         it(@"should use recordName instead of class name", ^{
             ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
-            databaseManager.tables should contain([DifferentTableName recordName]);
+            NSArray *databaseTables = databaseManager.tables;
+            databaseTables should contain([DifferentTableName tableName]);
         });
         
         it(@"save records with different table name", ^{
@@ -46,6 +50,30 @@ Tsuga<ARDatabaseManager>::run(^{
             [model save] should be_truthy;
             
             DifferentTableName *loadedModel = [[DifferentTableName all] objectAtIndex:0];
+            loadedModel.title should equal(title);
+        });
+
+
+        it(@"should use mapping name instead of class name", ^{
+            ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
+            NSArray *databaseTables = databaseManager.tables;
+            databaseTables should contain([DifferentTableMappingName tableName]);
+        });
+
+        it(@"should use column mapping name instead of property name name", ^{
+            ARDatabaseManager *databaseManager = [ARDatabaseManager sharedManager];
+            NSArray *tableColumns = [databaseManager columnsForTable:[DifferentTableMappingName tableName]]      ;
+            ARColumn *titleColumn = [DifferentTableMappingName columnWithGetterNamed:@"title"];
+            tableColumns should contain( titleColumn.mappingName);
+        });
+
+        it(@"save records with different table name using mapping", ^{
+            NSString *title = @"Does ot works?";
+            DifferentTableMappingName *model = [DifferentTableMappingName record];
+            model.title = title;
+            [model save] should be_truthy;
+
+            DifferentTableMappingName *loadedModel = [[DifferentTableMappingName all] objectAtIndex:0];
             loadedModel.title should equal(title);
         });
     });

@@ -11,7 +11,6 @@
 @implementation DifferentTableName
 
 belongs_to_imp(User, user, ARDependencyDestroy)
-//column_imp(key,userId)
 column_imp(string,title)
 
 + (NSString *)recordName {
