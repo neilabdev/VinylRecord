@@ -134,6 +134,7 @@
         self->_associationPolicy = OBJC_ASSOCIATION_RETAIN_NONATOMIC;
         
         switch (anAttribute[0]) {
+            case _C_BOOL:
             case _C_CHR:     // BOOL, char
                 self->_columnType = ARColumnTypePrimitiveChar;
                 self.internal = new AR::CharColumn;
