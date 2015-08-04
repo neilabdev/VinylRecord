@@ -25,5 +25,6 @@
 @dynamic floatProperty;
 @dynamic doubleProperty;
 @dynamic boolProperty;
+column_imp(boolean,bool2Property)
 
 @end

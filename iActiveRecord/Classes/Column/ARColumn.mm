@@ -135,6 +135,9 @@
         
         switch (anAttribute[0]) {
             case _C_BOOL:
+                self->_columnType = ARColumnTypePrimitiveChar;
+                self.internal = new AR::CharColumn;
+                break;
             case _C_CHR:     // BOOL, char
                 self->_columnType = ARColumnTypePrimitiveChar;
                 self.internal = new AR::CharColumn;

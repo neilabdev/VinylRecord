@@ -3,7 +3,7 @@ PODS:
   - Cedar (0.11.2)
   - CedarAsync (0.0.1):
     - Cedar
-  - Expecta (1.0.0)
+  - Expecta (1.0.2)
   - ISO8601DateFormatterValueTransformer (0.6.0):
     - RKValueTransformers (~> 1.1.0)
   - OCMock (3.1.2)
@@ -28,9 +28,9 @@ PODS:
     - TransitionKit (~> 2.1.0)
   - RKValueTransformers (1.1.2)
   - SOCKit (1.1)
-  - Specta (1.0.1)
+  - Specta (1.0.3)
   - TransitionKit (2.1.1)
-  - VinylRecord (1.0.5)
+  - VinylRecord (1.0.6)
 
 DEPENDENCIES:
   - Cedar (= 0.11.2)
@@ -49,14 +49,14 @@ SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   Cedar: 5fc651dc12640d5045393d2d51309e91c2abcbff
   CedarAsync: d2bbbff27948d521c7314d7a22f12040230f28e3
-  Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
+  Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   ISO8601DateFormatterValueTransformer: 3ac3a721381697cab4e792d8049ce2f2e9ad3036
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   RestKit: 1987b5efef289c6b27bd980714d6ca48d3871b78
   RKValueTransformers: 66ac5e4f077fdbe3496e792d89eeff4c3eb67701
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
-  Specta: 097be314a75de103703a3bf9a529dc1a398509d7
+  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
-  VinylRecord: 7a56c1e83eeb3579d206df2d5efc31493965f225
+  VinylRecord: 9610a5e5e392c5f40f2b7a4f0bfef666dde8af07
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

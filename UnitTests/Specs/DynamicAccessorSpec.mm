@@ -161,6 +161,12 @@ describe(@"Dynamic properties", ^{
             model.boolProperty = value;
             model.boolProperty should equal(value);
         });
+
+        it(@"bool 2 value", ^{
+            bool value = YES;
+            model.bool2Property = @(value);
+            model.bool2Property should equal( @(value) );
+        });
         
     });
     

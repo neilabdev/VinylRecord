@@ -25,5 +25,5 @@
 @property (nonatomic, readwrite) float floatProperty;
 @property (nonatomic, readwrite) double doubleProperty;
 @property (nonatomic, readwrite) BOOL boolProperty;
-
+column_dec(boolean,bool2Property)
 @end
