@@ -41,7 +41,7 @@
 @property (nonatomic,strong) NSMutableDictionary *entityCache;
 @property (nonatomic,strong) NSMutableSet *changedColumns;
 #pragma mark - Lazy Persistent Helpers
-- (BOOL)isNewRecord;
+
 - (BOOL)hasQueuedRelationships;
 - (BOOL)persistQueuedManyRelationships;
 

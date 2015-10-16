@@ -47,4 +47,13 @@
 
 + (NSArray*)findByConditions:(NSDictionary *)conditions;
 
+
+@optional
+
++ (void)validateUniquenessOfField:(NSString *)aField;
+
++ (void)validatePresenceOfField:(NSString *)aField ;
+
++ (void)validateField:(NSString *)aField withValidator:(NSString *)aValidator ;
+
 @end

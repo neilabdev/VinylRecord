@@ -1,0 +1,6 @@
+framework module VinylRecord {
+  umbrella header "VinylRecord.h"
+
+  export *
+  module * { export * }
+}
