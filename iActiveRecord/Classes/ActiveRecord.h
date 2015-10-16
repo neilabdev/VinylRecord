@@ -40,6 +40,8 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 - (void)markAsNew;
 
+- (BOOL)isNewRecord;
+
 - (BOOL)isDirty;
 
 - (BOOL)isValid;
