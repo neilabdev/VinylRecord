@@ -330,6 +330,18 @@
 		E67176A81B214DE70028415A /* UnitTests-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = E698C98C19F2B2AA00E13A61 /* UnitTests-Bridging-Header.h */; };
 		E67177311B214F3F0028415A /* VRValidationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E67177301B214F3F0028415A /* VRValidationSpec.mm */; };
 		E698C98E19F2B2AA00E13A61 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698C98D19F2B2AA00E13A61 /* Dog.swift */; };
+		E6FB00EC1BD14E8B007DAE32 /* NSArrayColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FB00E81BD14E8B007DAE32 /* NSArrayColumn.h */; settings = {ASSET_TAGS = (); }; };
+		E6FB00ED1BD14E8B007DAE32 /* NSArrayColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00E91BD14E8B007DAE32 /* NSArrayColumn.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00EE1BD14E8B007DAE32 /* NSArrayColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00E91BD14E8B007DAE32 /* NSArrayColumn.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00EF1BD14E8B007DAE32 /* NSDictionaryColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FB00EA1BD14E8B007DAE32 /* NSDictionaryColumn.h */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F01BD14E8B007DAE32 /* NSDictionaryColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00EB1BD14E8B007DAE32 /* NSDictionaryColumn.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F11BD14E8B007DAE32 /* NSDictionaryColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00EB1BD14E8B007DAE32 /* NSDictionaryColumn.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F41BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F51BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F61BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FB00F31BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F91BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00FA1BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00FB1BD14F01007DAE32 /* NSArray+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FB00F81BD14F01007DAE32 /* NSArray+sqlRepresentation.h */; settings = {ASSET_TAGS = (); }; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -584,6 +596,14 @@
 		E698C98D19F2B2AA00E13A61 /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		E6DE61571B2146B800F299BC /* SpecTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpecTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6DE615A1B2146B800F299BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E6FB00E81BD14E8B007DAE32 /* NSArrayColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayColumn.h; sourceTree = "<group>"; };
+		E6FB00E91BD14E8B007DAE32 /* NSArrayColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSArrayColumn.mm; sourceTree = "<group>"; };
+		E6FB00EA1BD14E8B007DAE32 /* NSDictionaryColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryColumn.h; sourceTree = "<group>"; };
+		E6FB00EB1BD14E8B007DAE32 /* NSDictionaryColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSDictionaryColumn.mm; sourceTree = "<group>"; };
+		E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+sqlRepresentation.m"; sourceTree = "<group>"; };
+		E6FB00F31BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+sqlRepresentation.h"; sourceTree = "<group>"; };
+		E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+sqlRepresentation.mm"; sourceTree = "<group>"; };
+		E6FB00F81BD14F01007DAE32 /* NSArray+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+sqlRepresentation.h"; sourceTree = "<group>"; };
 		EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -788,6 +808,8 @@
 		5DC6A0BC0FF1BE35F9E12EEE /* NSMutableDictionary */ = {
 			isa = PBXGroup;
 			children = (
+				E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */,
+				E6FB00F31BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h */,
 				5DC6A70619E877AB3D9FD1C1 /* NSMutableDictionary+valueToArray.h */,
 				5DC6AE1CA656F4B1046DC6C7 /* NSMutableDictionary+valueToArray.m */,
 			);
@@ -1003,6 +1025,10 @@
 				5DC6AF4001DDBA2F991E0CEF /* NSDateColumn.h */,
 				5DC6A6C1C7DBF140988B1966 /* NSDecimalNumberColumn.mm */,
 				5DC6A516DEAF1DA75BFDB382 /* NSDecimalNumberColumn.h */,
+				E6FB00E81BD14E8B007DAE32 /* NSArrayColumn.h */,
+				E6FB00E91BD14E8B007DAE32 /* NSArrayColumn.mm */,
+				E6FB00EA1BD14E8B007DAE32 /* NSDictionaryColumn.h */,
+				E6FB00EB1BD14E8B007DAE32 /* NSDictionaryColumn.mm */,
 				5DC6A695C80A25C8ECCB7127 /* NSNumberColumn.mm */,
 				5DC6AA786936AD0FA2ABB300 /* NSNumberColumn.h */,
 			);
@@ -1012,6 +1038,8 @@
 		5DC6A9BDE1AA9C238FE470C4 /* NSArray */ = {
 			isa = PBXGroup;
 			children = (
+				E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */,
+				E6FB00F81BD14F01007DAE32 /* NSArray+sqlRepresentation.h */,
 				5DC6A3B494BAFDF925209EAD /* NSArray+toSql.h */,
 				5DC6AA43E97CD839F19547A9 /* NSArray+toSql.m */,
 			);
@@ -1367,6 +1395,7 @@
 				5DC6AA356E7D1C402ECD13EE /* ARValidation.h in Headers */,
 				5DC6AF0524458D550BA9758F /* ARRepresentationProtocol.h in Headers */,
 				5DC6A3F60AAD34F09717E338 /* ARValidatorProtocol.h in Headers */,
+				E6FB00EF1BD14E8B007DAE32 /* NSDictionaryColumn.h in Headers */,
 				5DC6A20FDD154ACC3D40568D /* NSSet+toSql.h in Headers */,
 				5DC6A84E55B6EAC86E2F7DF0 /* NSMutableDictionary+valueToArray.h in Headers */,
 				5DC6A1D6718B7BBEEC7B5AAF /* NSDate+sqlRepresentation.h in Headers */,
@@ -1378,6 +1407,7 @@
 				5DC6A05D2DBD87666212EC8E /* NSDecimalNumber+isPresented.h in Headers */,
 				5DC6A28702173706B77E82ED /* NSNumber+sqlRepresentation.h in Headers */,
 				5DC6A0C4D7FD8569C2FED224 /* NSNumber+isPresented.h in Headers */,
+				E6FB00FB1BD14F01007DAE32 /* NSArray+sqlRepresentation.h in Headers */,
 				5DC6A094669AF8FC80221A17 /* NSString+lowercaseFirst.h in Headers */,
 				5DC6AA50E7BA4BB916001ACB /* NSString+sqlRepresentation.h in Headers */,
 				5DC6A78136FCCAA885EC705E /* NSString+stringWithEscapedQuote.h in Headers */,
@@ -1409,6 +1439,8 @@
 				5DC6A571FAAFF50A50FA3D29 /* ARDatabaseManager.h in Headers */,
 				5DC6A2158D795FDCE2D9D4E0 /* ARPersistentQueueEntity.h in Headers */,
 				5DC6ADA1564D0E115E325FF2 /* ARCallbacksHelper.h in Headers */,
+				E6FB00F61BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h in Headers */,
+				E6FB00EC1BD14E8B007DAE32 /* NSArrayColumn.h in Headers */,
 				5DC6A112EF9364533F728F56 /* ARCallback.h in Headers */,
 				5DC6A306669F1C6AFAF305F4 /* ARCallbacks.h in Headers */,
 				5DC6A63257F2F44AD8854CF6 /* ARSynchronizationProtocol.h in Headers */,
@@ -1432,6 +1464,7 @@
 				25922AF814EC286000CBB58A /* Frameworks */,
 				25922AF914EC286000CBB58A /* Resources */,
 				6FF13C8FB6E5425C8D4AAFC0 /* Copy Pods Resources */,
+				8BEE0F840EB0EDD7EFC103B3 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1469,6 +1502,7 @@
 				CA8FA3E01750ED7400BA47E6 /* Frameworks */,
 				CA8FA3E11750ED7400BA47E6 /* Resources */,
 				9683A125171241B2AAEC4FAC /* Copy Pods Resources */,
+				1A294CEAA1DFEE2C258ACAB4 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1488,6 +1522,7 @@
 				E6DE61541B2146B800F299BC /* Frameworks */,
 				E6DE61551B2146B800F299BC /* Resources */,
 				2208F3E744400E78BFCAB001 /* Copy Pods Resources */,
+				6F7E3CA5101AB248D38D7E22 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1577,6 +1612,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1A294CEAA1DFEE2C258ACAB4 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ActiveTwitter/Pods-ActiveTwitter-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2208F3E744400E78BFCAB001 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1621,6 +1671,21 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sanbox is not in sync with the Podfile.lock. Run 'pod install'.\nEOM\n    exit 1\nfi\n";
 		};
+		6F7E3CA5101AB248D38D7E22 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpecTests/Pods-SpecTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6FF13C8FB6E5425C8D4AAFC0 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1634,6 +1699,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests-resources.sh\"\n";
+		};
+		8BEE0F840EB0EDD7EFC103B3 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		9683A125171241B2AAEC4FAC /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1723,6 +1803,7 @@
 				5DC6ABE7FDF0275ED2B39DAA /* UserAnimalRelationship.m in Sources */,
 				5DC6A979811B59A97AC5E601 /* Item.m in Sources */,
 				5DC6A112FFF7C6B5D48F25D7 /* ARConfiguration.m in Sources */,
+				E6FB00F91BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */,
 				5DC6A1FE37C7DE859C56EFC8 /* ARSQLBuilder.m in Sources */,
 				5DC6AA6E579EC6846E163586 /* ARLazyFetcher.m in Sources */,
 				5DC6AEAB391E8E0DBAB26141 /* ARSchemaManager.m in Sources */,
@@ -1761,6 +1842,7 @@
 				5DC6A5A50025E7BE2DCB66B2 /* ShortColumn.mm in Sources */,
 				5DC6A6794175AB8CFFCB80C6 /* UnsignedShortColumn.mm in Sources */,
 				5DC6AB71675E61EA5823A34F /* IntColumn.mm in Sources */,
+				E6FB00ED1BD14E8B007DAE32 /* NSArrayColumn.mm in Sources */,
 				5DC6AA7D749B58F884ECFA6A /* UnsignedIntColumn.mm in Sources */,
 				5DC6A83061D703CF5061186E /* LongColumn.mm in Sources */,
 				5DC6A33BE2BC28B801AE248F /* UnsignedLongColumn.mm in Sources */,
@@ -1777,6 +1859,8 @@
 				5DC6AAB3EC7E573541DCA8B6 /* ARDatabaseManager.mm in Sources */,
 				5DC6AA481A1F80BAB55F1685 /* ARPersistentQueueEntity.m in Sources */,
 				5DC6A94C87C9B03A2C4C1750 /* ARCallback.m in Sources */,
+				E6FB00F01BD14E8B007DAE32 /* NSDictionaryColumn.mm in Sources */,
+				E6FB00F41BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m in Sources */,
 				5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */,
 				5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */,
 				5DC6AA3A6A9ED50E94AAF691 /* ARTransactionState.m in Sources */,
@@ -1795,11 +1879,13 @@
 				5DC6AB21FE73C6D834BC30E9 /* ARLazyFetcher.m in Sources */,
 				5DC6AC5453F5950D6F70BF34 /* ARSchemaManager.m in Sources */,
 				5DC6A24CF1FFBB21B500D1DA /* ARError.m in Sources */,
+				E6FB00F11BD14E8B007DAE32 /* NSDictionaryColumn.mm in Sources */,
 				5DC6AA48331E2079014384FB /* ARException.m in Sources */,
 				5DC6ADEBF2FAB4CF43AB04DA /* sqlite3_unicode.c in Sources */,
 				5DC6A6370834761A91A73762 /* ARBaseRelationship.m in Sources */,
 				5DC6A0B95AC264CF0D536194 /* ARRelationBelongsTo.m in Sources */,
 				5DC6AE1372573FF21456286E /* ARRelationHasMany.m in Sources */,
+				E6FB00F51BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m in Sources */,
 				5DC6A5ADE6E0ED4A22DCF1AA /* ARRelationHasManyThrough.m in Sources */,
 				5DC6AB92ED172BC58D166704 /* ARValidatorUniqueness.m in Sources */,
 				5DC6A627F79A301EECE51928 /* ARValidatorPresence.m in Sources */,
@@ -1807,6 +1893,7 @@
 				5DC6A91CDF9EE2A5E65AF364 /* ARValidation.m in Sources */,
 				5DC6A4FD347622B6CC413D77 /* NSSet+toSql.m in Sources */,
 				5DC6AF39A989D75CBD1D7FB9 /* NSMutableDictionary+valueToArray.m in Sources */,
+				E6FB00EE1BD14E8B007DAE32 /* NSArrayColumn.mm in Sources */,
 				5DC6A58C7A114E3971700FEA /* NSDate+sqlRepresentation.m in Sources */,
 				5DC6ACCEDD775CFE896EA15B /* NSDate+isPresented.m in Sources */,
 				5DC6A55DD23D4BF06F26CE5A /* NSData+sqlRepresentation.m in Sources */,
@@ -1834,6 +1921,7 @@
 				5DC6A3FD4CB7BFF15454B07C /* UnsignedLongLongColumn.mm in Sources */,
 				5DC6ADD7B757B2F7CCFCEAFB /* FloatColumn.mm in Sources */,
 				5DC6A5753359F0DBC44FB159 /* DoubleColumn.mm in Sources */,
+				E6FB00FA1BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */,
 				5DC6ACA4408CD9ADB95B9C8F /* NSStringColumn.mm in Sources */,
 				5DC6AE1BFBDAA86A82C1C989 /* NSDateColumn.mm in Sources */,
 				5DC6A29DDAC11E222360ABE5 /* NSDecimalNumberColumn.mm in Sources */,
