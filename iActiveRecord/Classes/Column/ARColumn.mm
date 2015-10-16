@@ -126,6 +126,12 @@
         } else if (self.columnClass == [NSNumber class]) {
             self.internal = new AR::NSNumberColumn;
             self.internal->setColumnKey(self->_columnKey);
+        }else if (self.columnClass == [NSArray class]) {
+            self.internal = new AR::NSArrayColumn;
+            self.internal->setColumnKey(self->_columnKey);
+        }else if (self.columnClass == [NSDictionary class]) {
+            self.internal = new AR::NSDictionaryColumn;
+            self.internal->setColumnKey(self->_columnKey);
         } else {
             self->_columnType = ARColumnTypeComposite;
         }

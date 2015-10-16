@@ -24,4 +24,5 @@
 #include "NSDateColumn.h"
 #include "NSDecimalNumberColumn.h"
 #include "NSNumberColumn.h"
-
+#include "NSArrayColumn.h"
+#include "NSDictionaryColumn.h"

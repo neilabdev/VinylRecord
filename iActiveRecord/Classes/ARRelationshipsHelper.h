@@ -150,6 +150,17 @@
 #define field_key_imp field_integer_imp
 
 
+
+#define field_array_dec( property_name ) \
+    @property ( nonatomic,retain ) NSMutableArray * property_name;
+#define field_array_imp( property_name ) \
+    @dynamic property_name ;
+
+#define field_dictionary_dec( property_name ) \
+    @property ( nonatomic,retain ) NSMutableDictionary * property_name;
+#define field_dictionary_imp( property_name ) \
+    @dynamic property_name ;
+
 #define field_string_dec( property_name ) \
     @property ( nonatomic,copy ) NSString * property_name;
 #define field_string_imp( property_name ) \

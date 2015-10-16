@@ -5,7 +5,7 @@
 
 #include "NSDecimalNumberColumn.h"
 namespace AR {
-
+//object.set_propertyNameKey:
     static NSLocale *posixLocale()
     {
         static NSLocale *posixLocale;
