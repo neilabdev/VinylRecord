@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ARRepresentationProtocol
+@protocol ARRepresentationProtocol // TODO: Implement this functionality, or remove it?
 
 @required
 + (NSString *)sqlType;
