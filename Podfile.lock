@@ -30,7 +30,7 @@ PODS:
   - SOCKit (1.1)
   - Specta (1.0.4)
   - TransitionKit (2.1.1)
-  - VinylRecord (1.0.8)
+  - VinylRecord (1.0.9)
 
 DEPENDENCIES:
   - Cedar (= 0.11.2)
@@ -57,6 +57,6 @@ SPEC CHECKSUMS:
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
-  VinylRecord: 404dc0808b021b0b768f379287ae58bcd603a7ec
+  VinylRecord: 86474b87dd960a95ba18413a95cab36b224ddc9f
 
 COCOAPODS: 0.39.0.rc.1

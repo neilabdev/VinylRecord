@@ -157,6 +157,7 @@
 		5DC6A94C87C9B03A2C4C1750 /* ARCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AC929D53D3FB0D9495CE /* ARCallback.m */; };
 		5DC6A953272F131397F612E1 /* ShortColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AF39155FB567AB5D3FB7 /* ShortColumn.mm */; };
 		5DC6A964E50FFD6006F0BAE9 /* ARPersistentQueueEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A9C656DECC49D74730F0 /* ARPersistentQueueEntity.m */; };
+		5DC6A9750E188E2682239AC2 /* VRMutableArraySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A12F087BBEB1B8C07D49 /* VRMutableArraySpec.mm */; };
 		5DC6A979811B59A97AC5E601 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AB78CE47BE5C9DAE9693 /* Item.m */; };
 		5DC6A98D02B317D989DD1887 /* AREnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6AD28F0D42EC4ED6CFABB /* AREnum.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5DC6A99E26A8FC34D5C138B6 /* FloatColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A4F233B2651C96A0B988 /* FloatColumn.h */; };
@@ -246,6 +247,7 @@
 		5DC6AFAF1E374B06F6F03B7B /* ARRelationBelongsTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6AFC843ED126BEC6E3B4B /* ARRelationBelongsTo.m */; };
 		5DC6AFB14BBDF1187421F2F9 /* VinylRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6A839E96BE75E11B2F86F /* VinylRecord.h */; };
 		5DC6AFC9B4F183E5E9DB158B /* ARBaseRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6ABDA1BA6C32D702C437D /* ARBaseRelationship.m */; };
+		5DC6AFF4E9D8855CE8866A7C /* VRMutableDictionarySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A0BB57F96096421EC919 /* VRMutableDictionarySpec.mm */; };
 		5DC6AFFC8484D75708A86FB7 /* sqlite3_unicode.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A8579D88D4B190D1C5B7 /* sqlite3_unicode.c */; settings = {COMPILER_FLAGS = "-Wno-missing-prototypes"; }; };
 		75F56DBA1717003C00A1DF7B /* DecimalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 75F56DB91717003C00A1DF7B /* DecimalRecord.m */; };
 		75F56DBC171700D300A1DF7B /* NSDecimalNumberSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 75F56DBB171700D300A1DF7B /* NSDecimalNumberSpec.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -374,9 +376,11 @@
 		5DC6A06DC63FD1B3C96E61F7 /* NSData+sqlRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+sqlRepresentation.m"; sourceTree = "<group>"; };
 		5DC6A0A3961EDF41F67D8B92 /* ARSynchronizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSynchronizationProtocol.h; sourceTree = "<group>"; };
 		5DC6A0ADFF4FFBF7C280E1D4 /* NSDecimalNumber+isPresented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+isPresented.h"; sourceTree = "<group>"; };
+		5DC6A0BB57F96096421EC919 /* VRMutableDictionarySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VRMutableDictionarySpec.mm; sourceTree = "<group>"; };
 		5DC6A0BB9565F82B8766CF1D /* ARRelationHasMany.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelationHasMany.h; sourceTree = "<group>"; };
 		5DC6A0BCB9E849518EF903B9 /* NSString+sqlRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+sqlRepresentation.m"; sourceTree = "<group>"; };
 		5DC6A0FF88777933875C326D /* ARValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARValidator.h; sourceTree = "<group>"; };
+		5DC6A12F087BBEB1B8C07D49 /* VRMutableArraySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VRMutableArraySpec.mm; sourceTree = "<group>"; };
 		5DC6A14995364C6B2265DFE4 /* ShortColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShortColumn.h; sourceTree = "<group>"; };
 		5DC6A160B3C166111F01BA37 /* NSNumber+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+sqlRepresentation.h"; sourceTree = "<group>"; };
 		5DC6A19BCD6DF5CDC603E453 /* ARErrorHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARErrorHelper.h; sourceTree = "<group>"; };
@@ -1325,6 +1329,8 @@
 				E6DE61651B214B2800F299BC /* Test Entities */,
 				E6DE61641B214AE200F299BC /* Specs */,
 				E6DE61591B2146B800F299BC /* Supporting Files */,
+				5DC6A0BB57F96096421EC919 /* VRMutableDictionarySpec.mm */,
+				5DC6A12F087BBEB1B8C07D49 /* VRMutableArraySpec.mm */,
 			);
 			path = SpecTests;
 			sourceTree = "<group>";
@@ -2014,6 +2020,8 @@
 				E67176A71B214DE70028415A /* Item.h in Sources */,
 				E67176A81B214DE70028415A /* UnitTests-Bridging-Header.h in Sources */,
 				E67177311B214F3F0028415A /* VRValidationSpec.mm in Sources */,
+				5DC6AFF4E9D8855CE8866A7C /* VRMutableDictionarySpec.mm in Sources */,
+				5DC6A9750E188E2682239AC2 /* VRMutableArraySpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
