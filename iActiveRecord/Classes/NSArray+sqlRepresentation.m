@@ -27,4 +27,9 @@
                                               error:&error] : nil;
     return jsonArray;
 }
+
+
++ (NSString *)sqlType {
+    return @"text";
+}
 @end

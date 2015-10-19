@@ -18,5 +18,6 @@ namespace AR {
 
         NSDate *__strong toColumnType(id value) const override;
         id toObjCObject(NSDate *value) const override;
+        id toObjCDefaultObject(void) const override;
     };
 };

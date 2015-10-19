@@ -25,5 +25,6 @@
 belongs_to_dec(Group, group, ARDependencyDestroy)
 has_many_through_dec(Project, UserProjectRelationship, projects, ARDependencyDestroy)
 has_many_through_dec(Animal, UserAnimalRelationship, pets, ARDependencyDestroy)
-
+column_dec(dictionary,attributes)
+column_dec(array,list)
 @end

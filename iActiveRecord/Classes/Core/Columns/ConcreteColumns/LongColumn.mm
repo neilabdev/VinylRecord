@@ -32,4 +32,8 @@ namespace AR {
         return @(value);
     }
 
+  id LongColumn::toObjCDefaultObject(void) const {
+      return @(0);
+  }
+
 };

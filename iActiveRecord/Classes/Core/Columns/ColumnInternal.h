@@ -19,8 +19,15 @@ namespace AR {
         static columnType accessorImpl(ActiveRecord *receiver, SEL _cmd)
         {
             ARColumn *column = [receiver columnWithGetterNamed:NSStringFromSelector(_cmd)];
-            id value = [receiver valueForColumn:column];
+            id value = [receiver valueForImmutableColumn:column];
             ColumnInternal<columnType> *columnInternal = dynamic_cast<ColumnInternal<columnType> *>(column.internal);
+
+            if(!value && !column.nullable) {
+                // ensures a column for new record, doesn't return nil but default type if required. Useful for embedded collections
+                // which are assigned by adding objects to collection itself.
+                [receiver setValue:value = columnInternal->toObjCDefaultObject() forColumn:column];
+            }
+
             return columnInternal->toColumnType(value);
         }
         static void mutatorImpl(ActiveRecord *receiver, SEL _cmd, columnType value)
@@ -48,6 +55,8 @@ namespace AR {
             throw std::exception();
         }
 
+
+
         const IMP accessor(void) const
         {
             return reinterpret_cast<IMP>(&accessorImpl);
@@ -60,7 +69,7 @@ namespace AR {
 
         virtual columnType toColumnType(id value) const = 0;
         virtual id toObjCObject(columnType value) const = 0;
-
+        virtual id toObjCDefaultObject(void) const = 0;
     };
 
 };

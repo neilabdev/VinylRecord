@@ -29,9 +29,13 @@ namespace AR {
     {
         return value;
     }
-    
+
     id NSNumberColumn::toObjCObject(NSNumber *value) const
     {
         return value;
     }
+
+  id NSNumberColumn::toObjCDefaultObject(void) const {
+      return @(0);
+  }
 };

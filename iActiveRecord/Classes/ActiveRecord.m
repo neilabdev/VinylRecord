@@ -225,6 +225,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
      //   self.createdAt = self.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
         self.entityCache = [NSMutableDictionary dictionary];
         self.changedColumns = [NSMutableSet setWithCapacity: 1];
+        self.deserializedCache = [NSMutableDictionary dictionary];
         shouldSync = NO;
     }
     return self;
@@ -240,6 +241,7 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
     self.updatedAt = nil;
     self.createdAt = nil;
     self.entityCache = nil;
+    self.deserializedCache = nil;
 }
 
 - (void)markAsNew {
@@ -1056,6 +1058,33 @@ static NSString *registerHasManyThrough = @"_ar_registerHasManyThrough";
                              aColumn.associationPolicy);
     
     [self.changedColumns addObject:aColumn];
+}
+
+- (void) loadValue:(id) value forColumn:(ARColumn *) column {
+    [self setValue:[column deserializedValue:value] forColumn:column];
+
+    if(!column.immutable) {
+        NSString *key = [NSString stringWithCString:column.columnKey encoding:NSStringEncodingConversionAllowLossy];
+        self.deserializedCache[key] = @([[value description] hash]);
+    }
+}
+
+- (id)valueForImmutableColumn:(ARColumn *)column { //todo: optimize, perhaps should check only on save
+    id object = objc_getAssociatedObject(self, column.columnKey);
+
+    if(!column.immutable && ![self.changedColumns containsObject:column]) {
+        NSString *key = [NSString stringWithCString:column.columnKey
+                                           encoding:NSStringEncodingConversionAllowLossy];
+        NSNumber *oldHash = self.deserializedCache[key];
+        NSNumber *newHash = @([[object description] hash]);
+
+        if([oldHash intValue] !=  [newHash intValue]) {
+            [self.changedColumns addObject:column];
+            self.deserializedCache[key] =  newHash ;//@([object hash]);
+        }
+    }
+
+    return object;
 }
 
 - (id)valueForColumn:(ARColumn *)aColumn {

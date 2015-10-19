@@ -42,4 +42,8 @@ namespace AR {
     {
         return value;
     }
+
+    id NSDecimalNumberColumn::toObjCDefaultObject(void) const {
+        return [NSDecimalNumber decimalNumberWithString:@"0"];
+    }
 };

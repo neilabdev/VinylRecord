@@ -39,6 +39,7 @@
 @property (nonatomic,strong) NSMutableSet *hasManyPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyThroughRelationsQueue;
 @property (nonatomic,strong) NSMutableDictionary *entityCache;
+@property (nonatomic,strong) NSMutableDictionary *deserializedCache;
 @property (nonatomic,strong) NSMutableSet *changedColumns;
 #pragma mark - Lazy Persistent Helpers
 
@@ -109,6 +110,8 @@
 
 + (void)initializeDynamicAccessors;
 - (void)setValue:(id)aValue forColumn:(ARColumn *)aColumn;
+- (void)loadValue:(id)value forColumn:(ARColumn *) column;
+- (id)valueForImmutableColumn:(ARColumn *)column;//TODO: renamed. This loads and hashes for deserializable Columns, which can be dirty without setting.
 - (id)valueForColumn:(ARColumn *)aColumn;
 
 #pragma mark - Indices support

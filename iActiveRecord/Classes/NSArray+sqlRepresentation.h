@@ -8,4 +8,6 @@
 @interface NSArray (sqlRepresentation)
 - (NSString *)toSql ;
 + (id)fromSql:(NSString *)sqlData ;
+
++ (NSString *)sqlType;
 @end

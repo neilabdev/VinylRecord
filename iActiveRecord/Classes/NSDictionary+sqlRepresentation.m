@@ -28,4 +28,8 @@
                                               error:&error] : nil;
     return jsonDictionary;
 }
+
++ (NSString *)sqlType {
+    return @"text";
+}
 @end

@@ -17,8 +17,12 @@ namespace AR {
       const char *sqlType(void) const override;
 
       NSString *sqlValueFromRecord(ActiveRecord *record) const override;
-
       NSArray *__strong toColumnType(id value) const override;
       id toObjCObject(NSArray *value) const override;
+      id toObjCDefaultObject(void) const override;
+
+      virtual id deserializeValue(id value) const override;
+      virtual BOOL nullable(void) const override;
+      virtual BOOL immutable(void) const override;
   };
 };

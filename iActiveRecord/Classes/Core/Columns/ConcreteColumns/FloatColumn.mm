@@ -32,4 +32,9 @@ namespace AR {
         return @(value);
     }
 
+  id FloatColumn::toObjCDefaultObject(void) const {
+      return @(0.0);
+  }
+
+
 };

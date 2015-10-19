@@ -21,14 +21,14 @@
 @property (nonatomic, copy, readonly) NSString *setter;
 @property (nonatomic, readwrite, getter = isDynamic) BOOL dynamic;
 @property (nonatomic, readonly) ARColumnType columnType;
-
+@property (nonatomic, readonly, getter=isNullable) BOOL nullable;
+@property (nonatomic, readonly, getter=isImmutable) BOOL immutable;
 @property (nonatomic, readwrite) objc_AssociationPolicy associationPolicy;
 
 - (instancetype)initWithProperty:(objc_property_t)property ofClass:(Class)aClass;
 - (instancetype)initWithProperty:(objc_property_t)property mapping:(NSDictionary*) mapping ofClass:(Class)aClass;
 - (NSString *)sqlValueForRecord:(ActiveRecord *)aRecord;
+- (id) deserializedValue: (id) value; //todo: rename
 - (const char *)sqlType;
-
 - (const char *)columnKey;
-
 @end

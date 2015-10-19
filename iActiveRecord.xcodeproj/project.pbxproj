@@ -339,9 +339,10 @@
 		E6FB00F41BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */; settings = {ASSET_TAGS = (); }; };
 		E6FB00F51BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */; settings = {ASSET_TAGS = (); }; };
 		E6FB00F61BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FB00F31BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h */; settings = {ASSET_TAGS = (); }; };
-		E6FB00F91BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */; settings = {ASSET_TAGS = (); }; };
-		E6FB00FA1BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */; settings = {ASSET_TAGS = (); }; };
+		E6FB00F91BD14F01007DAE32 /* NSArray+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.m */; settings = {ASSET_TAGS = (); }; };
+		E6FB00FA1BD14F01007DAE32 /* NSArray+sqlRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.m */; settings = {ASSET_TAGS = (); }; };
 		E6FB00FB1BD14F01007DAE32 /* NSArray+sqlRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FB00F81BD14F01007DAE32 /* NSArray+sqlRepresentation.h */; settings = {ASSET_TAGS = (); }; };
+		E6FB00FD1BD15122007DAE32 /* MutableColumnSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6FB00FC1BD15122007DAE32 /* MutableColumnSpec.mm */; settings = {ASSET_TAGS = (); }; };
 		FBD3850645A34F7FBB672C9B /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A80946EE38A49BE8DC2D83C /* libPods-UnitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -602,8 +603,9 @@
 		E6FB00EB1BD14E8B007DAE32 /* NSDictionaryColumn.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSDictionaryColumn.mm; sourceTree = "<group>"; };
 		E6FB00F21BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+sqlRepresentation.m"; sourceTree = "<group>"; };
 		E6FB00F31BD14EF6007DAE32 /* NSDictionary+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+sqlRepresentation.h"; sourceTree = "<group>"; };
-		E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+sqlRepresentation.mm"; sourceTree = "<group>"; };
+		E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+sqlRepresentation.m"; sourceTree = "<group>"; };
 		E6FB00F81BD14F01007DAE32 /* NSArray+sqlRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+sqlRepresentation.h"; sourceTree = "<group>"; };
+		E6FB00FC1BD15122007DAE32 /* MutableColumnSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MutableColumnSpec.mm; sourceTree = "<group>"; };
 		EB92247C1954CC6073930A34 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -685,6 +687,7 @@
 				CA3B7B9F15C91C3500757498 /* LazyFetcherSpec.mm */,
 				CA0BAEBA15C9A522008985E6 /* FactorySpec.mm */,
 				CA0BAEBC15C9A5D2008985E6 /* DependencySpec.mm */,
+				E6FB00FC1BD15122007DAE32 /* MutableColumnSpec.mm */,
 				CA0BAEBE15C9A68E008985E6 /* MigrationSpec.mm */,
 				CA0BAEC015C9A73A008985E6 /* TransactionSpec.mm */,
 				CA0BAEC215C9A7BD008985E6 /* UnicodeSpec.mm */,
@@ -1038,7 +1041,7 @@
 		5DC6A9BDE1AA9C238FE470C4 /* NSArray */ = {
 			isa = PBXGroup;
 			children = (
-				E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.mm */,
+				E6FB00F71BD14F01007DAE32 /* NSArray+sqlRepresentation.m */,
 				E6FB00F81BD14F01007DAE32 /* NSArray+sqlRepresentation.h */,
 				5DC6A3B494BAFDF925209EAD /* NSArray+toSql.h */,
 				5DC6AA43E97CD839F19547A9 /* NSArray+toSql.m */,
@@ -1540,6 +1543,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = VR;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "NEiLAB, INC";
 				TargetAttributes = {
@@ -1803,7 +1807,7 @@
 				5DC6ABE7FDF0275ED2B39DAA /* UserAnimalRelationship.m in Sources */,
 				5DC6A979811B59A97AC5E601 /* Item.m in Sources */,
 				5DC6A112FFF7C6B5D48F25D7 /* ARConfiguration.m in Sources */,
-				E6FB00F91BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */,
+				E6FB00F91BD14F01007DAE32 /* NSArray+sqlRepresentation.m in Sources */,
 				5DC6A1FE37C7DE859C56EFC8 /* ARSQLBuilder.m in Sources */,
 				5DC6AA6E579EC6846E163586 /* ARLazyFetcher.m in Sources */,
 				5DC6AEAB391E8E0DBAB26141 /* ARSchemaManager.m in Sources */,
@@ -1864,6 +1868,7 @@
 				5DC6A5273E204EDCB8727A86 /* ARCallbacks.m in Sources */,
 				5DC6ADE2506202530D5179B3 /* SwiftIntegrationSpec.mm in Sources */,
 				5DC6AA3A6A9ED50E94AAF691 /* ARTransactionState.m in Sources */,
+				E6FB00FD1BD15122007DAE32 /* MutableColumnSpec.mm in Sources */,
 				5DC6AACBDB7E2E4F66BE483F /* VinylRecord.m in Sources */,
 				5DC6A9D5C847CCC0D5F1701E /* DifferentTableMappingName.m in Sources */,
 			);
@@ -1921,7 +1926,7 @@
 				5DC6A3FD4CB7BFF15454B07C /* UnsignedLongLongColumn.mm in Sources */,
 				5DC6ADD7B757B2F7CCFCEAFB /* FloatColumn.mm in Sources */,
 				5DC6A5753359F0DBC44FB159 /* DoubleColumn.mm in Sources */,
-				E6FB00FA1BD14F01007DAE32 /* NSArray+sqlRepresentation.mm in Sources */,
+				E6FB00FA1BD14F01007DAE32 /* NSArray+sqlRepresentation.m in Sources */,
 				5DC6ACA4408CD9ADB95B9C8F /* NSStringColumn.mm in Sources */,
 				5DC6AE1BFBDAA86A82C1C989 /* NSDateColumn.mm in Sources */,
 				5DC6A29DDAC11E222360ABE5 /* NSDecimalNumberColumn.mm in Sources */,

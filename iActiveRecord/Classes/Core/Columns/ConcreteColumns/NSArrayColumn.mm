@@ -26,7 +26,7 @@ namespace AR {
           text = nil; //todo: remove, should never happen
       }
 
-      return sqlite3_bind_text(statement, columnIndex, [value UTF8String], -1, SQLITE_TRANSIENT) == SQLITE_OK;
+      return sqlite3_bind_text(statement, columnIndex, [text UTF8String], -1, SQLITE_TRANSIENT) == SQLITE_OK;
   }
 
   const char *NSArrayColumn::sqlType(void) const {
@@ -51,12 +51,7 @@ namespace AR {
 
   NSArray *__strong NSArrayColumn::toColumnType(id value) const
   {
-      NSString *jsonString = [value isKindOfClass:[NSString class]] ? value : nil;
-      NSError *error = nil;
-      NSMutableArray *jsonArray = jsonString ?
-              [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
-                                              options:NSJSONReadingMutableContainers
-                                                error:&error] : nil;
+      NSMutableArray *jsonArray = this->deserializeValue(value);
       return jsonArray;
   }
 
@@ -64,36 +59,37 @@ namespace AR {
   {
       return value;
   }
+
+  id NSArrayColumn::toObjCDefaultObject(void) const {
+      return [[NSMutableArray alloc] initWithCapacity:1];
+  }
+
+
+  id NSArrayColumn::deserializeValue(id value) const {
+      NSMutableArray *jsonArray =  nil;
+      NSError *error = nil;
+
+      if([value isKindOfClass:[NSString class]]) {
+          jsonArray = [NSJSONSerialization JSONObjectWithData:[(NSString*)value dataUsingEncoding:NSUTF8StringEncoding]
+                                                           options:NSJSONReadingMutableContainers
+                                                             error:&error];
+      } else if([value isMemberOfClass:[NSArray class]]) {
+          jsonArray =[NSMutableArray arrayWithArray:value];
+      } else if([value isKindOfClass:[NSMutableArray class]]) {
+          jsonArray = (NSMutableArray *)value;
+      }
+
+      return  jsonArray ? jsonArray : value;
+  }
+  
+  BOOL NSArrayColumn::nullable(void) const
+  {
+      return NO;
+  }
+
+  BOOL NSArrayColumn::immutable(void) const
+  {
+      return NO;
+  }
+
 };
-
-/*
- *
- * namespace AR {
-
-    bool NSNumberColumn::bind(sqlite3_stmt *statement, const int columnIndex, const id value) const
-    {
-        return sqlite3_bind_int(statement, columnIndex, [value integerValue]) == SQLITE_OK;
-    }
-
-    const char *NSNumberColumn::sqlType(void) const {
-        return "integer";
-    }
-
-    NSString *NSNumberColumn::sqlValueFromRecord(ActiveRecord *record) const
-    {
-        NSNumber *value = objc_getAssociatedObject(record, this->columnKey());
-
-        return [NSString stringWithFormat:@"%d", [value intValue]];
-    }
-
-    NSNumber *__strong NSNumberColumn::toColumnType(id value) const
-    {
-        return value;
-    }
-
-    id NSNumberColumn::toObjCObject(NSNumber *value) const
-    {
-        return value;
-    }
-};
- */

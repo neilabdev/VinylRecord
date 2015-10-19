@@ -21,5 +21,10 @@ namespace AR {
 
       NSDictionary *__strong toColumnType(id value) const override;
       id toObjCObject(NSDictionary *value) const override;
+      id toObjCDefaultObject(void) const override;
+
+      virtual id deserializeValue(id value) const override;
+      virtual BOOL nullable(void) const override;
+      virtual BOOL immutable(void) const override;
   };
 };
