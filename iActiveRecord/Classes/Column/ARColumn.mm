@@ -12,18 +12,30 @@
 #import "NSString+uppercaseFirst.h"
 #import "ActiveRecord_Private.h"
 #import "ConcreteColumns.h"
+#import "NSString+sqlRepresentation.h"
+#import "NSDictionary+sqlRepresentation.h"
+#import "NSArray+sqlRepresentation.h"
 
 @implementation ARColumn
 {
     char *_columnKey;
+    BOOL _isNullable;
+    BOOL _isMutable;
+
 }
 
-- (instancetype)initWithProperty:(objc_property_t)property ofClass:(Class)aClass {
+- (instancetype)initWithProperty:(objc_property_t)property ofClass:(Class)aClass  {
+    return [self initWithProperty:property mapping:nil ofClass:aClass];
+}
+
+- (instancetype)initWithProperty:(objc_property_t)property mapping:(NSDictionary*) mapping ofClass:(Class)aClass {
     self = [super init];
     if (self) {
         self.internal = NULL;
-
         self.recordClass = aClass;
+        NSString *mappingName = [mapping objectForKey:@"name"];
+        _isNullable = YES;
+        _isMutable = NO;
         _dynamic = NO;
         self->_associationPolicy = OBJC_ASSOCIATION_ASSIGN;
         const char *propertyName = property_getName(property);
@@ -32,6 +44,8 @@
         strcpy(_columnKey, propertyName);
         
         self->_columnName = [[NSString alloc] initWithUTF8String:_columnKey];
+        self->_mappingName = mappingName ? [mappingName stringAsColumnName] :
+                [[[NSString alloc] initWithUTF8String:_columnKey] stringAsColumnName];
         
         //  set default setter/getter
         [self setSetterFromAttribute:NULL];
@@ -118,6 +132,16 @@
         } else if (self.columnClass == [NSNumber class]) {
             self.internal = new AR::NSNumberColumn;
             self.internal->setColumnKey(self->_columnKey);
+        }else if (self.columnClass == [NSArray class]||self.columnClass == [NSMutableArray class]) {
+            self.internal = new AR::NSArrayColumn;
+            self.internal->setColumnKey(self->_columnKey);
+            _isNullable = NO;
+            _isMutable = YES;
+        }else if (self.columnClass == [NSDictionary class]||self.columnClass == [NSMutableDictionary class]) {
+            self.internal = new AR::NSDictionaryColumn;
+            self.internal->setColumnKey(self->_columnKey);
+            _isNullable = NO;
+            _isMutable = YES;
         } else {
             self->_columnType = ARColumnTypeComposite;
         }
@@ -203,12 +227,19 @@
 
 - (NSString *)sqlValueForRecord:(ActiveRecord *)record {
     if (self->_columnType == ARColumnTypeComposite) {
-        id value =  objc_getAssociatedObject(record, self->_columnKey);
+        id value = [record valueForColumn:self]; // objc_getAssociatedObject(record, self->_columnKey);
         return [value performSelector:@selector(toSql)];
     } else {
         return self.internal->sqlValueFromRecord(record);
     }
 }
+
+
+- (id) deserializedValue: (id) value {
+    id objcValue = self.internal != NULL ? self.internal->deserializeValue(value) : value;
+    return objcValue;
+}
+
 
 - (const char *)sqlType {
     if (self.columnType == ARColumnTypeComposite) {
@@ -227,5 +258,16 @@
     }
 }
 
+- (BOOL) isNullable {
+    return self.internal != NULL ? self.internal->nullable() : YES;
+}
 
+- (BOOL) isMutable {
+    return self.internal != NULL ? !self.internal->immutable() : NO;
+}
+
+
+- (BOOL) isImmutable {
+    return !self.isMutable;
+}
 @end

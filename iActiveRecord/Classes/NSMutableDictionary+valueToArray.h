@@ -11,5 +11,5 @@
 @interface NSMutableDictionary (valueToArray)
 
 - (void)addValue:(id)aValue toArrayNamed:(NSString *)anArrayName;
-
+- (void)setValue:(id)aValue forKey:(NSString *) key toMapNamed:(NSString *)anArrayName;
 @end

@@ -24,4 +24,19 @@
     [anArray addObject:aValue];
 }
 
+- (void)setValue:(id)aValue forKey:(NSString *) key toMapNamed:(NSString *)anArrayName {
+    if (aValue == nil) {
+        return;
+    }
+
+    NSMutableDictionary *anMap = [self objectForKey:anArrayName];
+    if (anMap == nil) {
+        anMap = [NSMutableDictionary dictionary];
+        [self setValue:anMap
+                forKey:anArrayName];
+    }
+
+    [anMap setValue:aValue forKey:key];
+}
+
 @end

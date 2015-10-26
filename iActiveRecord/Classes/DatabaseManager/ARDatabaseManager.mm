@@ -19,6 +19,7 @@
 @implementation ARDatabaseConnection {
 @private
     sqlite3 *database;
+    __block NSInteger recyles;
 }
 @synthesize database = database;
 
@@ -34,6 +35,7 @@
 - (id)initWithConfiguration:(ARConfiguration *)config {
     if (self = [super init]) {
         database = NULL;
+        recyles = config.recycleInterval;
         self.configuration = config;
         [self openConnection];
     }
@@ -46,30 +48,63 @@
     return connection;
 }
 
+- (void) releaseConnection {
+    if (database) {
+        int rc = sqlite3_close(database);
+        if (rc == SQLITE_BUSY) {
+            NSLog(@"SQLITE_BUSY: not all statements cleanly finalized");
+
+            sqlite3_stmt *stmt;
+            while ((stmt = sqlite3_next_stmt(database, 0x00)) != 0) {
+                NSLog(@"finalizing stmt");
+                sqlite3_finalize(stmt);
+            }
+            rc = sqlite3_close(database);
+        }
+
+        if (rc != SQLITE_OK) {
+            NSLog(@"close not OK.  rc=%d", rc);
+        }
+
+        database = NULL;
+    }
+}
+
 - (void)openConnection {
     dispatch_sync([ARDatabaseConnection connectionQueue], ^{
-        if (!database) if (SQLITE_OK != sqlite3_open([self.configuration.databasePath UTF8String], &database)) {
+        if(database) {
+            if(recyles != ARConfigurationRecycleIntervalNever && --recyles==0) {
+                recyles = self.configuration.recycleInterval;
+                [self releaseConnection];
+                NSLog(@"recycling connection");
+            }
+        }
+
+        if (!database && SQLITE_OK != sqlite3_open_v2([self.configuration.databasePath UTF8String],
+                &database, self.configuration.flags |SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE , NULL)) {
             NSLog(@"Couldn't open database connection: %s", sqlite3_errmsg(database));
+            database = NULL;
         }
     });
 }
 
 - (void)closeConnection {
     dispatch_sync([ARDatabaseConnection connectionQueue], ^{
-        if (database) {
-            sqlite3_close(database);
-        }
+        [self releaseConnection];
     });
+}
+
+- (void) recycleConnection {
+    [self openConnection];
 }
 
 - (void)dealloc {
     [self closeConnection];
 }
-
 @end
 
 @interface ARDatabaseManager ()
-@property(nonatomic, retain) NSMutableDictionary *connections;
+    @property(nonatomic, retain) NSMutableDictionary *connections;
 @end
 
 @implementation ARDatabaseManager
@@ -101,7 +136,6 @@ static NSArray *records = nil;
 }
 
 - (void)dealloc {
-    //[self closeConnection];
     sqlite3_unicode_free();
 }
 
@@ -113,6 +147,8 @@ static NSArray *records = nil;
 
     if(!currentConnection) {
         [threadDictionary setObject:currentConnection=[ARDatabaseConnection connectionWithConfiguration:self.configuration] forKey:@"ARDatabaseConnection"];
+    } else {
+        [currentConnection recycleConnection];
     }
 
     return currentConnection;
@@ -149,7 +185,7 @@ static NSArray *records = nil;
     [self createIndices];
 }
 
-- (void)createTable:(Class)aRecord {
+- (void)createTable:(Class <ActiveRecord>)aRecord {
     const char *sqlQuery = [ARSQLBuilder sqlOnCreateTableForRecord:aRecord];
     [self executeSqlQuery:sqlQuery];
 }
@@ -164,8 +200,8 @@ static NSArray *records = nil;
     NSArray *allExisting = [existedViews arrayByAddingObjectsFromArray: existedTables];
     NSArray *describedTables = [self records];
     
-    for (Class tableClass in describedTables) {
-        NSString *tableName = [tableClass recordName];
+    for (Class <ActiveRecord> tableClass in describedTables) {
+        NSString *tableName = [tableClass tableName];
         if (![allExisting containsObject:tableName] ) {
             //only create table if there is no table or view for ist
             [self createTable:tableClass];
@@ -177,7 +213,7 @@ static NSArray *records = nil;
             NSMutableArray *describedColumns = [NSMutableArray array];
             
             for (ARColumn *column in describedProperties) {
-                [describedColumns addObject:column.columnName];
+                [describedColumns addObject:column.mappingName];
             }
             
             for (NSString *column in describedColumns) {
@@ -221,7 +257,6 @@ static NSArray *records = nil;
             }
         }
         
-        
     });
     return resultArray;
 }
@@ -263,6 +298,7 @@ static NSArray *records = nil;
             }
         }
         sqlite3_free_table(results);
+
     });
     return resultArray;
 }
@@ -283,6 +319,7 @@ static NSArray *records = nil;
             NSLog( @"Couldn't execute query %s : %s", anSqlQuery, sqlite3_errmsg(connection.database) );
             result = NO;
         }
+
     });
     return result;
 }
@@ -293,7 +330,6 @@ static NSArray *records = nil;
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *statement;
-        
         const char *sqlQuery = [aSqlRequest UTF8String];
 
         if (sqlite3_prepare_v2(connection.database, sqlQuery, -1, &statement, NULL) != SQLITE_OK) {
@@ -319,8 +355,7 @@ static NSArray *records = nil;
                 NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name(statement, columnIndex)];
                
                 if (!hasColumns) {
-                    ARColumn* column = [Record performSelector:@selector(columnNamed:)
-                                                       withObject:columnName];
+                    ARColumn* column = [Record performSelector:@selector(columnNamed:) withObject:columnName];
                     if(column == nil){
                         /*if working with views, sqlite3_column_name(statement, columnIndex) currently returns fully qualified column names
                         * the follwoing code dissembles the fully qualified name to have only the raw column name itself self for the lookup in the
@@ -335,7 +370,7 @@ static NSArray *records = nil;
                         //our recovery operation for the column name failed
                         sqlite3_finalize(statement);
                         @throw [ARException exceptionWithName: @"ColumnNotFoundInRecord"
-                                                       reason: [NSString stringWithFormat: @"Column %@ could not be found in record %@", columnName, [Record recordName],nil  ]
+                                                       reason: [NSString stringWithFormat: @"Column %@ could not be found in record %@", columnName, [Record tableName],nil  ]
                                                      userInfo: nil];
                     }
                     columns[columnIndex] = column;
@@ -370,14 +405,14 @@ static NSArray *records = nil;
                         NSLog(@"UNKOWN COLUMN TYPE %d", columnType);
                         break;
                 }
-                [record setValue:value forColumn:column];
+                [record loadValue:value forColumn:column];
             }
             [record resetChanges];
             [resultArray addObject:record];
             hasColumns = YES;
         }
         sqlite3_finalize(statement);
-        
+
     });
     
     return resultArray;
@@ -399,9 +434,7 @@ static NSArray *records = nil;
         
         resultArray = [NSMutableArray array];
         BOOL cachesLoaded = NO;
-        
         NSMutableDictionary *recordsDictionary;
-        
         NSMutableArray *columns = nil;
         Class *recordClasses = NULL;
         NSMutableArray *recordNames = nil;
@@ -431,7 +464,6 @@ static NSArray *records = nil;
             for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
                 
                 NSString *recordName = nil;
-                
                 NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name(statement, columnIndex)];
                 
                 if (!cachesLoaded) {
@@ -483,14 +515,13 @@ static NSArray *records = nil;
                     [recordsDictionary setValue:currentRecord
                                          forKey:recordName];
                 }
-                
-                [currentRecord setValue:value forColumn:column];
+                [currentRecord loadValue:value forColumn:column];
             }
             cachesLoaded = YES;
             [resultArray addObject:recordsDictionary];
         }
         sqlite3_finalize(statement);
-        
+
     });
     
     return resultArray;
@@ -499,8 +530,7 @@ static NSArray *records = nil;
 - (NSInteger)countOfRecordsWithName:(NSString *)aName {
 #warning remove
     NSString *aSqlRequest = [NSString stringWithFormat:
-                             @"SELECT count(id) FROM '%@'",
-                             [self tableName:aName]];
+                             @"SELECT count(id) FROM '%@'", aName];
     return [self functionResult:aSqlRequest];
 }
 
@@ -539,22 +569,31 @@ static NSArray *records = nil;
         }
         
         sqlite3_free_table(results);
+
     });
     
     return resId;
 }
 
 - (NSInteger)saveRecord:(ActiveRecord *)aRecord {
-    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    
+    NSDate *originalUpdatedAt = aRecord.updatedAt;
+    NSDate *originalCreatedAt = aRecord.createdAt;
     NSSet *changedColumns = [aRecord changedColumns];
     NSInteger columnsCount = changedColumns.count;
-    if (!columnsCount) {
-        return 0;
+    __block int result = 0;
+
+    if(columnsCount) { //TODO: refactor
+        if(!originalUpdatedAt)
+            aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+        if(!aRecord.createdAt)
+            aRecord.createdAt = [NSDate dateWithTimeIntervalSinceNow:0];
+
+        changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+        columnsCount = changedColumns.count;
     }
 
-    __block int result = 0;
-    
+    if(columnsCount)
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
@@ -567,12 +606,12 @@ static NSArray *records = nil;
         NSArray *orderedColumns = [changedColumns allObjects];  //Used to prevent enumeration execeptions should columns change.
 
         for (ARColumn *column in orderedColumns) {
-            [columns addObject:[NSString stringWithFormat:@"'%@'", column.columnName]];
+            [columns addObject:[NSString stringWithFormat:@"'%@'", column.mappingName]];
         }
         
         NSString *sqlString = [NSString stringWithFormat:
                                @"INSERT INTO '%@'(%@) VALUES(%@)",
-                               [aRecord recordName],
+                               [aRecord tableName],
                                [columns componentsJoinedByString:@","],  //FIXME: Sometimes query generates because no changed columns: "INSERT INTO 'Subscriber'() VALUES(?,?,?,?,?,?)"
                                valueMapping];
         
@@ -601,7 +640,7 @@ static NSArray *records = nil;
                         NSData *data = value;
                         sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
                     } else {
-                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.mappingName);
                     }
                     
                     break;
@@ -625,37 +664,49 @@ static NSArray *records = nil;
                     break;
             }
         }
+
     });
+
+    if(result == 0) {
+        aRecord.createdAt = originalCreatedAt;
+        aRecord.updatedAt = originalUpdatedAt;
+    }
+
     return result;
 }
 
 
 - (NSInteger)updateRecord:(ActiveRecord *)aRecord {
-    aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSSet *changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+    NSDate *originalUpdatedAt = aRecord.updatedAt;
+    NSDate *originalCreatedAt = aRecord.createdAt;
+    NSSet *changedColumns = [aRecord changedColumns];
     NSInteger columnsCount = changedColumns.count;
-    if (!columnsCount) {
-        return 0;
+
+    if(columnsCount) {
+        aRecord.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+        changedColumns = [NSSet setWithSet: [aRecord changedColumns]];
+        columnsCount = changedColumns.count;
     }
+
 
     __block int result = SQLITE_OK;
 
+    if(columnsCount)
     dispatch_sync([self activeRecordQueue], ^{
         ARDatabaseConnection *connection = [self getCurrentConnection];
         sqlite3_stmt *stmt;
         const char *sql;
 
-
         NSMutableArray *columns = [NSMutableArray arrayWithCapacity:columnsCount];
         NSArray *orderedColumns = [changedColumns allObjects];
 
         for (ARColumn *column in orderedColumns) {
-            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.columnName]];
+            [columns addObject:[NSString stringWithFormat:@"'%@' = ?", column.mappingName]];
         }
 
         NSString *sqlString = [NSString stringWithFormat:
                 @"UPDATE '%@' SET %@ WHERE id = %@",
-                [aRecord recordName],
+                [aRecord tableName],
                 [columns componentsJoinedByString:@","],aRecord.id];
 
         sql = [sqlString UTF8String];
@@ -676,7 +727,7 @@ static NSArray *records = nil;
                         NSData *data = value;
                         sqlite3_bind_blob(stmt, columnIndex, [data bytes], [data length], NULL);
                     } else {
-                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.columnName);
+                        NSLog(@"UNKNOWN COLUMN !!1 %@ %@", value, column.mappingName);
                     }
 
                     break;
@@ -700,7 +751,13 @@ static NSArray *records = nil;
                     break;
             }
         }
+
     });
+
+    if(result != SQLITE_OK) {
+        aRecord.updatedAt = originalUpdatedAt;
+    }
+
     return result != SQLITE_OK ? 0 : 1;
 }
 

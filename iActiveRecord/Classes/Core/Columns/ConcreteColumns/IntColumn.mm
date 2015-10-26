@@ -32,4 +32,8 @@ namespace AR {
         return @(value);
     }
 
+  id IntColumn::toObjCDefaultObject(void) const {
+      return @(0);
+  }
+
 };

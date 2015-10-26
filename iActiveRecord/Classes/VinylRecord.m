@@ -6,7 +6,5 @@
 #import "VinylRecord.h"
 
 
-@implementation VinylRecord {
-
-}
+@implementation VinylRecord {}
 @end

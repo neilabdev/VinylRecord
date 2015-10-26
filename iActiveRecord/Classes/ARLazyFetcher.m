@@ -49,13 +49,13 @@
 
         return self;
     }
-- (instancetype)initWithRecord:(Class)aRecord {
+- (instancetype)initWithRecord:(Class <ActiveRecord> )aRecord {
     self = [self init];
     recordClass = aRecord;
     return self;
 }
 
-- (instancetype)initWithRecord:(Class)aRecord withInitialSql:(NSString *)anInitialSql {
+- (instancetype)initWithRecord:(Class <ActiveRecord> )aRecord withInitialSql:(NSString *)anInitialSql {
     self = [self initWithRecord:aRecord];
     if (self) {
         sqlRequest = [anInitialSql copy];
@@ -72,7 +72,7 @@
     } else {
         NSArray *columns = [aRecord columns];
         for (ARColumn *column in columns) {
-            [fields addObject:column.columnName];
+            [fields addObject:column.mappingName];
         }
     }
     if (exceptFields) {
@@ -106,15 +106,18 @@
 
 
 - (void)createRecordHasManyThrough {
-    NSString *relId = [NSString stringWithFormat:@"%@Id", [[row recordName] lowercaseFirst]];
-    Class relClass = NSClassFromString(hasManyThroughClass);
+    NSString *relId = row.foreignPropertyKey;
+    Class <ActiveRecordPrivateMethods> relClass = NSClassFromString(hasManyThroughClass); //stringMappingForColumnNamed:
+    NSString *mappingId = [relClass stringMappingForColumnNamed:relId];
     [self join:relClass];
-    [self where:@"%@.%@ = %@", [[relClass performSelector:@selector(recordName)] stringAsColumnName], relId, row.id, nil];
+    [self where:@"%@.%@ = %@",[relClass tableName], mappingId, row.id, nil];
 }
 
-- (void)createRecordHasMany {
-    NSString *selfId = [NSString stringWithFormat:@"%@Id", [[row class] description]];
-    [self where:@"%@ = %@", [selfId stringAsColumnName], row.id, nil];
+- (void)createRecordHasMany { //TODO: Refactor method to support mapping
+    NSString *selfId = row.foreignPropertyKey;
+    Class <ActiveRecordPrivateMethods> relClass = NSClassFromString(hasManyClass); //stringMappingForColumnNamed:
+    NSString *mappingId = [relClass stringMappingForColumnNamed:selfId];
+    [self where:@"%@ = %@", mappingId, row.id, nil];
 }
 
 
@@ -148,7 +151,7 @@
         NSString *order = [[orderByConditions valueForKey:key] boolValue] ? @"ASC" : @"DESC";
         [statement appendFormat:
          @" \"%@\".\"%@\" %@ ,",
-         [recordClass performSelector:@selector(recordName)], key, order];
+         [recordClass tableName], key, order];
     }
     [statement replaceCharactersInRange:NSMakeRange(statement.length - 1, 1) withString:@""];
     return statement;
@@ -174,7 +177,7 @@
     for (NSString *field in [self fieldsOfRecord : recordClass]) {
         fieldname = [NSString stringWithFormat:
                      @"\"%@\".\"%@\" AS '%@#%@'",
-                     [recordClass performSelector:@selector(recordName)],
+                     [recordClass tableName],
                      field,
                      [recordClass.class description], // use the class name here, since the class is looked up when records are loaded
                      field];
@@ -184,7 +187,7 @@
     for (NSString *field in [self fieldsOfRecord : joinClass]) {
         fieldname = [NSString stringWithFormat:
                      @"\"%@\".\"%@\" AS '%@#%@'",
-                     [joinClass performSelector:@selector(recordName)],
+                     [joinClass tableName],
                      field,
                      [joinClass.class description],  // use the class name here, since the class is looked up when records are loaded
 
@@ -194,7 +197,7 @@
 
     [statement appendFormat:@"%@ FROM \"%@\" ",
      [fields componentsJoinedByString:@","],
-     [recordClass performSelector:@selector(recordName)]];
+     [recordClass tableName]];
     return statement;
 }
 
@@ -205,13 +208,13 @@
     for (NSString *field in [self recordFields]) {
         fieldname = [NSString stringWithFormat:
                      @"\"%@\".\"%@\"",
-                     [recordClass performSelector:@selector(recordName)],
+                     [recordClass tableName],
                      field];
         [fields addObject:fieldname];
     }
     [statement appendFormat:@"%@ FROM \"%@\" ",
      [fields componentsJoinedByString:@","],
-     [recordClass performSelector:@selector(recordName)]];
+     [recordClass tableName]];
     return statement;
 }
 
@@ -221,8 +224,8 @@
         return statement;
     }
     NSString *join = joinString(joinType);
-    NSString *joinTable = [joinClass performSelector:@selector(recordName)];
-    NSString *selfTable = [recordClass performSelector:@selector(recordName)];
+    NSString *joinTable = [joinClass tableName];
+    NSString *selfTable = [recordClass tableName];
     [statement appendFormat:
      @" %@ JOIN \"%@\" ON \"%@\".\"%@\" = \"%@\".\"%@\" ",
      join,
@@ -298,15 +301,17 @@
 
 #pragma mark - Joins
 
-- (ARLazyFetcher *)join:(Class)aJoinRecord {
+- (ARLazyFetcher *)join:(Class <ActiveRecord> )aJoinRecord { //TODO: Refactor method to support mapping
 
     NSString *_recordField = @"id";
     NSString *_joinField = [NSString stringWithFormat:@"%@Id",
                             [[recordClass description] lowercaseFirst]];
+    Class <ActiveRecordPrivateMethods> recordClazz =  aJoinRecord;
+    NSString *mappingId = [recordClazz stringMappingForColumnNamed:_joinField];
     [self join:aJoinRecord
        useJoin:ARJoinInner
        onField:_recordField
-      andField:_joinField];
+      andField:mappingId];
     return self;
 }
 
@@ -330,12 +335,12 @@
     if(!row) return nil;
 
     NSArray *entities = nil;
-    NSString *entityKey = [NSString stringWithFormat:@"%@", [[recordClass recordName] lowercaseFirst]];
+    NSString *entityKey = [recordClass performSelector:@selector(foreignPropertyKey)];
 
     if (relationType == ARRelationTypeHasManyThrough) {
         entities = [row cachedArrayForKey:entityKey];
     } else if (relationType == ARRelationTypeHasMany) {
-        entities = [row cachedEntityForKey:entityKey];
+        entities = [row cachedArrayForKey:entityKey];
     }
     return entities;
 }
@@ -397,7 +402,7 @@
 
     NSMutableString *sql = [NSMutableString string];
     NSString *select = [NSString stringWithFormat:@"SELECT count(*) FROM \"%@\" ",
-                        [recordClass performSelector:@selector(recordName)]];
+                        [recordClass tableName]];
     NSString *where = [self createWhereStatement];
     NSString *join = [self createJoinStatement];
     NSInteger resultCount = 0;

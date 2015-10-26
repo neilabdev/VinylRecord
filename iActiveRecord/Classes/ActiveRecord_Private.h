@@ -12,30 +12,44 @@
 @class ARLazyFetcher;
 @class ARError;
 @class ARColumn;
+
+
+
 @protocol ActiveRecordPrivateMethods <ActiveRecord>
 + (ActiveRecord*)persistedRecord;
+#pragma mark - Column getters
+
++ (ARColumn *)columnNamed:(NSString *)aColumnName;
+- (ARColumn *)columnNamed:(NSString *)aColumnName;
++ (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
+- (NSString*) stringMappingForColumnNamed: (NSString*) columnName;
++ (NSString*) foreignPropertyKey;
+- (NSString*) foreignPropertyKey;
 @end
-@interface ActiveRecord ()
+
+@interface ActiveRecord () <ActiveRecordPrivateMethods>
 {
     @private
     BOOL isNew;
     NSMutableSet *errors;
-    NSMutableSet *_changedColumns;
-
+    BOOL shouldSync;
 }
 
 @property (nonatomic,strong) NSMutableSet *belongsToPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyPersistentQueue;
 @property (nonatomic,strong) NSMutableSet *hasManyThroughRelationsQueue;
 @property (nonatomic,strong) NSMutableDictionary *entityCache;
+@property (nonatomic,strong) NSMutableDictionary *deserializedCache;
+@property (nonatomic,strong) NSMutableSet *changedColumns;
 #pragma mark - Lazy Persistent Helpers
-- (BOOL)isNewRecord;
+
 - (BOOL)hasQueuedRelationships;
 - (BOOL)persistQueuedManyRelationships;
 
 #pragma mark - Validations Declaration
 
 + (void)initializeValidators;
++ (void)initializeMapping;
 + (void)validateUniquenessOfField:(NSString *)aField;
 + (void)validatePresenceOfField:(NSString *)aField;
 + (void)validateField:(NSString *)aField withValidator:(NSString *)aValidator;
@@ -45,8 +59,6 @@
 - (void)resetErrors;
 - (void)resetChanges;
 
-- (NSArray *)columns;
-+ (NSArray *)columns;
 
 #pragma mark - Relationships
 
@@ -87,10 +99,6 @@
 
 - (void)privateAfterDestroy;
 
-#pragma mark - Column getters
-
-+ (ARColumn *)columnNamed:(NSString *)aColumnName;
-- (ARColumn *)columnNamed:(NSString *)aColumnName;
 
 + (ARColumn *)columnWithSetterNamed:(NSString *)aSetterName;
 - (ARColumn *)columnWithSetterNamed:(NSString *)aSetterName;
@@ -98,12 +106,12 @@
 + (ARColumn *)columnWithGetterNamed:(NSString *)aGetterName;
 - (ARColumn *)columnWithGetterNamed:(NSString *)aGetterName;
 
-- (NSSet *)changedColumns;
-
 #pragma mark - Dynamic Properties
 
 + (void)initializeDynamicAccessors;
 - (void)setValue:(id)aValue forColumn:(ARColumn *)aColumn;
+- (void)loadValue:(id)value forColumn:(ARColumn *) column;
+- (id)valueForImmutableColumn:(ARColumn *)column;//TODO: renamed. This loads and hashes for deserializable Columns, which can be dirty without setting.
 - (id)valueForColumn:(ARColumn *)aColumn;
 
 #pragma mark - Indices support

@@ -32,9 +32,6 @@
 - (void)createTable:(id)aRecord;
 - (void)appendMigrations;
 
-- (void)openConnection;
-- (void)closeConnection;
-
 - (NSArray *)tables;
 - (NSArray *)views;
 - (NSArray *)columnsForTable:(NSString *)aTableName;

@@ -28,5 +28,6 @@ validation_do(
 indices_do(
     add_index_on(name)
 )
-
+column_imp(dictionary,attributes)
+column_imp(array,list)
 @end

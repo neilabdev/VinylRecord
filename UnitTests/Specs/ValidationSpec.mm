@@ -25,72 +25,72 @@ afterEach(^{
 
 describe(@"Presence", ^{
     it(@"Should not save User with empty name", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"";
         BOOL result = [user save];
-        result should_not BeTruthy();
-//        result should_not BeTruthy();
+        result should_not be_truthy;
+//        result should_not be_truthy;
     });
     it(@"Should save User with some name", ^{
-        User *user = [User new];
+        User *user = [User record];
         user.name = @"John";
         BOOL result = [user save];
-        result should BeTruthy();
-//        result should BeTruthy();
+        result should be_truthy;
+//        result should be_truthy;
     });
 });
 
 describe(@"Uniqueness", ^{
     it(@"Should not save User with same name", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
 
-        result should BeTruthy();
-        User *john2 = [User new];
+        result should be_truthy;
+        User *john2 = [User record];
         john2.name = @"John";
         result = [john2 save];
-        result should_not BeTruthy();
+        result should_not be_truthy;
         //Updates should not validate uniqueness
 
         john.name = @"Johns";
         john.name = @"John";
         john.birthDate = [NSDate date];
         result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
 
     });
     it(@"Should save User with some name", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
-        result should BeTruthy();
-        User *peter = [User new];
+        result should be_truthy;
+        User *peter = [User record];
         peter.name = @"Peter";
         result = [peter save];
-        result should BeTruthy();
+        result should be_truthy;
     });
     it(@"Should update fetched User", ^{
-        User *john = [User new];
+        User *john = [User record];
         john.name = @"John";
         BOOL result = [john save];
-        result should BeTruthy();
+        result should be_truthy;
         User *user = [[[[User query] limit:1] fetchRecords] objectAtIndex:0];
         user.updatedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-        user.save should BeTruthy();
+        user.save should be_truthy;
     });
 });
 
 describe(@"Custom validator", ^{
     it(@"Animal name should be valid", ^{
-        Animal *animal = [Animal new];
+        Animal *animal = [Animal record];
         animal.name = @"animal";
-        [animal save] should BeTruthy();
+        [animal save] should be_truthy;
     });
     it(@"Animal name should not be valid", ^{
-        Animal *animal = [Animal new];
+        Animal *animal = [Animal record];
         animal.name = @"bear";
-        [animal save] should_not BeTruthy();
+        [animal save] should_not be_truthy;
     });
 });
 

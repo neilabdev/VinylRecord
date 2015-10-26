@@ -24,6 +24,23 @@ namespace AR {
         virtual const IMP mutator(void) const = 0;
         
         virtual NSString *sqlValueFromRecord(ActiveRecord *record) const = 0;
+
+
+        virtual id deserializeValue(id value) const
+        {
+            return value;
+        }
+
+        virtual BOOL nullable(void) const
+        {
+            return YES;
+        }
+
+
+        virtual BOOL immutable(void) const
+        {
+            return YES;
+        }
         
         const char *columnKey() const
         {

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "ActiveRecordProtocol.h"
 typedef enum {
     ARJoinLeft,
     ARJoinRight,
@@ -18,7 +18,7 @@ typedef enum {
 @class ActiveRecord;
 @interface ARLazyFetcher : NSArray
 
-- (instancetype)initWithRecord:(Class )aRecord;
+- (instancetype)initWithRecord:(Class  <ActiveRecord> )aRecord;
 - (instancetype)initWithRecord:(ActiveRecord *)entityRow
                    thatHasMany:(NSString *)aClassName through:(NSString *)aRelationsipClassName ;
 
@@ -27,9 +27,9 @@ typedef enum {
 
 - (ARLazyFetcher *)only:(NSString *)aFirstParam, ... NS_REQUIRES_NIL_TERMINATION;
 - (ARLazyFetcher *)except:(NSString *)aFirstParam, ... NS_REQUIRES_NIL_TERMINATION;
-- (ARLazyFetcher *)join:(Class)aJoinRecord;
+- (ARLazyFetcher *)join:(Class <ActiveRecord> )aJoinRecord;
 
-- (ARLazyFetcher *)join:(Class)aJoinRecord
+- (ARLazyFetcher *)join:(Class <ActiveRecord> )aJoinRecord
                 useJoin:(ARJoinType)aJoinType
                 onField:(NSString *)aFirstField
                andField:(NSString *)aSecondField;

@@ -117,17 +117,6 @@
 #define add_search_on(aField) \
     [self performSelector: @selector(addSearchOn:) withObject: @ ""#aField ""];
 
-#define indexes_do(indices) \
-    + (void)initializeIndices { \
-        [super initializeIndices]; \
-        indices \
-    }
-
-#define mapping_do(mapping) \
-    (void) initializeMapping { \
-        return; \
-    }
-
 #define has_none_through_dec has_many_through_imp
 #define has_none_through_imp(relative_class, relationship, accessor, dependency) \
     + (ARDependency)_ar_registerHasManyThrough ## relative_class ## _ar_ ## relationship { \
@@ -160,6 +149,17 @@
 #define field_key_dec field_integer_dec
 #define field_key_imp field_integer_imp
 
+
+
+#define field_array_dec( property_name ) \
+    @property ( nonatomic,retain ) NSMutableArray * property_name;
+#define field_array_imp( property_name ) \
+    @dynamic property_name ;
+
+#define field_dictionary_dec( property_name ) \
+    @property ( nonatomic,retain ) NSMutableDictionary * property_name;
+#define field_dictionary_imp( property_name ) \
+    @dynamic property_name ;
 
 #define field_string_dec( property_name ) \
     @property ( nonatomic,copy ) NSString * property_name;

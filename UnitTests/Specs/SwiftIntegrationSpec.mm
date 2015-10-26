@@ -31,7 +31,7 @@ SPEC_BEGIN(SwiftIntegrationSpecs)
             NSNumber *recordId = nil;
             Dog *animal = [Dog new: @{@"name":@"animal", @"title": @"dog title", @"breed":@"dog breed"}];
 
-            animal.save should BeTruthy();
+            animal.save should be_truthy;
             recordId = animal.id;
             Dog *dog = [[Dog allRecords] objectAtIndex:0];
             dog.foo=@"bark";

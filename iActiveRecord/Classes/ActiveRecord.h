@@ -5,12 +5,11 @@
 //  Created by Alex Denisov on 10.01.12.
 //  Copyright (c) 2012 okolodev.org. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <objc/message.h>
-
+#import "ActiveRecordProtocol.h"
 #import "ARRelationshipsHelper.h"
-#import "ARValidationsHelper.h"
+#import "ARMappingHelper.h"
 #import "ARCallbacksHelper.h"
 #import "ARLazyFetcher.h"
 #import "ARErrorHelper.h"
@@ -20,14 +19,10 @@
 #import "ARValidatorProtocol.h"
 #import "ARException.h"
 #import "ARIndicesMacroHelper.h"
+#import "ARValidationsHelper.h"
 #import "ARConfiguration.h"
 #import "ARSynchronizationProtocol.h"
 #import "ARTransactionState.h"
-
-@protocol ActiveRecord <NSObject>
-#pragma mark - TableName
-+ (NSString *)recordName;
-@end
 
 @class ARConfiguration;
 
@@ -39,12 +34,13 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
     [ARException raise];
 
 @interface ActiveRecord : NSObject <ActiveRecord>
-
 @property(nonatomic, retain) NSNumber *id;
 @property(nonatomic, retain) NSDate *updatedAt;
 @property(nonatomic, retain) NSDate *createdAt;
 
 - (void)markAsNew;
+
+- (BOOL)isNewRecord;
 
 - (BOOL)isDirty;
 
@@ -62,23 +58,17 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (instancetype)create:(NSDictionary *)values;
 
++ (instancetype)record;
+
++ (instancetype)record:(NSDictionary *)values;
+
 - (void)copyFrom:(ActiveRecord *)copy;
 
 - (void)copyFrom:(ActiveRecord *)copy merge:(BOOL)merge;
 
 - (instancetype)reload;
 
-- (BOOL)save;
-
-- (BOOL)update;
-
-- (BOOL)sync;
-
-- (void)dropRecord;
-
-+ (NSInteger)count;
-
-+ (NSArray *)allRecords;
++ (NSArray *)allRecords __deprecated;
 
 + (ARLazyFetcher *)lazyFetcher;
 
@@ -89,7 +79,6 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 + (void)transaction:(ARTransactionBlock)aTransactionBlock;
 
 + (void)applyConfiguration:(ARConfigurationBlock)configBlock;
-
 
 #pragma mark - Callbacks
 
@@ -115,21 +104,7 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 - (void)afterSync;
 
-
 #pragma mark - Extensions
-+ (ARLazyFetcher *) query;
-
-+ (instancetype)findById:(id)record_id;
-
-+ (instancetype)findByKey:(id)key value:(id)value;
-
-+ (instancetype)findOrBuildByKey:(id)key value:(id)value;
-
-+ (NSArray *)findAllByKey:(id)key value:(id)value;
-
-+ (NSArray *)findAllByConditions:(NSDictionary *)conditions;
-
-+ (instancetype)findByConditions:(NSDictionary *)conditions;
 
 + (void)addSearchOn:(NSString *)aField;
 
@@ -139,5 +114,3 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 - (instancetype)recordSaved;
 @end
-
-
