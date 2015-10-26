@@ -10,14 +10,14 @@ VinylRecord (short for Vinyl ActiveRecord) is a pure SQLite ActiveRecord ORM for
 * Save/Update Callbacks (NEW)
 
 # COMING SOON
-* Official Swift Support (currently works best via subclass)
+* Official Swift Support (currently works best via subclass, but works with module import. Without associations, no Objc-C needed)
 * Better Documentation :)
 
 # INSTALLATION  
 ## Using CocoaPods (Recommend)
 ***
     # Podfile
-    pod 'VinylRecord', '1.0.4'
+    pod 'VinylRecord', '1.0.9'
     
 ## Using Source
 ***
@@ -101,6 +101,8 @@ VinylRecord supports the typical sql types, which may be either defined using si
         column_dec(decimal,property_of_decimal) // NSDecimalNumber
         column_dec(blob,property_of_blob) // NSData
         column_dec(date,property_of_date) // NSDate
+        column_dec(dictionary,property_of_dictionary) // NSMutableDictionary
+        column_dec(array,property_of_array) // NSMutableArray
     @end
     
     @implementation DataTypes
@@ -110,44 +112,12 @@ VinylRecord supports the typical sql types, which may be either defined using si
         column_imp(decimal,property_of_decimal)
         column_imp(blob,property_of_blob)
         column_imp(date,property_of_date)
+        column_imp(dictionary,property_of_dictionary)
+        column_imp(array,property_of_array)
         // or @dynamic property_name which doesn't generate helpers
     @end
     
 ```
-
-## Custom Data Types
-
-All custom property types should implement ARRepresentationProtocol:
-
-```objective-c
-    @protocol ARRepresentationProtocol
-
-    @required
-    + (const char *)sqlType;
-    + (id)fromSql:(NSString *)sqlData;
-     - (NSString *)toSql;
-    @end
-```
-
-This is a simple example:
-
-```objective-c
-    @implementation NSString (sqlRepresentation)
-    + (ActiveRecord *)fromSql:(NSString *)sqlData{
-        return sqlData;
-    }
-
-    - (NSString *)toSql {
-        return self;
-    }
-
-    + (const char *)sqlType {
-        return "text";
-    }
-    @end
-```
-
-
 
 # VALIDATION
 

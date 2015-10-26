@@ -21,5 +21,6 @@ namespace AR {
         
         NSNumber *__strong toColumnType(id value) const override;
         id toObjCObject(NSNumber *value) const override;
+        id toObjCDefaultObject(void) const override;
     };
 };

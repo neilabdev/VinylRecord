@@ -32,4 +32,8 @@ namespace AR {
         return @(value);
     }
 
+    id UnsignedShortColumn::toObjCDefaultObject(void) const
+    {
+        return @(0);
+    }
 };

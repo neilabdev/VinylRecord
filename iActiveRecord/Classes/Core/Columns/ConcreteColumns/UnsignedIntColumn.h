@@ -18,5 +18,6 @@ namespace AR {
 
         unsigned int toColumnType(id value) const override;
         id toObjCObject(unsigned int value) const override;
+        id toObjCDefaultObject(void) const override;
     };
 };

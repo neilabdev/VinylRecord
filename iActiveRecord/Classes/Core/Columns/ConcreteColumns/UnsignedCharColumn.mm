@@ -32,4 +32,9 @@ namespace AR {
         return @(value);
     }
 
+  id AR::UnsignedCharColumn::toObjCDefaultObject(void) const {
+      char character = '\n';
+      return @(character);
+  }
+
 };

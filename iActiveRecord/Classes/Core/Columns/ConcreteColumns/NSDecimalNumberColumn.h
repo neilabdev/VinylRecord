@@ -18,5 +18,6 @@ namespace AR {
 
         NSDecimalNumber *__strong toColumnType(id value) const override;
         id toObjCObject(NSDecimalNumber *value) const override;
+        id toObjCDefaultObject(void) const override;
     };
 };

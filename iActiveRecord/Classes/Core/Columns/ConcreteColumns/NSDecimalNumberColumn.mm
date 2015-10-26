@@ -5,7 +5,7 @@
 
 #include "NSDecimalNumberColumn.h"
 namespace AR {
-
+//object.set_propertyNameKey:
     static NSLocale *posixLocale()
     {
         static NSLocale *posixLocale;
@@ -41,5 +41,9 @@ namespace AR {
     id NSDecimalNumberColumn::toObjCObject(NSDecimalNumber *value) const
     {
         return value;
+    }
+
+    id NSDecimalNumberColumn::toObjCDefaultObject(void) const {
+        return [NSDecimalNumber decimalNumberWithString:@"0"];
     }
 };

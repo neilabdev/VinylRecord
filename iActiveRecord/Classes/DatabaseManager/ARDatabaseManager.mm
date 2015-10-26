@@ -405,7 +405,7 @@ static NSArray *records = nil;
                         NSLog(@"UNKOWN COLUMN TYPE %d", columnType);
                         break;
                 }
-                [record setValue:value forColumn:column];
+                [record loadValue:value forColumn:column];
             }
             [record resetChanges];
             [resultArray addObject:record];
@@ -434,9 +434,7 @@ static NSArray *records = nil;
         
         resultArray = [NSMutableArray array];
         BOOL cachesLoaded = NO;
-        
         NSMutableDictionary *recordsDictionary;
-        
         NSMutableArray *columns = nil;
         Class *recordClasses = NULL;
         NSMutableArray *recordNames = nil;
@@ -466,7 +464,6 @@ static NSArray *records = nil;
             for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
                 
                 NSString *recordName = nil;
-                
                 NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name(statement, columnIndex)];
                 
                 if (!cachesLoaded) {
@@ -518,8 +515,7 @@ static NSArray *records = nil;
                     [recordsDictionary setValue:currentRecord
                                          forKey:recordName];
                 }
-                
-                [currentRecord setValue:value forColumn:column];
+                [currentRecord loadValue:value forColumn:column];
             }
             cachesLoaded = YES;
             [resultArray addObject:recordsDictionary];
