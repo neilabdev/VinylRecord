@@ -299,6 +299,7 @@
 		CAE92278171495290082A97C /* UserProjectRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9226A171495290082A97C /* UserProjectRelationship.m */; };
 		CAE9227C171495880082A97C /* ARFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE9227B171495880082A97C /* ARFactory.m */; };
 		CAE9227F17149A080082A97C /* octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = CAE9227E17149A080082A97C /* octocat.png */; };
+		E611BE641BD5A20200B38154 /* NSNumberColumn.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6A695C80A25C8ECCB7127 /* NSNumberColumn.mm */; };
 		E671768A1B214DE70028415A /* Animal.h in Sources */ = {isa = PBXBuildFile; fileRef = CAE92250171495290082A97C /* Animal.h */; };
 		E671768B1B214DE70028415A /* Animal.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE92251171495290082A97C /* Animal.m */; };
 		E671768C1B214DE70028415A /* AnimalValidator.h in Sources */ = {isa = PBXBuildFile; fileRef = CAE92252171495290082A97C /* AnimalValidator.h */; };
@@ -1884,6 +1885,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E611BE641BD5A20200B38154 /* NSNumberColumn.mm in Sources */,
 				5DC6A12D9A2EF3CEBD17C195 /* NSDateSpec.mm in Sources */,
 				5DC6A6A80094378ED5C401AA /* ARConfiguration.m in Sources */,
 				5DC6AA37F0C4B191310F6C64 /* ARSQLBuilder.m in Sources */,
