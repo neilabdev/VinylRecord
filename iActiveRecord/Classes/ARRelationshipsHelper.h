@@ -229,7 +229,7 @@
 #define field_decimal_imp( property_name ) \
     @dynamic property_name ;   \
     - (double) double_##property_name { \
-        NSInteger value =  [ [ self property_name ] integerValue ]; \
+        double value =  [ [ self property_name ] doubleValue ]; \
         return value; \
     }  \
     - (void) setDouble_##property_name: (double) value  { \
