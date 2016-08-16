@@ -211,8 +211,9 @@
     NSString *fieldname = nil;
     for (NSString *field in [self recordFields]) {
         fieldname = [NSString stringWithFormat:
-                     @"\"%@\".\"%@\"",
+                     @"\"%@\".\"%@\" AS \"%@\"",
                      [recordClass tableName],
+                     field,
                      field];
         [fields addObject:fieldname];
     }
