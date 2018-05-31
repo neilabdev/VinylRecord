@@ -110,6 +110,10 @@
     Class <ActiveRecordPrivateMethods> relClass = NSClassFromString(hasManyThroughClass); //stringMappingForColumnNamed:
     NSString *mappingId = [relClass stringMappingForColumnNamed:relId];
     [self join:relClass];
+
+
+
+
     [self where:@"%@.%@ = %@",[relClass tableName], mappingId, row.id, nil];
 }
 
@@ -207,8 +211,9 @@
     NSString *fieldname = nil;
     for (NSString *field in [self recordFields]) {
         fieldname = [NSString stringWithFormat:
-                     @"\"%@\".\"%@\"",
+                     @"\"%@\".\"%@\" AS \"%@\"",
                      [recordClass tableName],
+                     field,
                      field];
         [fields addObject:fieldname];
     }

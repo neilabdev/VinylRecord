@@ -52,6 +52,7 @@
         [self setGetterFromAttribute:NULL];
         uint attributesCount = 0;
         objc_property_attribute_t *attributes = property_copyAttributeList(property, &attributesCount);
+
         for (int i = 0; i < attributesCount; i++) {
             switch (attributes[i].name[0]) {
                 case 'T':
@@ -114,9 +115,10 @@
 - (BOOL)setPropertyTypeFromAttribute:(const char *)anAttribute {
     BOOL result = YES;
     char *type = NULL;
+    unsigned long attribute_len = strlen(anAttribute); //enumerations as properties return @? instead of usual @"ClassName"
     //  classes described as @"ClassName"
-    if (anAttribute[0] == '@') {
-        unsigned long length = strlen(anAttribute) - 3;
+    if (attribute_len > 3 && anAttribute[0] == '@') {
+        unsigned long length = attribute_len - 3;
         type = (char *)calloc( length+1, sizeof(char) );
         strncpy(type, anAttribute + 2, length);
         self.columnClass = [objc_getClass(type) class];
