@@ -108,9 +108,9 @@ typedef void (^ARConfigurationBlock)(ARConfiguration *config);
 
 + (void)addSearchOn:(NSString *)aField;
 
-+ (BOOL)savePointTransaction:(ARSavePointTransactionBlock)transaction;
++ (BOOL)savePointTransaction:(ARSavePointTransactionBlock)transaction NS_SWIFT_NAME(savePoint(transaction:));
 
-+ (BOOL)savePoint:(NSString *)name transaction:(ARSavePointTransactionBlock)transaction;
++ (BOOL)savePoint:(NSString *)name transaction:(ARSavePointTransactionBlock)transaction  NS_SWIFT_NAME(savePoint(name:transaction:));
 
 - (instancetype)recordSaved;
 @end

@@ -47,21 +47,21 @@ typedef enum {
 
 #pragma mark - findBy Helpers
 
-- (id) findById: (id) record_id;
-- (id) findByKey: (id) key value: (id) value;
-- (NSArray *) findAllByKey: (id) key value: (id) value;
-- (id) fetchFirstRecord;
+- (id) findById: (id) record_id  NS_SWIFT_NAME(findBy(id:));
+- (id) findByKey: (id) key value: (id) value NS_SWIFT_NAME(findBy(key:value:));
+- (NSArray *) findAllByKey: (id) key value: (id) value  NS_SWIFT_NAME(findAllBy(key:value:));
+- (id) fetchFirstRecord NS_SWIFT_NAME(first());
 
-- (NSArray *) findByConditions: (NSDictionary*) conditions;
-- (NSArray *) findAllByConditions: (NSDictionary*) conditions;
+- (NSArray *) findByConditions: (NSDictionary*) conditions  NS_SWIFT_NAME(find(by:));
+- (NSArray *) findAllByConditions: (NSDictionary*) conditions NS_SWIFT_NAME(findAll(by:));
 
 #pragma mark - whereFilters
 
-- (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue;
-- (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue;
-- (ARLazyFetcher *)whereField:(NSString *)aField in:(NSArray *)aValues;
-- (ARLazyFetcher *)whereField:(NSString *)aField notIn:(NSArray *)aValues;
-- (ARLazyFetcher *)whereField:(NSString *)aField like:(NSString *)aPattern;
-- (ARLazyFetcher *)whereField:(NSString *)aField notLike:(NSString *)aPattern;
-- (ARLazyFetcher *)whereField:(NSString *)aField between:(id)startValue and:(id)endValue;
+- (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue  NS_SWIFT_NAME(where(field:equalToValue:));
+- (ARLazyFetcher *)whereField:(NSString *)aField notEqualToValue:(id)aValue NS_SWIFT_NAME(where(field:notEqualToValue:));
+- (ARLazyFetcher *)whereField:(NSString *)aField in:(NSArray *)aValues  NS_SWIFT_NAME(where(field:in:));
+- (ARLazyFetcher *)whereField:(NSString *)aField notIn:(NSArray *)aValues NS_SWIFT_NAME(where(field:notIn:));
+- (ARLazyFetcher *)whereField:(NSString *)aField like:(NSString *)aPattern NS_SWIFT_NAME(where(field:like:));
+- (ARLazyFetcher *)whereField:(NSString *)aField notLike:(NSString *)aPattern NS_SWIFT_NAME(where(field:notLike:));
+- (ARLazyFetcher *)whereField:(NSString *)aField between:(id)startValue and:(id)endValue NS_SWIFT_NAME(where(field:between:and:));
 @end
