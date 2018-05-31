@@ -51,10 +51,9 @@ typedef enum {
 - (id) findByKey: (id) key value: (id) value NS_SWIFT_NAME(findBy(key:value:));
 - (NSArray *) findAllByKey: (id) key value: (id) value  NS_SWIFT_NAME(findAllBy(key:value:));
 - (id) fetchFirstRecord NS_SWIFT_NAME(first());
-
-- (NSArray *) findByConditions: (NSDictionary*) conditions  NS_SWIFT_NAME(find(by:));
+- (id ) findByConditions: (NSDictionary*) conditions  NS_SWIFT_NAME(find(by:));
 - (NSArray *) findAllByConditions: (NSDictionary*) conditions NS_SWIFT_NAME(findAll(by:));
-
+- (NSArray *) findAllByConditions: (NSDictionary*) conditions limit: (NSInteger) limit NS_SWIFT_NAME(findAll(by:limit:));
 #pragma mark - whereFilters
 
 - (ARLazyFetcher *)whereField:(NSString *)aField equalToValue:(id)aValue  NS_SWIFT_NAME(where(field:equalToValue:));

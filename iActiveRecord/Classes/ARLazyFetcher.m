@@ -493,13 +493,41 @@
     return results;
 }
 
-- (NSArray *) findByConditions: (NSDictionary*) conditions {
-    NSMutableArray *results = [NSMutableArray array];
-    return results;
+- (id ) findByConditions: (NSDictionary*) conditions {
+    return [[self findAllByConditions:conditions limit:1] firstObject];
 }
 
-- (NSArray *) findAllByConditions: (NSDictionary*) conditions {
-    NSMutableArray *results = [NSMutableArray array];
+#define PR(params,i) (params.count > i ? params[i++] : nil)
+
+- (NSArray *) findAllByConditions: (NSDictionary*) conditions  {
+    return [self findAllByConditions:conditions limit:0];
+}
+- (NSArray *) findAllByConditions: (NSDictionary*) conditions  limit: (NSUInteger) limit {
+    NSMutableArray *builder = [NSMutableArray array];
+    NSMutableArray *params = [NSMutableArray arrayWithCapacity:15];
+    NSAssert(conditions.allKeys.count<=15, @"maximum of 15 conditions allowed");
+    for(id key in conditions ){
+        id value = conditions[key];
+        NSString *sql = [NSString stringWithFormat:@" %@ = %%%@ ",[key stringAsColumnName],@"@"];
+        [builder addObject:sql];
+        [params addObject:value];
+    }
+
+    NSString *query = [builder componentsJoinedByString: @" AND "];
+    NSUInteger i = 0;
+
+    ARLazyFetcher *whereFetcher = [self where:  query , //THE FIRST NIL ENDS THE QUERY,
+                    PR(params,i), PR(params,i),PR(params,i),PR(params,i),PR(params,i),
+                    PR(params,i), PR(params,i),PR(params,i),PR(params,i),PR(params,i),
+                    PR(params,i), PR(params,i),PR(params,i),PR(params,i),PR(params,i),nil];
+    NSArray *results ;
+
+    if(limit > 0 ) {
+        results = [[whereFetcher limit: limit]  fetchRecords];
+    } else {
+        results = [whereFetcher  fetchRecords];
+    }
+
     return results;
 }
 
