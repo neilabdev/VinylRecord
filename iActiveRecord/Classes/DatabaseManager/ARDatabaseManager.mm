@@ -796,12 +796,12 @@ static NSArray *records = nil;
     if (records == nil) {
         NSMutableArray *clazzes = [NSMutableArray array];
         NSArray *subclasses = class_getSubclasses([ActiveRecord class]);
-        for(Class clazz in subclasses) {
+        for (Class clazz in subclasses) {
             //TODO: Until VinylRecord becomes the official base class and ActiveRecord compatibility is dropped. the subclass VinylRecord should not create a new table.
-            if(! (clazz == [VinylRecord class]))
+            if (!(clazz == [VinylRecord class]))
                 [clazzes addObject:clazz];
         }
-        records = clazzes; // record = class_getSubclasses([ActiveRecord class]); // originally.
+        records = clazzes;
     }
     return records;
 }

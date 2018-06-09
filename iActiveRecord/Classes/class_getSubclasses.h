@@ -11,7 +11,9 @@
 
 static NSArray *class_getSubclasses(Class parentClass) {
     int numClasses = objc_getClassList(NULL, 0);
-    Class classes[sizeof(Class) * numClasses];
+    NSUInteger sizeOfClass = sizeof(Class) * numClasses;
+    NSMutableData* data = [NSMutableData dataWithLength:sizeOfClass];
+    Class * classes = (Class *) [data mutableBytes];
     numClasses = objc_getClassList(classes, numClasses);
     NSMutableArray *result = [NSMutableArray array];
     for (NSInteger i = 0; i < numClasses; i++) {
